@@ -1,4 +1,4 @@
 konfigurasi
 >>> go mod init rujukan
 install go fiber
->>> go get github.com/gofiber/fiber/v2
+>>> go get -u github.com/gin-gonic/gin
