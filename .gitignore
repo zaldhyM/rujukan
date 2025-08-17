@@ -2,4 +2,5 @@
 go.mod
 go.sum
 conf.env
+docker-compose.yml
 mysql_data/
