@@ -1,0 +1,28 @@
+-- sisrute.rumah_sakit definition
+USE `master`;
+
+CREATE TABLE `faskes` (
+  `ID` smallint NOT NULL AUTO_INCREMENT,
+  `NAMA` VARCHAR(100) DEFAULT '',
+  `KODE` CHAR(12) DEFAULT NULL  COMMENT 'kode faskes',
+  `ALAMAT` varchar(100) DEFAULT '',
+  `KONTAK` varchar(50) DEFAULT '',
+  `EMAIL` varchar(50) DEFAULT '',
+  `PROV` CHAR(10) DEFAULT '' COMMENT 'kode wilayah propinsi',
+  `KAB` CHAR(10) DEFAULT '' COMMENT 'kode wilayah KOta/Kab',
+  `KELOMPOK FASKES` tinyint(0) DEFAULT '0' COMMENT 'db master table referensi JENIS = 1',
+  `LAT` varchar(50) DEFAULT NULL,
+  `LNG` varchar(50) DEFAULT NULL,
+  `TANGGAL` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `STATUS_KERJASAMA_BPJS` tinyint(4) NOT NULL DEFAULT 0 COMMENT '1=Ya, 0=Tdk',
+  `KODE_FASKES_BPJS` char(8) DEFAULT NULL,
+  `STATUS` tinyint(1) DEFAULT '1',
+  PRIMARY KEY (`ID`),
+  UNIQUE KEY `KODE` (`KODE`),
+  KEY `STATUS` (`STATUS`),
+  KEY `PROV` (`PROV`),
+  KEY `KAB` (`KAB`),
+  KEY `NAMA` (`NAMA`),
+  KEY `STATUS_KERJASAMA_BPJS` (`STATUS_KERJASAMA_BPJS`),
+  KEY `KODE_FASKES_BPJS` (`KODE_FASKES_BPJS`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
