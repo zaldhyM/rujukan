@@ -1,7 +1,7 @@
 **konfigurasi api**
 ``` 
-    cd api/ 
-    go mod init rujukan
+cd api/ 
+go mod init rujukan
 ```
 
 **install go fiber**
