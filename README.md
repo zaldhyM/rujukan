@@ -36,10 +36,17 @@ docker compose up -d
 docker ps
 ```
 
-**docker compose stop (stop dan menghapus countener)**
+**docker masuk ke terminal mysql**
+
+```
+docker exec -it mysql_server mysql -u root -p
+```
+
+**docker compose (stop dan menghapus countener)**
 
 ```
 docker compose down
+docker compose down -v
 ```
 
 **docker di hentikan tampa menhapus**
@@ -48,8 +55,3 @@ docker compose down
 docker compose stop
 ```
 
-**perbaruan configurasi docker**
-
-```
-docker compose down -v
-```
