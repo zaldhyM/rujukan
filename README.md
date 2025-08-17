@@ -1,4 +1,5 @@
-**konfigurasi**
+**konfigurasi api**
+``` cd api/ ```
 
 ```go mod init rujukan```
 
@@ -6,7 +7,7 @@
 
 ```go get -u github.com/gin-gonic/gin```
 
-**docker run countener**
+**Konfigurasi docker run countener**
 
 ```docker compose up -d```
 
