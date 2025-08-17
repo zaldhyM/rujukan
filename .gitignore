@@ -1,4 +1,5 @@
 .vscode/
 go.mod
 go.sum
+conf.env
 mysql_data/
