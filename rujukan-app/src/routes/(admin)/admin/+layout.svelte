@@ -1,4 +1,23 @@
 <script>
+  import Fa from "svelte-fa";
+  import {
+    faChartPie,
+    faFilePdf,
+    faLink,
+    faTruckMedical,
+    faUsers,
+    faBell,
+    faEnvelope,
+    faSearch,
+    faBars,
+    faTable,
+    faFile,
+    faDonate,
+    faRightFromBracket,
+    faFontAwesomeFlag,
+    faGear,
+    faUser,
+  } from "@fortawesome/free-solid-svg-icons";
   import avatar from "$lib/assets/img/undraw_profile.svg";
 </script>
 
@@ -22,7 +41,7 @@
     <!-- Nav Item - Dashboard -->
     <li class="nav-item">
       <a class="nav-link" href="/admin">
-        <i class="fas fa-fw fa-tachometer-alt"></i>
+        <Fa icon={faChartPie} />
         <span>Dashboard</span></a
       >
     </li>
@@ -43,7 +62,7 @@
         aria-expanded="true"
         aria-controls="collapseTwo"
       >
-        <i class="fas fa-fw fa-cog"></i>
+        <Fa icon={faTruckMedical} />
         <span>Rujukan</span>
       </a>
       <div
@@ -70,7 +89,7 @@
         aria-expanded="true"
         aria-controls="laporandandashbord"
       >
-        <i class="fas fa-fw fa-wrench"></i>
+        <Fa icon={faFilePdf} />
         <span>Laporan & Dashboard</span>
       </a>
       <div
@@ -97,7 +116,7 @@
         aria-expanded="true"
         aria-controls="collapseUtilities"
       >
-        <i class="fas fa-fw fa-wrench"></i>
+        <Fa icon={faLink} />
         <span>Intergasi</span>
       </a>
       <div
@@ -132,7 +151,7 @@
         aria-expanded="true"
         aria-controls="collapsePages"
       >
-        <i class="fas fa-fw fa-folder"></i>
+        <Fa icon={faUsers} />
         <span>User</span>
       </a>
       <div
@@ -160,7 +179,7 @@
     <!-- Nav Item - Charts -->
     <li class="nav-item">
       <a class="nav-link" href="charts.html">
-        <i class="fas fa-fw fa-chart-area"></i>
+        <Fa icon={faChartPie} />
         <span>Charts</span></a
       >
     </li>
@@ -168,7 +187,7 @@
     <!-- Nav Item - Tables -->
     <li class="nav-item">
       <a class="nav-link" href="tables.html">
-        <i class="fas fa-fw fa-table"></i>
+        <Fa icon={faTable} />
         <span>Tables</span></a
       >
     </li>
@@ -196,7 +215,7 @@
           id="sidebarToggleTop"
           class="btn btn-link d-md-none rounded-circle mr-3"
         >
-          <i class="fa fa-bars"></i>
+          <Fa icon={faBars} />
         </button>
 
         <!-- Topbar Search -->
@@ -213,7 +232,7 @@
             />
             <div class="input-group-append">
               <button class="btn btn-primary" type="button">
-                <i class="fas fa-search fa-sm"></i>
+                <Fa icon={faSearch} />
               </button>
             </div>
           </div>
@@ -232,7 +251,7 @@
               aria-haspopup="true"
               aria-expanded="false"
             >
-              <i class="fas fa-search fa-fw"></i>
+              <Fa icon={faBell} />
             </a>
             <!-- Dropdown - Messages -->
             <div
@@ -250,7 +269,7 @@
                   />
                   <div class="input-group-append">
                     <button class="btn btn-primary" type="button">
-                      <i class="fas fa-search fa-sm"></i>
+                      <Fa icon={faBell} />
                     </button>
                   </div>
                 </div>
@@ -269,7 +288,7 @@
               aria-haspopup="true"
               aria-expanded="false"
             >
-              <i class="fas fa-bell fa-fw"></i>
+              <Fa icon={faBell} style="color:gray" />
               <!-- Counter - Alerts -->
               <span class="badge badge-danger badge-counter">3+</span>
             </a>
@@ -282,7 +301,7 @@
               <a class="dropdown-item d-flex align-items-center" href="#">
                 <div class="mr-3">
                   <div class="icon-circle bg-primary">
-                    <i class="fas fa-file-alt text-white"></i>
+                    <Fa icon={faBell} style="color: white;" />
                   </div>
                 </div>
                 <div>
@@ -295,7 +314,7 @@
               <a class="dropdown-item d-flex align-items-center" href="#">
                 <div class="mr-3">
                   <div class="icon-circle bg-success">
-                    <i class="fas fa-donate text-white"></i>
+                    <Fa icon={faDonate} style="color: white;" />
                   </div>
                 </div>
                 <div>
@@ -306,7 +325,7 @@
               <a class="dropdown-item d-flex align-items-center" href="#">
                 <div class="mr-3">
                   <div class="icon-circle bg-warning">
-                    <i class="fas fa-exclamation-triangle text-white"></i>
+                    <Fa icon={faFile} style="color: white;" />
                   </div>
                 </div>
                 <div>
@@ -332,7 +351,7 @@
               aria-haspopup="true"
               aria-expanded="false"
             >
-              <i class="fas fa-envelope fa-fw"></i>
+              <Fa icon={faEnvelope} style="color:gray" />
               <!-- Counter - Messages -->
               <span class="badge badge-danger badge-counter">7</span>
             </a>
@@ -437,21 +456,20 @@
               aria-labelledby="userDropdown"
             >
               <a class="dropdown-item" href="#">
-                <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                <Fa icon={faUser} style="color: gray;" />
                 Profile
               </a>
               <a class="dropdown-item" href="#">
-                <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                <Fa icon={faGear} style="color: gray;" />
                 Settings
               </a>
               <a class="dropdown-item" href="#">
-                <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
+                <Fa icon={faFontAwesomeFlag} style="color: gray;" />
                 Activity Log
               </a>
               <div class="dropdown-divider"></div>
               <a class="dropdown-item" href="/login">
-                <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"
-                ></i>
+                <Fa icon={faRightFromBracket} style="color: gray;" />
                 Logout
               </a>
             </div>
