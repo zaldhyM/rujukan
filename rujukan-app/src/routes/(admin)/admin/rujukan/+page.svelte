@@ -1,3 +1,9 @@
+<script>
+  import Fa from "svelte-fa";
+  import { faClipboard } from "@fortawesome/free-solid-svg-icons";
+  import avatar from "$lib/assets/img/undraw_profile.svg";
+</script>
+
 <!-- Page Heading -->
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
   <h1 class="h3 mb-0 text-gray-800">Cards</h1>
@@ -18,7 +24,10 @@
             <div class="h5 mb-0 font-weight-bold text-gray-800">$40,000</div>
           </div>
           <div class="col-auto">
-            <i class="fas fa-calendar fa-2x text-gray-300"></i>
+            <Fa
+              icon={faClipboard}
+              class="fas fa-clipboard-list fa-2x text-gray-300"
+            />
           </div>
         </div>
       </div>
@@ -39,7 +48,10 @@
             <div class="h5 mb-0 font-weight-bold text-gray-800">$215,000</div>
           </div>
           <div class="col-auto">
-            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+            <Fa
+              icon={faClipboard}
+              class="fas fa-clipboard-list fa-2x text-gray-300"
+            />
           </div>
         </div>
       </div>
@@ -66,7 +78,7 @@
                   <div
                     class="progress-bar bg-info"
                     role="progressbar"
-                    style="width: 50%"
+                    style="width: 80%"
                     aria-valuenow="50"
                     aria-valuemin="0"
                     aria-valuemax="100"
@@ -76,7 +88,10 @@
             </div>
           </div>
           <div class="col-auto">
-            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+            <Fa
+              icon={faClipboard}
+              class="fas fa-clipboard-list fa-2x text-gray-300"
+            />
           </div>
         </div>
       </div>
@@ -97,7 +112,10 @@
             <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
           </div>
           <div class="col-auto">
-            <i class="fas fa-comments fa-2x text-gray-300"></i>
+            <Fa
+              icon={faClipboard}
+              class="fas fa-clipboard-list fa-2x text-gray-300"
+            />
           </div>
         </div>
       </div>
