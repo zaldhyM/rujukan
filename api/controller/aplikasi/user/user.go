@@ -1,10 +1,10 @@
 package user
 
 import (
-	"github.com/gin-gonic/gin"
-
 	"rujukan/model"
 	modeluser "rujukan/model/aplikasi/user"
+
+	"github.com/gin-gonic/gin"
 )
 
 func DataAll(c *gin.Context) {

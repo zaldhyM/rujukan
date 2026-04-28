@@ -18,9 +18,9 @@ var (
 
 func DBConnection() {
 	// Load file .env
-	err := godotenv.Load("../conf.env")
+	err := godotenv.Load()
 	if err != nil {
-		log.Fatal("Error loading conf.env file")
+		log.Fatal("Error loading .env file")
 	}
 
 	// Ambil value
