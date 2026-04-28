@@ -10,7 +10,7 @@ import (
 func main() {
 	router := gin.Default()
 	model.DBConnection()
-	router.GET("/aplikasi/user", user.Index)
+	router.GET("/aplikasi/user", user.DataAll)
 	//http.ListenAndServe(":8080", nil)
 	router.Run(":8081") // listen and serve on 0.0.0.0:8080
 }

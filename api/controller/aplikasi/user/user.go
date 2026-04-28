@@ -7,7 +7,7 @@ import (
 	modeluser "rujukan/model/aplikasi/user"
 )
 
-func Index(c *gin.Context) {
+func DataAll(c *gin.Context) {
 	model.SwitchDatabase("aplikasi")
 	respon, _ := modeluser.QueryAll()
 	c.JSON(200, gin.H{
