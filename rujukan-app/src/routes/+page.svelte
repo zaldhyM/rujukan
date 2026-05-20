@@ -1,7 +1,19 @@
 <script>
+  import { onMount } from 'svelte';
+  import { isLoggedIn } from '$lib/auth';
+
   function masuk() {
-    window.location.href = "/admin";
+    if (isLoggedIn()) {
+      window.location.href = "/admin";
+    } else {
+      window.location.href = "/login";
+    }
   }
+
+  onMount(() => {
+    // Auto redirect
+    masuk();
+  });
 </script>
 
 <div class="hero">

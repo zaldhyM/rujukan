@@ -1,204 +1,123 @@
-<script>
+<script lang="ts">
+  import { onMount } from 'svelte';
+  import { page } from '$app/stores';
   import Fa from "svelte-fa";
   import {
-    faChartPie,
-    faFilePdf,
-    faLink,
-    faTruckMedical,
-    faUsers,
-    faBell,
-    faEnvelope,
-    faSearch,
-    faBars,
-    faTable,
-    faFile,
-    faDonate,
-    faRightFromBracket,
-    faFontAwesomeFlag,
+    faChartLine,
+    faInbox,
+    faPaperPlane,
     faGear,
+    faBell,
+    faBars,
+    faRightFromBracket,
     faUser,
+    faHospital
   } from "@fortawesome/free-solid-svg-icons";
   import avatar from "$lib/assets/img/undraw_profile.svg";
+  import { isLoggedIn, getCurrentUser, getFaskesSettings, logout, getRujukanMasuk } from '$lib/auth';
+
+  let { children } = $props();
+
+  let user: any = $state({ name: '', username: '', role: '' });
+  let faskes: any = $state({ name: '', code: '' });
+  let isMounted = $state(false);
+  let pendingCount = $state(0);
+
+  onMount(() => {
+    if (!isLoggedIn()) {
+      window.location.href = '/login';
+      return;
+    }
+    user = getCurrentUser();
+    faskes = getFaskesSettings();
+    
+    // Count pending incoming referrals for notification badge
+    const incoming = getRujukanMasuk();
+    pendingCount = incoming.filter((r: any) => r.status === 'Pending').length;
+
+    isMounted = true;
+  });
+
+  function handleLogout() {
+    logout();
+    window.location.href = '/login';
+  }
+
+  // Active menu check helper
+  function isActive(path: string) {
+    if (!isMounted) return false;
+    return $page.url.pathname === path;
+  }
 </script>
 
+<svelte:head>
+  <title>Dashboard Rujukan - {faskes.name || 'Faskes'}</title>
+</svelte:head>
+
+{#if isMounted}
 <div id="wrapper">
   <!-- Sidebar -->
-  <ul
-    class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion"
-    id="accordionSidebar"
-  >
+  <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
     <!-- Sidebar - Brand -->
-    <a
-      class="sidebar-brand d-flex align-items-center justify-content-center"
-      href="/"
-    >
-      <div class="sidebar-brand-text mx-3">Rujukan</div>
+    <a class="sidebar-brand d-flex align-items-center justify-content-center py-4" href="/admin">
+      <div class="sidebar-brand-icon">
+        <Fa icon={faHospital} size="lg" />
+      </div>
+      <div class="sidebar-brand-text mx-2 text-capitalize small font-weight-bold">SISRUTE LOKAL</div>
     </a>
 
     <!-- Divider -->
     <hr class="sidebar-divider my-0" />
 
     <!-- Nav Item - Dashboard -->
-    <li class="nav-item">
+    <li class="nav-item" class:active={isActive('/admin')}>
       <a class="nav-link" href="/admin">
-        <Fa icon={faChartPie} />
-        <span>Dashboard</span></a
-      >
+        <Fa icon={faChartLine} class="mr-2" />
+        <span>Dashboard</span>
+      </a>
     </li>
 
     <!-- Divider -->
     <hr class="sidebar-divider" />
 
     <!-- Heading -->
-    <div class="sidebar-heading">Rujukan</div>
+    <div class="sidebar-heading">Layanan Rujukan</div>
 
-    <!-- Nav Item - Pages Collapse Menu -->
-    <li class="nav-item">
-      <a
-        class="nav-link collapsed"
-        href="#"
-        data-toggle="collapse"
-        data-target="#collapseTwo"
-        aria-expanded="true"
-        aria-controls="collapseTwo"
-      >
-        <Fa icon={faTruckMedical} />
-        <span>Rujukan</span>
+    <!-- Nav Item - Rujukan Masuk -->
+    <li class="nav-item" class:active={isActive('/admin/rujukan-masuk')}>
+      <a class="nav-link" href="/admin/rujukan-masuk">
+        <Fa icon={faInbox} class="mr-2" />
+        <span>Rujukan Masuk</span>
+        {#if pendingCount > 0}
+          <span class="badge badge-danger badge-counter ml-2">{pendingCount}</span>
+        {/if}
       </a>
-      <div
-        id="collapseTwo"
-        class="collapse"
-        aria-labelledby="headingTwo"
-        data-parent="#accordionSidebar"
-      >
-        <div class="bg-white py-2 collapse-inner rounded">
-          <h6 class="collapse-header">Monitoring Rujukan</h6>
-          <a class="collapse-item" href="/admin/rujukan">Masuk</a>
-          <a class="collapse-item" href="/halaman">Keluar</a>
-        </div>
-      </div>
     </li>
 
-    <!-- Nav Item - Utilities Collapse Menu -->
-    <li class="nav-item">
-      <a
-        class="nav-link collapsed"
-        href="#"
-        data-toggle="collapse"
-        data-target="#laporandandashbord"
-        aria-expanded="true"
-        aria-controls="laporandandashbord"
-      >
-        <Fa icon={faFilePdf} />
-        <span>Laporan & Dashboard</span>
+    <!-- Nav Item - Rujukan Keluar -->
+    <li class="nav-item" class:active={isActive('/admin/rujukan-keluar')}>
+      <a class="nav-link" href="/admin/rujukan-keluar">
+        <Fa icon={faPaperPlane} class="mr-2" />
+        <span>Rujukan Keluar</span>
       </a>
-      <div
-        id="laporandandashbord"
-        class="collapse"
-        aria-labelledby="headingUtilities"
-        data-parent="#accordionSidebar"
-      >
-        <div class="bg-white py-2 collapse-inner rounded">
-          <h6 class="collapse-header">Laporan & Dashboard:</h6>
-          <a class="collapse-item" href="/admin/integrasi/sisrute">Laporan</a>
-          <a class="collapse-item" href="/admin/integrasi/rsonline">Dashbord</a>
-        </div>
-      </div>
-    </li>
-
-    <!-- Nav Item - Utilities Collapse Menu -->
-    <li class="nav-item">
-      <a
-        class="nav-link collapsed"
-        href="#"
-        data-toggle="collapse"
-        data-target="#collapseUtilities"
-        aria-expanded="true"
-        aria-controls="collapseUtilities"
-      >
-        <Fa icon={faLink} />
-        <span>Intergasi</span>
-      </a>
-      <div
-        id="collapseUtilities"
-        class="collapse"
-        aria-labelledby="headingUtilities"
-        data-parent="#accordionSidebar"
-      >
-        <div class="bg-white py-2 collapse-inner rounded">
-          <h6 class="collapse-header">Integrasi applikasi:</h6>
-          <a class="collapse-item" href="/admin/integrasi/sisrute">Sisrute</a>
-          <a class="collapse-item" href="/admin/integrasi/rsonline">RS Online</a
-          >
-          <a class="collapse-item" href="/admin/integrasi/bpjs">BPJS</a>
-        </div>
-      </div>
     </li>
 
     <!-- Divider -->
     <hr class="sidebar-divider" />
 
     <!-- Heading -->
-    <div class="sidebar-heading">Pengaturan</div>
+    <div class="sidebar-heading">Konfigurasi</div>
 
-    <!-- Nav Item - Pages Collapse Menu -->
-    <li class="nav-item active">
-      <a
-        class="nav-link"
-        href="#"
-        data-toggle="collapse"
-        data-target="#collapsePages"
-        aria-expanded="true"
-        aria-controls="collapsePages"
-      >
-        <Fa icon={faUsers} />
-        <span>User</span>
+    <!-- Nav Item - Pengaturan -->
+    <li class="nav-item" class:active={isActive('/admin/pengaturan')}>
+      <a class="nav-link" href="/admin/pengaturan">
+        <Fa icon={faGear} class="mr-2" />
+        <span>Pengaturan</span>
       </a>
-      <div
-        id="collapsePages"
-        class="collapse"
-        aria-labelledby="headingPages"
-        data-parent="#accordionSidebar"
-      >
-        <div class="bg-white py-2 collapse-inner rounded">
-          <h6 class="collapse-header">User Applikasi:</h6>
-          <a class="collapse-item" href="login.html">Daftar User</a>
-          <a class="collapse-item" href="register.html">Hak Akses User</a>
-          <a class="collapse-item" href="blank.html">Group User</a>
-          <a class="collapse-item" href="forgot-password.html"
-            >Reset Password User</a
-          >
-          <div class="collapse-divider"></div>
-          <h6 class="collapse-header">Menu Aplikasi:</h6>
-          <a class="collapse-item" href="404.html">Menu</a>
-          <a class="collapse-item" href="blank.html">Group User dan Menu</a>
-        </div>
-      </div>
-    </li>
-
-    <!-- Nav Item - Charts -->
-    <li class="nav-item">
-      <a class="nav-link" href="charts.html">
-        <Fa icon={faChartPie} />
-        <span>Charts</span></a
-      >
-    </li>
-
-    <!-- Nav Item - Tables -->
-    <li class="nav-item">
-      <a class="nav-link" href="tables.html">
-        <Fa icon={faTable} />
-        <span>Tables</span></a
-      >
     </li>
 
     <!-- Divider -->
     <hr class="sidebar-divider d-none d-md-block" />
-
-    <!-- Sidebar Toggler (Sidebar) -->
-    <div class="text-center d-none d-md-inline">
-      <button class="rounded-circle border-0" id="sidebarToggle"></button>
-    </div>
   </ul>
   <!-- End of Sidebar -->
 
@@ -207,76 +126,20 @@
     <!-- Main Content -->
     <div id="content">
       <!-- Topbar -->
-      <nav
-        class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow"
-      >
+      <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow-sm">
         <!-- Sidebar Toggle (Topbar) -->
-        <button
-          id="sidebarToggleTop"
-          class="btn btn-link d-md-none rounded-circle mr-3"
-        >
+        <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
           <Fa icon={faBars} />
         </button>
 
-        <!-- Topbar Search -->
-        <form
-          class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search"
-        >
-          <div class="input-group">
-            <input
-              type="text"
-              class="form-control bg-light border-0 small"
-              placeholder="Search for..."
-              aria-label="Search"
-              aria-describedby="basic-addon2"
-            />
-            <div class="input-group-append">
-              <button class="btn btn-primary" type="button">
-                <Fa icon={faSearch} />
-              </button>
-            </div>
-          </div>
-        </form>
+        <!-- Faskes Name Display -->
+        <div class="d-none d-sm-inline-block ml-md-3 my-2 my-md-0 mw-100 text-gray-800 font-weight-bold">
+          <Fa icon={faHospital} class="text-primary mr-1" />
+          {faskes.name} ({faskes.code})
+        </div>
 
         <!-- Topbar Navbar -->
         <ul class="navbar-nav ml-auto">
-          <!-- Nav Item - Search Dropdown (Visible Only XS) -->
-          <li class="nav-item dropdown no-arrow d-sm-none">
-            <a
-              class="nav-link dropdown-toggle"
-              href="#"
-              id="searchDropdown"
-              role="button"
-              data-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false"
-            >
-              <Fa icon={faBell} />
-            </a>
-            <!-- Dropdown - Messages -->
-            <div
-              class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
-              aria-labelledby="searchDropdown"
-            >
-              <form class="form-inline mr-auto w-100 navbar-search">
-                <div class="input-group">
-                  <input
-                    type="text"
-                    class="form-control bg-light border-0 small"
-                    placeholder="Search for..."
-                    aria-label="Search"
-                    aria-describedby="basic-addon2"
-                  />
-                  <div class="input-group-append">
-                    <button class="btn btn-primary" type="button">
-                      <Fa icon={faBell} />
-                    </button>
-                  </div>
-                </div>
-              </form>
-            </div>
-          </li>
-
           <!-- Nav Item - Alerts -->
           <li class="nav-item dropdown no-arrow mx-1">
             <a
@@ -290,145 +153,31 @@
             >
               <Fa icon={faBell} style="color:gray" />
               <!-- Counter - Alerts -->
-              <span class="badge badge-danger badge-counter">3+</span>
+              {#if pendingCount > 0}
+                <span class="badge badge-danger badge-counter">{pendingCount}</span>
+              {/if}
             </a>
             <!-- Dropdown - Alerts -->
             <div
               class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
               aria-labelledby="alertsDropdown"
             >
-              <h6 class="dropdown-header">Alerts Center</h6>
-              <a class="dropdown-item d-flex align-items-center" href="#">
-                <div class="mr-3">
-                  <div class="icon-circle bg-primary">
-                    <Fa icon={faBell} style="color: white;" />
+              <h6 class="dropdown-header">Notifikasi Masuk</h6>
+              {#if pendingCount > 0}
+                <a class="dropdown-item d-flex align-items-center" href="/admin/rujukan-masuk">
+                  <div class="mr-3">
+                    <div class="icon-circle bg-warning text-white p-2 rounded-circle">
+                      <Fa icon={faInbox} />
+                    </div>
                   </div>
-                </div>
-                <div>
-                  <div class="small text-gray-500">December 12, 2019</div>
-                  <span class="font-weight-bold"
-                    >A new monthly report is ready to download!</span
-                  >
-                </div>
-              </a>
-              <a class="dropdown-item d-flex align-items-center" href="#">
-                <div class="mr-3">
-                  <div class="icon-circle bg-success">
-                    <Fa icon={faDonate} style="color: white;" />
+                  <div>
+                    <div class="small text-gray-500">Hari ini</div>
+                    <span class="font-weight-bold">Ada {pendingCount} rujukan baru yang perlu ditinjau!</span>
                   </div>
-                </div>
-                <div>
-                  <div class="small text-gray-500">December 7, 2019</div>
-                  $290.29 has been deposited into your account!
-                </div>
-              </a>
-              <a class="dropdown-item d-flex align-items-center" href="#">
-                <div class="mr-3">
-                  <div class="icon-circle bg-warning">
-                    <Fa icon={faFile} style="color: white;" />
-                  </div>
-                </div>
-                <div>
-                  <div class="small text-gray-500">December 2, 2019</div>
-                  Spending Alert: We've noticed unusually high spending for your
-                  account.
-                </div>
-              </a>
-              <a class="dropdown-item text-center small text-gray-500" href="#"
-                >Show All Alerts</a
-              >
-            </div>
-          </li>
-
-          <!-- Nav Item - Messages -->
-          <li class="nav-item dropdown no-arrow mx-1">
-            <a
-              class="nav-link dropdown-toggle"
-              href="#"
-              id="messagesDropdown"
-              role="button"
-              data-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false"
-            >
-              <Fa icon={faEnvelope} style="color:gray" />
-              <!-- Counter - Messages -->
-              <span class="badge badge-danger badge-counter">7</span>
-            </a>
-            <!-- Dropdown - Messages -->
-            <div
-              class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
-              aria-labelledby="messagesDropdown"
-            >
-              <h6 class="dropdown-header">Message Center</h6>
-              <a class="dropdown-item d-flex align-items-center" href="#">
-                <div class="dropdown-list-image mr-3">
-                  <img class="rounded-circle" src={avatar} alt="..." />
-                  <div class="status-indicator bg-success"></div>
-                </div>
-                <div class="font-weight-bold">
-                  <div class="text-truncate">
-                    Hi there! I am wondering if you can help me with a problem
-                    I've been having.
-                  </div>
-                  <div class="small text-gray-500">Emily Fowler · 58m</div>
-                </div>
-              </a>
-              <a class="dropdown-item d-flex align-items-center" href="#">
-                <div class="dropdown-list-image mr-3">
-                  <img
-                    class="rounded-circle"
-                    src="img/undraw_profile_2.svg"
-                    alt="..."
-                  />
-                  <div class="status-indicator"></div>
-                </div>
-                <div>
-                  <div class="text-truncate">
-                    I have the photos that you ordered last month, how would you
-                    like them sent to you?
-                  </div>
-                  <div class="small text-gray-500">Jae Chun · 1d</div>
-                </div>
-              </a>
-              <a class="dropdown-item d-flex align-items-center" href="#">
-                <div class="dropdown-list-image mr-3">
-                  <img
-                    class="rounded-circle"
-                    src="img/undraw_profile_3.svg"
-                    alt="..."
-                  />
-                  <div class="status-indicator bg-warning"></div>
-                </div>
-                <div>
-                  <div class="text-truncate">
-                    Last month's report looks great, I am very happy with the
-                    progress so far, keep up the good work!
-                  </div>
-                  <div class="small text-gray-500">Morgan Alvarez · 2d</div>
-                </div>
-              </a>
-              <a class="dropdown-item d-flex align-items-center" href="#">
-                <div class="dropdown-list-image mr-3">
-                  <img
-                    class="rounded-circle"
-                    src="https://source.unsplash.com/Mv9hjnEUHR4/60x60"
-                    alt="..."
-                  />
-                  <div class="status-indicator bg-success"></div>
-                </div>
-                <div>
-                  <div class="text-truncate">
-                    Am I a good boy? The reason I ask is because someone told me
-                    that people say this to all dogs, even if they aren't
-                    good...
-                  </div>
-                  <div class="small text-gray-500">Chicken the Dog · 2w</div>
-                </div>
-              </a>
-              <a class="dropdown-item text-center small text-gray-500" href="#"
-                >Read More Messages</a
-              >
+                </a>
+              {:else}
+                <div class="p-3 text-center small text-gray-500">Tidak ada notifikasi baru</div>
+              {/if}
             </div>
           </li>
 
@@ -445,48 +194,45 @@
               aria-haspopup="true"
               aria-expanded="false"
             >
-              <span class="mr-2 d-none d-lg-inline text-gray-600 small"
-                >Douglas McGee</span
-              >
-              <img class="img-profile rounded-circle" src={avatar} />
+              <div class="d-flex flex-column text-right mr-2">
+                <span class="d-none d-lg-inline text-gray-700 font-weight-bold small">{user.name}</span>
+                <span class="d-none d-lg-inline text-gray-500 text-xs">{user.role}</span>
+              </div>
+              <img class="img-profile rounded-circle" src={avatar} alt="Profile" style="width: 32px; height: 32px;" />
             </a>
             <!-- Dropdown - User Information -->
             <div
               class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
               aria-labelledby="userDropdown"
             >
-              <a class="dropdown-item" href="#">
-                <Fa icon={faUser} style="color: gray;" />
-                Profile
+              <a class="dropdown-item" href="/admin/pengaturan">
+                <Fa icon={faUser} class="mr-2 text-gray-400" />
+                Profil Saya
               </a>
-              <a class="dropdown-item" href="#">
-                <Fa icon={faGear} style="color: gray;" />
-                Settings
-              </a>
-              <a class="dropdown-item" href="#">
-                <Fa icon={faFontAwesomeFlag} style="color: gray;" />
-                Activity Log
+              <a class="dropdown-item" href="/admin/pengaturan">
+                <Fa icon={faGear} class="mr-2 text-gray-400" />
+                Pengaturan Faskes
               </a>
               <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="/login">
-                <Fa icon={faRightFromBracket} style="color: gray;" />
-                Logout
-              </a>
+              <button class="dropdown-item text-danger font-weight-bold btn-link bg-transparent border-0 w-100 text-left" onclick={handleLogout}>
+                <Fa icon={faRightFromBracket} class="mr-2 text-danger" />
+                Keluar Aplikasi
+              </button>
             </div>
           </li>
         </ul>
       </nav>
 
       <!-- Main Content -->
-      <div class="container-fluid">
-        <slot></slot>
+      <div class="container-fluid py-2">
+        {@render children?.()}
       </div>
     </div>
     <!-- Footer -->
-    <footer class="sticky-footer bg-white">
+    <footer class="sticky-footer bg-white shadow-sm mt-5">
       <div class="container my-auto">
         <div class="copyright text-center my-auto">
-          <span>Copyright &copy; Your Website 2020</span>
+          <span>Copyright &copy; Aplikasi Rujukan Pasien Svelte 2026 - {faskes.name}</span>
         </div>
       </div>
     </footer>
@@ -494,44 +240,28 @@
   </div>
   <!-- End of Content Wrapper -->
 </div>
-<!-- End of Page Wrapper -->
+{/if}
 
-<!-- Scroll to Top Button-->
-<a class="scroll-to-top rounded" href="#page-top">
-  <i class="fas fa-angle-up"></i>
-</a>
-
-<!-- Logout Modal-->
-<div
-  class="modal fade"
-  id="logoutModal"
-  tabindex="-1"
-  role="dialog"
-  aria-labelledby="exampleModalLabel"
-  aria-hidden="true"
->
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-        <button
-          class="close"
-          type="button"
-          data-dismiss="modal"
-          aria-label="Close"
-        >
-          <span aria-hidden="true">×</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        Select "Logout" below if you are ready to end your current session.
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-secondary" type="button" data-dismiss="modal"
-          >Cancel</button
-        >
-        <a class="btn btn-primary" href="login.html">Logout</a>
-      </div>
-    </div>
-  </div>
-</div>
+<style>
+  /* Premium Sidebar modifications */
+  .sidebar {
+    background: linear-gradient(180deg, #4e73df 10deg, #224abe 100%) !important;
+  }
+  .nav-item.active .nav-link {
+    background-color: rgba(255, 255, 255, 0.15) !important;
+    font-weight: bold;
+  }
+  .nav-link {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1rem !important;
+  }
+  .navbar-nav.sidebar .nav-item .nav-link span {
+    font-size: 0.85rem !important;
+  }
+  .topbar-divider {
+    border-right: 1px solid #e3e6f0;
+    height: calc(4.375rem - 2rem);
+    margin: auto 1rem;
+  }
+</style>
