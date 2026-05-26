@@ -88,66 +88,67 @@
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
   <div>
     <h1 class="h3 mb-1 text-gray-800 font-weight-bold">Pengaturan</h1>
-    <p class="text-muted mb-0 small">Kelola profil pengguna dan konfigurasi instansi fasilitas kesehatan Anda.</p>
+    <p class="text-muted mb-0 small">Kelola informasi profil petugas dan konfigurasi instansi fasilitas kesehatan Anda.</p>
   </div>
 </div>
 
 <div class="row">
   <!-- Left Side: User Profile Settings -->
   <div class="col-lg-6 mb-4">
-    <div class="card shadow-sm border-0 h-100">
+    <div class="card-modern h-100">
       <div class="card-header bg-white py-3 border-bottom d-flex align-items-center">
-        <Fa icon={faUser} class="text-primary mr-2" />
-        <h6 class="m-0 font-weight-bold text-primary">Profil Pengguna</h6>
+        <div class="card-header-icon bg-primary-light text-primary me-2">
+          <Fa icon={faUser} />
+        </div>
+        <h6 class="m-0 font-weight-bold text-main">Profil Pengguna</h6>
       </div>
-      <div class="card-body">
+      <div class="card-body p-4">
         {#if showSuccessUser}
-          <div class="alert alert-success d-flex align-items-center py-2 mb-3 small" role="alert">
-            <Fa icon={faCheckCircle} class="mr-2" /> Profil berhasil diperbarui!
+          <div class="alert alert-success-modern d-flex align-items-center py-2 px-3 mb-4 small animate-fade-in" role="alert">
+            <Fa icon={faCheckCircle} class="me-2" /> Profil berhasil diperbarui!
           </div>
         {/if}
 
         <form onsubmit={handleSaveProfile}>
-          <div class="form-group mb-3">
-            <label for="profName" class="form-label small font-weight-bold text-gray-700">Nama Lengkap & Gelar</label>
+          <div class="mb-3">
+            <label for="profName" class="form-label">Nama Lengkap & Gelar</label>
             <input
               type="text"
               id="profName"
-              class="form-control form-control-sm"
+              class="form-control"
               bind:value={userName}
               required
             />
           </div>
 
-          <div class="form-group mb-3">
-            <label for="profRole" class="form-label small font-weight-bold text-gray-700">Jabatan / Peran Medis</label>
+          <div class="mb-3">
+            <label for="profRole" class="form-label">Jabatan / Peran Medis</label>
             <input
               type="text"
               id="profRole"
-              class="form-control form-control-sm"
+              class="form-control"
               bind:value={userRole}
               required
             />
           </div>
 
-          <div class="form-group mb-4">
-            <label for="profUser" class="form-label small font-weight-bold text-gray-700">Username / NIP <span class="text-xs text-muted">(ID Pengguna)</span></label>
-            <div class="input-group">
+          <div class="mb-4">
+            <label for="profUser" class="form-label">Username / NIP <span class="text-xs text-muted">(ID Pengguna)</span></label>
+            <div class="input-icon-wrapper">
               <input
                 type="text"
                 id="profUser"
-                class="form-control form-control-sm bg-light"
+                class="form-control bg-light text-muted ps-3pe"
+                style="padding-right: 2.5rem !important;"
                 bind:value={userUsername}
                 disabled
               />
-              <div class="input-group-append bg-light border border-left-0 rounded-right pr-2 d-flex align-items-center justify-content-center">
-                <span class="text-muted"><Fa icon={faLock} size="xs" /></span>
-              </div>
+              <span class="input-icon-right"><Fa icon={faLock} /></span>
             </div>
-            <span class="text-xs text-muted mt-1 d-block">Username tidak dapat diubah setelah terdaftar.</span>
+            <span class="text-xs text-muted mt-2 d-block">Username tidak dapat diubah setelah terdaftar.</span>
           </div>
 
-          <button type="submit" class="btn btn-sm btn-primary rounded-pill px-4">
+          <button type="submit" class="btn-modern-primary py-2 px-4">
             <Fa icon={faSave} class="mr-1" /> Simpan Profil
           </button>
         </form>
@@ -157,45 +158,47 @@
 
   <!-- Right Side: Faskes Facility Settings -->
   <div class="col-lg-6 mb-4">
-    <div class="card shadow-sm border-0 h-100">
+    <div class="card-modern h-100">
       <div class="card-header bg-white py-3 border-bottom d-flex align-items-center">
-        <Fa icon={faHospital} class="text-primary mr-2" />
-        <h6 class="m-0 font-weight-bold text-primary">Informasi Instansi (Faskes)</h6>
+        <div class="card-header-icon bg-primary-light text-primary me-2">
+          <Fa icon={faHospital} />
+        </div>
+        <h6 class="m-0 font-weight-bold text-main">Informasi Instansi (Faskes)</h6>
       </div>
-      <div class="card-body">
+      <div class="card-body p-4">
         {#if showSuccessFaskes}
-          <div class="alert alert-success d-flex align-items-center py-2 mb-3 small" role="alert">
-            <Fa icon={faCheckCircle} class="mr-2" /> Data Faskes berhasil diperbarui!
+          <div class="alert alert-success-modern d-flex align-items-center py-2 px-3 mb-4 small animate-fade-in" role="alert">
+            <Fa icon={faCheckCircle} class="me-2" /> Data Faskes berhasil diperbarui!
           </div>
         {/if}
 
         <form onsubmit={handleSaveFaskes}>
-          <div class="row">
-            <div class="col-md-8 mb-3">
-              <label for="fasName" class="form-label small font-weight-bold text-gray-700">Nama Fasilitas Kesehatan</label>
+          <div class="row mb-3">
+            <div class="col-md-8 mb-3 mb-md-0">
+              <label for="fasName" class="form-label">Nama Instansi Medis</label>
               <input
                 type="text"
                 id="fasName"
-                class="form-control form-control-sm"
+                class="form-control"
                 bind:value={faskesName}
                 required
               />
             </div>
-            <div class="col-md-4 mb-3">
-              <label for="fasCode" class="form-label small font-weight-bold text-gray-700">Kode Faskes</label>
+            <div class="col-md-4">
+              <label for="fasCode" class="form-label">Kode Instansi</label>
               <input
                 type="text"
                 id="fasCode"
-                class="form-control form-control-sm font-monospace"
+                class="form-control font-monospace"
                 bind:value={faskesCode}
                 required
               />
             </div>
           </div>
 
-          <div class="form-group mb-3">
-            <label for="fasType" class="form-label small font-weight-bold text-gray-700">Tipe / Kategori Faskes</label>
-            <select id="fasType" class="form-control form-control-sm" bind:value={faskesType}>
+          <div class="mb-3">
+            <label for="fasType" class="form-label">Kategori / Tipe Layanan</label>
+            <select id="fasType" class="form-select" bind:value={faskesType}>
               <option value="Puskesmas">Puskesmas (Faskes Tingkat I)</option>
               <option value="Klinik Pratama">Klinik Pratama</option>
               <option value="Rumah Sakit Tipe C">Rumah Sakit Tipe C (Rujukan)</option>
@@ -204,11 +207,11 @@
             </select>
           </div>
 
-          <div class="form-group mb-3">
-            <label for="fasAddress" class="form-label small font-weight-bold text-gray-700">Alamat Lengkap</label>
+          <div class="mb-3">
+            <label for="fasAddress" class="form-label">Alamat Lengkap Kantor</label>
             <textarea
               id="fasAddress"
-              class="form-control form-control-sm"
+              class="form-control"
               rows="2"
               bind:value={faskesAddress}
               required
@@ -217,26 +220,26 @@
 
           <div class="row mb-4">
             <div class="col-sm-6 mb-3 mb-sm-0">
-              <label for="fasPhone" class="form-label small font-weight-bold text-gray-700">No. Telepon / Fax</label>
+              <label for="fasPhone" class="form-label">No. Telepon / Fax</label>
               <input
                 type="text"
                 id="fasPhone"
-                class="form-control form-control-sm"
+                class="form-control"
                 bind:value={faskesPhone}
               />
             </div>
             <div class="col-sm-6">
-              <label for="fasEmail" class="form-label small font-weight-bold text-gray-700">Email Instansi</label>
+              <label for="fasEmail" class="form-label">Email Hubungan Masyarakat</label>
               <input
                 type="email"
                 id="fasEmail"
-                class="form-control form-control-sm"
+                class="form-control"
                 bind:value={faskesEmail}
               />
             </div>
           </div>
 
-          <button type="submit" class="btn btn-sm btn-primary rounded-pill px-4">
+          <button type="submit" class="btn-modern-primary py-2 px-4">
             <Fa icon={faSave} class="mr-1" /> Simpan Data Faskes
           </button>
         </form>
@@ -246,6 +249,35 @@
 </div>
 
 <style>
+  .card-header-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .alert-success-modern {
+    background-color: var(--success-light);
+    color: var(--success-dark);
+    border: 1px solid rgba(16, 185, 129, 0.2);
+    border-radius: var(--radius-md);
+    font-weight: 600;
+  }
+
+  .input-icon-wrapper {
+    position: relative;
+  }
+
+  .input-icon-right {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-light);
+  }
+
   .font-monospace {
     font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace !important;
   }

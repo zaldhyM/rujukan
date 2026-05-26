@@ -88,30 +88,29 @@
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
   <div>
     <h1 class="h3 mb-1 text-gray-800 font-weight-bold">Rujukan Masuk</h1>
-    <p class="text-muted mb-0 small">Kelola rujukan pasien yang dikirim oleh fasilitas kesehatan lain ke faskes Anda.</p>
+    <p class="text-muted mb-0 small">Kelola dan tinjau pengajuan rujukan dari fasilitas kesehatan lain.</p>
   </div>
 </div>
 
 <!-- Filter and Search controls -->
-<div class="card shadow-sm mb-4 border-0">
-  <div class="card-body">
+<div class="card-modern mb-4">
+  <div class="card-body p-3">
     <div class="row align-items-center">
-      <!-- Filter Status -->
-      <div class="col-lg-6 col-md-12 mb-3 mb-lg-0">
-        <div class="btn-group" role="group" aria-label="Filter Status">
+      <!-- Filter Status (Pills layout) -->
+      <div class="col-lg-7 mb-3 mb-lg-0">
+        <div class="filter-pills-wrapper d-flex flex-wrap gap-2">
           {#each ['Semua', 'Pending', 'Diterima', 'Ditolak'] as status}
             <button
               type="button"
-              class="btn btn-sm"
-              class:btn-primary={filterStatus === status}
-              class:btn-outline-primary={filterStatus !== status}
+              class="btn-filter-pill"
+              class:active={filterStatus === status}
               onclick={() => filterStatus = status}
             >
-              {status}
+              <span class="pill-text">{status}</span>
               {#if status === 'Semua'}
-                <span class="badge bg-white text-primary ml-1">{rujukanList.length}</span>
+                <span class="pill-badge">{rujukanList.length}</span>
               {:else}
-                <span class="badge" class:bg-warning={status === 'Pending'} class:bg-success={status === 'Diterima'} class:bg-danger={status === 'Ditolak'}>
+                <span class="pill-badge badge-color-{status.toLowerCase()}">
                   {rujukanList.filter(r => r.status === status).length}
                 </span>
               {/if}
@@ -121,17 +120,15 @@
       </div>
       
       <!-- Search Input -->
-      <div class="col-lg-6 col-md-12">
-        <div class="input-group">
+      <div class="col-lg-5">
+        <div class="input-icon-wrapper">
+          <i class="fas fa-search input-icon" style="color: var(--text-light);"></i>
           <input
             type="text"
-            class="form-control form-control-sm border-right-0"
-            placeholder="Cari No. Rujukan, Nama Pasien, Diagnosa, atau Faskes..."
+            class="form-control ps-5"
+            placeholder="Cari No. Rujukan, Nama Pasien, Diagnosa..."
             bind:value={searchQuery}
           />
-          <div class="input-group-append bg-white border border-left-0 rounded-right pr-2 d-flex align-items-center justify-content-center">
-            <span class="text-muted"><Fa icon={faSearch} size="xs" /></span>
-          </div>
         </div>
       </div>
     </div>
@@ -139,21 +136,23 @@
 </div>
 
 <!-- Table / Content -->
-<div class="card shadow-sm border-0">
+<div class="card-modern">
   <div class="card-body p-0">
     {#if filteredList().length === 0}
       <div class="text-center py-5">
-        <Fa icon={faInbox} size="3x" class="text-gray-300 mb-3" />
-        <h5 class="text-gray-500">Tidak ada data rujukan masuk</h5>
+        <div class="empty-icon mb-3">
+          <Fa icon={faInbox} size="3x" />
+        </div>
+        <h5 class="text-gray-500 font-weight-bold">Tidak ada data rujukan masuk</h5>
         <p class="text-muted small">Coba sesuaikan filter atau kata kunci pencarian Anda.</p>
       </div>
     {:else}
       <div class="table-responsive">
-        <table class="table table-hover align-middle mb-0">
-          <thead class="bg-light text-gray-700 font-weight-bold text-xs">
+        <table class="table-modern">
+          <thead>
             <tr>
-              <th class="px-4 py-3">No. Rujukan</th>
-              <th>Tgl Rujukan</th>
+              <th>No. Rujukan</th>
+              <th>Tanggal Kirim</th>
               <th>Faskes Asal</th>
               <th>Pasien</th>
               <th>Diagnosa Utama</th>
@@ -161,38 +160,39 @@
               <th class="text-center">Aksi</th>
             </tr>
           </thead>
-          <tbody class="small">
+          <tbody>
             {#each filteredList() as r (r.id)}
               <tr>
-                <td class="px-4 py-3 font-weight-bold text-primary">{r.noRujukan}</td>
+                <td class="font-weight-bold text-primary">{r.noRujukan}</td>
                 <td>
-                  <div class="d-flex align-items-center">
-                    <Fa icon={faCalendar} class="mr-1 text-muted" />
-                    {r.tglRujukan}
+                  <div class="d-flex align-items-center gap-1">
+                    <Fa icon={faCalendar} class="text-muted" />
+                    <span>{r.tglRujukan}</span>
                   </div>
                 </td>
-                <td class="font-weight-bold text-gray-800">
-                  <div class="d-flex align-items-center">
-                    <Fa icon={faHospital} class="mr-1 text-muted text-xs" />
-                    {r.faskesAsal}
+                <td class="font-weight-bold">
+                  <div class="d-flex align-items-center gap-1">
+                    <Fa icon={faHospital} class="text-muted" />
+                    <span>{r.faskesAsal}</span>
                   </div>
                 </td>
                 <td>
-                  <div class="font-weight-bold text-gray-800">{r.pasien.nama}</div>
-                  <div class="text-xs text-muted">No: {r.pasien.noKartu} • Usia: {r.pasien.usia} th</div>
+                  <div class="font-weight-bold">{r.pasien.nama}</div>
+                  <div class="text-xs text-muted">No: {r.pasien.noKartu} • {r.pasien.usia} th</div>
                 </td>
                 <td>{r.diagnosa}</td>
                 <td class="text-center">
-                  <span class="badge py-2 px-3 rounded-pill text-white" 
-                    class:bg-warning={r.status === 'Pending'} 
-                    class:bg-success={r.status === 'Diterima'} 
-                    class:bg-danger={r.status === 'Ditolak'}
+                  <span class="badge-modern" 
+                    class:badge-modern-warning={r.status === 'Pending'} 
+                    class:badge-modern-success={r.status === 'Diterima'} 
+                    class:badge-modern-danger={r.status === 'Ditolak'}
                   >
+                    <i class="fas fa-circle text-xs mr-1" style="font-size: 6px;"></i>
                     {r.status}
                   </span>
                 </td>
                 <td class="text-center">
-                  <button class="btn btn-sm btn-outline-primary px-3 rounded-pill" onclick={() => openDetail(r)}>
+                  <button class="btn btn-sm btn-outline-primary px-3 rounded-pill font-weight-bold" onclick={() => openDetail(r)}>
                     <Fa icon={faInfoCircle} class="mr-1" /> Detail
                   </button>
                 </td>
@@ -207,109 +207,109 @@
 
 <!-- Detail Modal -->
 {#if detailModalOpen && selectedRujukan}
-  <div class="modal-backdrop fade show" style="z-index: 1040;"></div>
-  <div class="modal fade show d-block" tabindex="-1" role="dialog" style="z-index: 1050; overflow-y: auto;">
+  <div class="modal-backdrop-custom animate-fade-in"></div>
+  <div class="modal d-block animate-fade-in" tabindex="-1" role="dialog" style="overflow-y: auto;">
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-      <div class="modal-content border-0 shadow-lg rounded-4">
+      <div class="modal-content modal-modern-content">
         <!-- Header -->
-        <div class="modal-header bg-gradient-primary text-white border-0 py-3">
-          <h5 class="modal-title font-weight-bold">
+        <div class="modal-header modal-modern-header d-flex justify-content-between align-items-center text-white">
+          <h5 class="modal-title font-weight-bold mb-0">
             <Fa icon={faInbox} class="mr-2" /> Detail Rujukan Masuk
           </h5>
-          <button type="button" class="btn bg-transparent border-0 text-white font-weight-bold" onclick={closeDetail}>
+          <button type="button" class="btn bg-transparent border-0 text-white font-weight-bold p-0" onclick={closeDetail}>
             <Fa icon={faTimes} />
           </button>
         </div>
         
         <!-- Body -->
-        <div class="modal-body p-4">
+        <div class="modal-body modal-modern-body">
           <!-- Rujukan Header Card -->
-          <div class="card bg-light border-0 mb-4 rounded-3">
-            <div class="card-body py-3 px-4">
-              <div class="row">
-                <div class="col-sm-6">
-                  <span class="text-xs text-muted d-block uppercase font-weight-bold">Nomor Rujukan</span>
-                  <span class="h6 font-weight-bold text-primary">{selectedRujukan.noRujukan}</span>
-                </div>
-                <div class="col-sm-6 text-sm-right mt-2 mt-sm-0">
-                  <span class="text-xs text-muted d-block uppercase font-weight-bold">Tanggal Kirim</span>
-                  <span class="h6 font-weight-bold text-gray-800">{selectedRujukan.tglRujukan}</span>
-                </div>
+          <div class="kpi-card p-3 mb-4 bg-light border-0">
+            <div class="row align-items-center">
+              <div class="col-sm-6">
+                <span class="text-xs text-muted d-block uppercase font-weight-bold mb-1">Nomor Rujukan SISRUTE</span>
+                <span class="h6 font-weight-bold text-primary font-monospace">{selectedRujukan.noRujukan}</span>
+              </div>
+              <div class="col-sm-6 text-sm-end mt-2 mt-sm-0">
+                <span class="text-xs text-muted d-block uppercase font-weight-bold mb-1">Tanggal Pengiriman</span>
+                <span class="h6 font-weight-bold text-gray-800">{selectedRujukan.tglRujukan}</span>
               </div>
             </div>
           </div>
 
           <div class="row">
             <!-- Left Column: Patient & Sender Info -->
-            <div class="col-md-6 mb-4 mb-md-0">
-              <h6 class="font-weight-bold text-primary mb-3"><Fa icon={faUser} class="mr-1" /> Data Pasien</h6>
-              <ul class="list-group list-group-flush mb-4">
-                <li class="list-group-item bg-transparent px-0 py-2 d-flex justify-content-between">
-                  <span class="text-muted">Nama Lengkap</span>
-                  <span class="font-weight-bold text-gray-800">{selectedRujukan.pasien.nama}</span>
-                </li>
-                <li class="list-group-item bg-transparent px-0 py-2 d-flex justify-content-between">
-                  <span class="text-muted">NIK</span>
-                  <span class="text-gray-800 font-monospace">{selectedRujukan.pasien.nik}</span>
-                </li>
-                <li class="list-group-item bg-transparent px-0 py-2 d-flex justify-content-between">
-                  <span class="text-muted">No. BPJS</span>
-                  <span class="text-gray-800 font-monospace">{selectedRujukan.pasien.noKartu}</span>
-                </li>
-                <li class="list-group-item bg-transparent px-0 py-2 d-flex justify-content-between">
-                  <span class="text-muted">Jenis Kelamin</span>
-                  <span class="text-gray-800">{selectedRujukan.pasien.gender}</span>
-                </li>
-                <li class="list-group-item bg-transparent px-0 py-2 d-flex justify-content-between">
-                  <span class="text-muted">Usia</span>
-                  <span class="text-gray-800">{selectedRujukan.pasien.usia} Tahun</span>
-                </li>
-              </ul>
-
-              <h6 class="font-weight-bold text-primary mb-3"><Fa icon={faHospital} class="mr-1" /> Informasi Pengirim</h6>
-              <ul class="list-group list-group-flush">
-                <li class="list-group-item bg-transparent px-0 py-2 d-flex justify-content-between">
-                  <span class="text-muted">Faskes Perujuk</span>
-                  <span class="font-weight-bold text-gray-800">{selectedRujukan.faskesAsal}</span>
-                </li>
-                <li class="list-group-item bg-transparent px-0 py-2 d-flex justify-content-between">
-                  <span class="text-muted">Poli Tujuan</span>
-                  <span class="text-gray-800 font-weight-bold">{selectedRujukan.poliTujuan}</span>
-                </li>
-              </ul>
-            </div>
-
-            <!-- Right Column: Medical Info & Response Action -->
-            <div class="col-md-6">
-              <h6 class="font-weight-bold text-primary mb-3"><Fa icon={faIdCard} class="mr-1" /> Diagnosa & Alasan</h6>
-              <div class="card border-left-primary bg-light mb-4 rounded-3">
-                <div class="card-body py-3 px-4">
-                  <span class="text-xs text-muted d-block uppercase font-weight-bold">Diagnosa Utama</span>
-                  <span class="d-block font-weight-bold text-gray-800">{selectedRujukan.diagnosa}</span>
-                  <hr class="my-2" />
-                  <span class="text-xs text-muted d-block uppercase font-weight-bold">Catatan Klinis</span>
-                  <span class="d-block text-gray-700 italic small mt-1">"{selectedRujukan.catatan}"</span>
+            <div class="col-md-6 mb-4 mb-md-0 border-end border-color-light">
+              <h6 class="font-weight-bold text-primary mb-3"><Fa icon={faUser} class="mr-1" /> Data Identitas Pasien</h6>
+              
+              <div class="patient-info-list mb-4">
+                <div class="info-row py-2 d-flex justify-content-between">
+                  <span class="text-muted small">Nama Lengkap</span>
+                  <span class="font-weight-bold text-main">{selectedRujukan.pasien.nama}</span>
+                </div>
+                <div class="info-row py-2 d-flex justify-content-between">
+                  <span class="text-muted small">NIK Pasien</span>
+                  <span class="text-main font-monospace">{selectedRujukan.pasien.nik}</span>
+                </div>
+                <div class="info-row py-2 d-flex justify-content-between">
+                  <span class="text-muted small">No. BPJS Kesehatan</span>
+                  <span class="text-main font-monospace">{selectedRujukan.pasien.noKartu}</span>
+                </div>
+                <div class="info-row py-2 d-flex justify-content-between">
+                  <span class="text-muted small">Jenis Kelamin</span>
+                  <span class="text-main">{selectedRujukan.pasien.gender}</span>
+                </div>
+                <div class="info-row py-2 d-flex justify-content-between">
+                  <span class="text-muted small">Usia Pasien</span>
+                  <span class="text-main font-weight-bold">{selectedRujukan.pasien.usia} Tahun</span>
                 </div>
               </div>
 
+              <h6 class="font-weight-bold text-primary mb-3"><Fa icon={faHospital} class="mr-1" /> Asal Instansi Pengirim</h6>
+              <div class="patient-info-list">
+                <div class="info-row py-2 d-flex justify-content-between">
+                  <span class="text-muted small">Faskes Perujuk</span>
+                  <span class="font-weight-bold text-main">{selectedRujukan.faskesAsal}</span>
+                </div>
+                <div class="info-row py-2 d-flex justify-content-between">
+                  <span class="text-muted small">Poli / Spesialisasi</span>
+                  <span class="text-main font-weight-bold text-primary">{selectedRujukan.poliTujuan}</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right Column: Medical Info & Response Action -->
+            <div class="col-md-6 ps-md-4">
+              <h6 class="font-weight-bold text-primary mb-3"><Fa icon={faIdCard} class="mr-1" /> Indikasi Klinis & Diagnosa</h6>
+              
+              <div class="medical-condition-card p-3 mb-4 rounded-3">
+                <span class="text-xs text-muted d-block uppercase font-weight-bold mb-1">Diagnosa Utama</span>
+                <span class="d-block font-weight-bold text-danger">{selectedRujukan.diagnosa}</span>
+                
+                <hr class="my-2 border-color-light" />
+                
+                <span class="text-xs text-muted d-block uppercase font-weight-bold mb-1">Keterangan Medis</span>
+                <span class="d-block text-gray-700 italic small mt-1">"{selectedRujukan.catatan || '-'}"</span>
+              </div>
+
               <!-- Response Form -->
-              <h6 class="font-weight-bold text-primary mb-2">Tanggapan Penerima</h6>
+              <h6 class="font-weight-bold text-primary mb-2">Tanggapan Peninjauan Medis</h6>
               <div class="form-group mb-3">
                 <textarea
                   class="form-control form-control-sm small"
                   rows="3"
-                  placeholder="Masukkan catatan tanggapan medis / alasan (opsional)..."
+                  placeholder="Berikan catatan persetujuan / alasan penolakan rujukan..."
                   bind:value={respondNote}
                 ></textarea>
               </div>
 
               <!-- Status Badge -->
-              <div class="d-flex align-items-center justify-content-between p-2 rounded border mb-3 bg-white">
+              <div class="d-flex align-items-center justify-content-between p-3 rounded-3 border mb-3 bg-light">
                 <span class="small text-muted font-weight-bold">Status Saat Ini:</span>
-                <span class="badge py-2 px-3 rounded-pill text-white" 
-                  class:bg-warning={selectedRujukan.status === 'Pending'} 
-                  class:bg-success={selectedRujukan.status === 'Diterima'} 
-                  class:bg-danger={selectedRujukan.status === 'Ditolak'}
+                <span class="badge-modern" 
+                  class:badge-modern-warning={selectedRujukan.status === 'Pending'} 
+                  class:badge-modern-success={selectedRujukan.status === 'Diterima'} 
+                  class:badge-modern-danger={selectedRujukan.status === 'Ditolak'}
                 >
                   {selectedRujukan.status}
                 </span>
@@ -319,25 +319,25 @@
         </div>
 
         <!-- Footer -->
-        <div class="modal-footer bg-light border-0 d-flex justify-content-between p-3">
-          <button type="button" class="btn btn-sm btn-outline-secondary px-4 rounded-pill" onclick={closeDetail}>
+        <div class="modal-footer modal-modern-footer d-flex justify-content-between">
+          <button type="button" class="btn btn-modern-secondary" onclick={closeDetail}>
             <Fa icon={faArrowLeft} class="mr-1" /> Kembali
           </button>
           
           <div class="d-flex gap-2">
             <button
               type="button"
-              class="btn btn-sm btn-danger px-4 rounded-pill mr-2"
+              class="btn btn-modern-danger py-2 px-3 mr-2"
               onclick={() => updateStatus('Ditolak')}
             >
               <Fa icon={faTimes} class="mr-1" /> Tolak Rujukan
             </button>
             <button
               type="button"
-              class="btn btn-sm btn-success px-4 rounded-pill"
+              class="btn btn-modern-primary py-2 px-3"
               onclick={() => updateStatus('Diterima')}
             >
-              <Fa icon={faCheck} class="mr-1" /> Terima Rujukan
+              <Fa icon={faCheck} class="mr-1" /> Setujui Rujukan
             </button>
           </div>
         </div>
@@ -347,12 +347,114 @@
 {/if}
 
 <style>
-  .modal-backdrop {
-    background-color: rgba(0, 0, 0, 0.5);
+  .modal-backdrop-custom {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(11, 15, 25, 0.6);
+    backdrop-filter: blur(5px);
+    z-index: 1040;
   }
-  .card-body {
-    border-radius: 0.5rem;
+  .modal {
+    z-index: 1050;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
   }
+  
+  .empty-icon {
+    width: 60px;
+    height: 60px;
+    margin: 0 auto;
+    background-color: #f1f5f9;
+    color: var(--text-light);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .border-color-light {
+    border-color: var(--border-color) !important;
+  }
+
+  /* Filter Pills Custom Styles */
+  .btn-filter-pill {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 1rem;
+    border-radius: var(--radius-pill);
+    border: 1px solid var(--border-color);
+    background-color: #ffffff;
+    font-weight: 700;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: var(--transition);
+  }
+
+  .btn-filter-pill:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+  }
+
+  .btn-filter-pill.active {
+    background-color: var(--primary);
+    border-color: var(--primary);
+    color: #ffffff;
+  }
+
+  .pill-badge {
+    padding: 0.15rem 0.45rem;
+    font-size: 0.7rem;
+    border-radius: var(--radius-pill);
+    font-weight: 800;
+    background-color: #f1f5f9;
+    color: var(--text-muted);
+  }
+
+  .btn-filter-pill.active .pill-badge {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+  }
+
+  .badge-color-pending { background-color: var(--warning-light); color: var(--warning-dark); }
+  .badge-color-diterima { background-color: var(--success-light); color: var(--success-dark); }
+  .badge-color-ditolak { background-color: var(--danger-light); color: var(--danger-dark); }
+
+  /* Input icon wrapper */
+  .input-icon-wrapper {
+    position: relative;
+  }
+  .input-icon {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  .ps-5 {
+    padding-left: 2.5rem !important;
+  }
+
+  /* Patient Details List */
+  .info-row {
+    border-bottom: 1px dashed var(--border-color);
+  }
+  .info-row:last-child {
+    border-bottom: none;
+  }
+
+  /* Medical Indication Card */
+  .medical-condition-card {
+    background-color: var(--danger-light);
+    border-left: 4px solid var(--danger);
+  }
+  
   .font-monospace {
     font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace !important;
   }

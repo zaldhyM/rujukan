@@ -117,33 +117,32 @@
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
   <div>
     <h1 class="h3 mb-1 text-gray-800 font-weight-bold">Rujukan Keluar</h1>
-    <p class="text-muted mb-0 small">Kirim rujukan pasien dari fasilitas kesehatan Anda ke rumah sakit rujukan tingkat lanjut.</p>
+    <p class="text-muted mb-0 small">Kirim dan pantau rujukan pasien ke rumah sakit rujukan tingkat lanjut.</p>
   </div>
-  <button class="btn btn-primary btn-sm rounded-pill px-4 py-2 font-weight-bold shadow-sm mt-3 mt-sm-0" onclick={openCreateModal}>
+  <button class="btn-modern-primary py-2 px-4 shadow-sm mt-3 mt-sm-0" onclick={openCreateModal}>
     <Fa icon={faPlus} class="mr-1" /> Buat Rujukan Keluar
   </button>
 </div>
 
 <!-- Filter and Search controls -->
-<div class="card shadow-sm mb-4 border-0">
-  <div class="card-body">
+<div class="card-modern mb-4">
+  <div class="card-body p-3">
     <div class="row align-items-center">
       <!-- Filter Status -->
-      <div class="col-lg-6 col-md-12 mb-3 mb-lg-0">
-        <div class="btn-group" role="group" aria-label="Filter Status">
+      <div class="col-lg-7 mb-3 mb-lg-0">
+        <div class="filter-pills-wrapper d-flex flex-wrap gap-2">
           {#each ['Semua', 'Dikirim', 'Diproses', 'Selesai'] as status}
             <button
               type="button"
-              class="btn btn-sm"
-              class:btn-primary={filterStatus === status}
-              class:btn-outline-primary={filterStatus !== status}
+              class="btn-filter-pill"
+              class:active={filterStatus === status}
               onclick={() => filterStatus = status}
             >
-              {status}
+              <span class="pill-text">{status}</span>
               {#if status === 'Semua'}
-                <span class="badge bg-white text-primary ml-1">{rujukanList.length}</span>
+                <span class="pill-badge">{rujukanList.length}</span>
               {:else}
-                <span class="badge" class:bg-success={status === 'Dikirim'} class:bg-warning={status === 'Diproses'} class:bg-primary={status === 'Selesai'}>
+                <span class="pill-badge badge-color-{status.toLowerCase()}">
                   {rujukanList.filter(r => r.status === status).length}
                 </span>
               {/if}
@@ -153,17 +152,15 @@
       </div>
       
       <!-- Search Input -->
-      <div class="col-lg-6 col-md-12">
-        <div class="input-group">
+      <div class="col-lg-5">
+        <div class="input-icon-wrapper">
+          <i class="fas fa-search input-icon" style="color: var(--text-light);"></i>
           <input
             type="text"
-            class="form-control form-control-sm border-right-0"
-            placeholder="Cari No. Rujukan, Nama Pasien, Diagnosa, atau Faskes..."
+            class="form-control ps-5"
+            placeholder="Cari No. Rujukan, Pasien, Rumah Sakit..."
             bind:value={searchQuery}
           />
-          <div class="input-group-append bg-white border border-left-0 rounded-right pr-2 d-flex align-items-center justify-content-center">
-            <span class="text-muted"><Fa icon={faSearch} size="xs" /></span>
-          </div>
         </div>
       </div>
     </div>
@@ -171,54 +168,57 @@
 </div>
 
 <!-- Table / Content -->
-<div class="card shadow-sm border-0">
+<div class="card-modern">
   <div class="card-body p-0">
     {#if filteredList().length === 0}
       <div class="text-center py-5">
-        <Fa icon={faPaperPlane} size="3x" class="text-gray-300 mb-3" />
-        <h5 class="text-gray-500">Tidak ada data rujukan keluar</h5>
-        <p class="text-muted small">Coba buat rujukan keluar baru dengan menekan tombol di pojok kanan atas.</p>
+        <div class="empty-icon mb-3">
+          <Fa icon={faPaperPlane} size="3x" />
+        </div>
+        <h5 class="text-gray-500 font-weight-bold">Tidak ada data rujukan keluar</h5>
+        <p class="text-muted small">Kirim rujukan baru dengan menekan tombol buat rujukan di pojok kanan atas.</p>
       </div>
     {:else}
       <div class="table-responsive">
-        <table class="table table-hover align-middle mb-0">
-          <thead class="bg-light text-gray-700 font-weight-bold text-xs">
+        <table class="table-modern">
+          <thead>
             <tr>
-              <th class="px-4 py-3">No. Rujukan</th>
-              <th>Tgl Rujukan</th>
-              <th>Faskes Tujuan</th>
+              <th>No. Rujukan</th>
+              <th>Tanggal Kirim</th>
+              <th>Faskes Penerima</th>
               <th>Pasien</th>
               <th>Diagnosa Utama</th>
               <th class="text-center">Status</th>
             </tr>
           </thead>
-          <tbody class="small">
+          <tbody>
             {#each filteredList() as r (r.id)}
               <tr>
-                <td class="px-4 py-3 font-weight-bold text-primary">{r.noRujukan}</td>
+                <td class="font-weight-bold text-primary">{r.noRujukan}</td>
                 <td>
-                  <div class="d-flex align-items-center">
-                    <Fa icon={faCalendar} class="mr-1 text-muted" />
-                    {r.tglRujukan}
+                  <div class="d-flex align-items-center gap-1">
+                    <Fa icon={faCalendar} class="text-muted" />
+                    <span>{r.tglRujukan}</span>
                   </div>
                 </td>
-                <td class="font-weight-bold text-gray-800">
-                  <div class="d-flex align-items-center">
-                    <Fa icon={faHospital} class="mr-1 text-muted text-xs" />
-                    {r.faskesTujuan}
+                <td class="font-weight-bold">
+                  <div class="d-flex align-items-center gap-1">
+                    <Fa icon={faHospital} class="text-muted" />
+                    <span>{r.faskesTujuan}</span>
                   </div>
                 </td>
                 <td>
-                  <div class="font-weight-bold text-gray-800">{r.pasien.nama}</div>
-                  <div class="text-xs text-muted">No: {r.pasien.noKartu} • Usia: {r.pasien.usia} th</div>
+                  <div class="font-weight-bold">{r.pasien.nama}</div>
+                  <div class="text-xs text-muted">No: {r.pasien.noKartu} • {r.pasien.usia} th</div>
                 </td>
                 <td>{r.diagnosa}</td>
                 <td class="text-center">
-                  <span class="badge py-2 px-3 rounded-pill text-white" 
-                    class:bg-success={r.status === 'Dikirim'} 
-                    class:bg-warning={r.status === 'Diproses'} 
-                    class:bg-primary={r.status === 'Selesai'}
+                  <span class="badge-modern" 
+                    class:badge-modern-success={r.status === 'Dikirim'} 
+                    class:badge-modern-warning={r.status === 'Diproses'} 
+                    class:badge-modern-info={r.status === 'Selesai'}
                   >
+                    <i class="fas fa-circle text-xs mr-1" style="font-size: 6px;"></i>
                     {r.status}
                   </span>
                 </td>
@@ -233,64 +233,64 @@
 
 <!-- Create Outgoing Referral Modal -->
 {#if showCreateModal}
-  <div class="modal-backdrop fade show" style="z-index: 1040;"></div>
-  <div class="modal fade show d-block" tabindex="-1" role="dialog" style="z-index: 1050; overflow-y: auto;">
+  <div class="modal-backdrop-custom animate-fade-in"></div>
+  <div class="modal d-block animate-fade-in" tabindex="-1" role="dialog" style="overflow-y: auto;">
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-      <div class="modal-content border-0 shadow-lg rounded-4">
+      <div class="modal-content modal-modern-content">
         <form onsubmit={handleSubmit}>
           <!-- Header -->
-          <div class="modal-header bg-gradient-primary text-white border-0 py-3">
-            <h5 class="modal-title font-weight-bold">
+          <div class="modal-header modal-modern-header d-flex justify-content-between align-items-center text-white">
+            <h5 class="modal-title font-weight-bold mb-0">
               <Fa icon={faUserPlus} class="mr-2" /> Buat Rujukan Keluar Baru
             </h5>
-            <button type="button" class="btn bg-transparent border-0 text-white font-weight-bold" onclick={closeCreateModal}>
+            <button type="button" class="btn bg-transparent border-0 text-white font-weight-bold p-0" onclick={closeCreateModal}>
               <Fa icon={faTimes} />
             </button>
           </div>
           
           <!-- Body -->
-          <div class="modal-body p-4">
+          <div class="modal-body modal-modern-body">
             {#if formErrorMessage}
-              <div class="alert alert-danger py-2 mb-3 text-center small" role="alert">
-                {formErrorMessage}
+              <div class="alert alert-danger-modern py-2 px-3 mb-3 text-center small" role="alert">
+                <i class="fas fa-exclamation-circle mr-1"></i> {formErrorMessage}
               </div>
             {/if}
 
             <div class="row">
               <!-- Left Column: Patient Bio -->
-              <div class="col-md-6 mb-3 mb-md-0">
+              <div class="col-md-6 mb-3 mb-md-0 border-end border-color-light">
                 <h6 class="font-weight-bold text-primary mb-3">Identitas Pasien</h6>
                 
-                <div class="form-group mb-3">
-                  <label for="namaPasien" class="form-label small font-weight-bold text-gray-700">Nama Pasien *</label>
+                <div class="mb-3">
+                  <label for="namaPasien" class="form-label">Nama Lengkap Pasien *</label>
                   <input
                     type="text"
                     id="namaPasien"
-                    class="form-control form-control-sm"
+                    class="form-control"
                     placeholder="Masukkan nama lengkap pasien"
                     bind:value={inputNama}
                     required
                   />
                 </div>
 
-                <div class="form-group mb-3">
-                  <label for="nikPasien" class="form-label small font-weight-bold text-gray-700">NIK Pasien *</label>
+                <div class="mb-3">
+                  <label for="nikPasien" class="form-label">NIK Pasien (16 Digit) *</label>
                   <input
                     type="text"
                     id="nikPasien"
-                    class="form-control form-control-sm"
+                    class="form-control"
                     placeholder="Masukkan 16 digit NIK"
                     bind:value={inputNik}
                     required
                   />
                 </div>
 
-                <div class="form-group mb-3">
-                  <label for="noKartu" class="form-label small font-weight-bold text-gray-700">No. Kartu BPJS *</label>
+                <div class="mb-3">
+                  <label for="noKartu" class="form-label">No. Kartu BPJS *</label>
                   <input
                     type="text"
                     id="noKartu"
-                    class="form-control form-control-sm"
+                    class="form-control"
                     placeholder="Masukkan 13 digit nomor BPJS"
                     bind:value={inputNoKartu}
                     required
@@ -299,18 +299,18 @@
 
                 <div class="row">
                   <div class="col-sm-6 mb-3 mb-sm-0">
-                    <label for="gender" class="form-label small font-weight-bold text-gray-700">Jenis Kelamin</label>
-                    <select id="gender" class="form-control form-control-sm" bind:value={inputGender}>
+                    <label for="gender" class="form-label">Jenis Kelamin</label>
+                    <select id="gender" class="form-select" bind:value={inputGender}>
                       <option value="Laki-laki">Laki-laki</option>
                       <option value="Perempuan">Perempuan</option>
                     </select>
                   </div>
                   <div class="col-sm-6">
-                    <label for="usia" class="form-label small font-weight-bold text-gray-700">Usia *</label>
+                    <label for="usia" class="form-label">Usia (Tahun) *</label>
                     <input
                       type="number"
                       id="usia"
-                      class="form-control form-control-sm"
+                      class="form-control"
                       placeholder="Usia"
                       bind:value={inputUsia}
                       required
@@ -320,12 +320,12 @@
               </div>
 
               <!-- Right Column: Destination Faskes & Med Info -->
-              <div class="col-md-6">
-                <h6 class="font-weight-bold text-primary mb-3">Tujuan & Detail Medis</h6>
+              <div class="col-md-6 ps-md-4">
+                <h6 class="font-weight-bold text-primary mb-3">Instansi Tujuan & Medis</h6>
                 
-                <div class="form-group mb-3">
-                  <label for="faskesTujuan" class="form-label small font-weight-bold text-gray-700">Faskes Tujuan Rujukan *</label>
-                  <select id="faskesTujuan" class="form-control form-control-sm" bind:value={inputFaskesTujuan}>
+                <div class="mb-3">
+                  <label for="faskesTujuan" class="form-label">Fasilitas Kesehatan Tujuan *</label>
+                  <select id="faskesTujuan" class="form-select" bind:value={inputFaskesTujuan}>
                     <option value="RSCM (Rumah Sakit Cipto Mangunkusumo)">RSCM Jakarta</option>
                     <option value="RS Kanker Dharmais">RS Kanker Dharmais</option>
                     <option value="RS Jantung Harapan Kita">RS Jantung Harapan Kita</option>
@@ -334,9 +334,9 @@
                   </select>
                 </div>
 
-                <div class="form-group mb-3">
-                  <label for="poliTujuan" class="form-label small font-weight-bold text-gray-700">Spesialisasi / Poli Tujuan *</label>
-                  <select id="poliTujuan" class="form-control form-control-sm" bind:value={inputPoliTujuan}>
+                <div class="mb-3">
+                  <label for="poliTujuan" class="form-label">Spesialisasi / Poli Tujuan *</label>
+                  <select id="poliTujuan" class="form-select" bind:value={inputPoliTujuan}>
                     <option value="Poli Penyakit Dalam">Poli Penyakit Dalam (Interna)</option>
                     <option value="Poli Jantung & Pembuluh Darah">Poli Jantung & Pembuluh Darah</option>
                     <option value="Poli Bedah Onkologi">Poli Bedah Onkologi</option>
@@ -346,25 +346,25 @@
                   </select>
                 </div>
 
-                <div class="form-group mb-3">
-                  <label for="diagnosa" class="form-label small font-weight-bold text-gray-700">Diagnosa Utama *</label>
+                <div class="mb-3">
+                  <label for="diagnosa" class="form-label">Diagnosa Utama Medis *</label>
                   <input
                     type="text"
                     id="diagnosa"
-                    class="form-control form-control-sm"
-                    placeholder="Contoh: Chronic Kidney Disease Stage V"
+                    class="form-control"
+                    placeholder="Contoh: CKD Stage V / Heart Failure"
                     bind:value={inputDiagnosa}
                     required
                   />
                 </div>
 
-                <div class="form-group mb-3">
-                  <label for="catatan" class="form-label small font-weight-bold text-gray-700">Catatan Klinis / Keterangan Tambahan</label>
+                <div class="mb-3">
+                  <label for="catatan" class="form-label">Catatan Klinis / Keterangan Medis</label>
                   <textarea
                     id="catatan"
-                    class="form-control form-control-sm"
+                    class="form-control"
                     rows="3"
-                    placeholder="Masukkan indikasi rujukan medis..."
+                    placeholder="Masukkan indikasi klinis rujukan medis..."
                     bind:value={inputCatatan}
                   ></textarea>
                 </div>
@@ -373,11 +373,11 @@
           </div>
 
           <!-- Footer -->
-          <div class="modal-footer bg-light border-0 d-flex justify-content-between p-3">
-            <button type="button" class="btn btn-sm btn-outline-secondary px-4 rounded-pill" onclick={closeCreateModal}>
+          <div class="modal-footer modal-modern-footer d-flex justify-content-between">
+            <button type="button" class="btn btn-modern-secondary" onclick={closeCreateModal}>
               Batal
             </button>
-            <button type="submit" class="btn btn-sm btn-primary px-4 rounded-pill">
+            <button type="submit" class="btn btn-modern-primary py-2 px-4">
               <Fa icon={faPaperPlane} class="mr-1" /> Kirim Rujukan
             </button>
           </div>
@@ -388,10 +388,105 @@
 {/if}
 
 <style>
-  .modal-backdrop {
-    background-color: rgba(0, 0, 0, 0.5);
+  .modal-backdrop-custom {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(11, 15, 25, 0.6);
+    backdrop-filter: blur(5px);
+    z-index: 1040;
   }
-  .card-body {
-    border-radius: 0.5rem;
+  .modal {
+    z-index: 1050;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+  
+  .empty-icon {
+    width: 60px;
+    height: 60px;
+    margin: 0 auto;
+    background-color: #f1f5f9;
+    color: var(--text-light);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .border-color-light {
+    border-color: var(--border-color) !important;
+  }
+
+  /* Filter Pills Custom Styles */
+  .btn-filter-pill {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 1rem;
+    border-radius: var(--radius-pill);
+    border: 1px solid var(--border-color);
+    background-color: #ffffff;
+    font-weight: 700;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: var(--transition);
+  }
+
+  .btn-filter-pill:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+  }
+
+  .btn-filter-pill.active {
+    background-color: var(--primary);
+    border-color: var(--primary);
+    color: #ffffff;
+  }
+
+  .pill-badge {
+    padding: 0.15rem 0.45rem;
+    font-size: 0.7rem;
+    border-radius: var(--radius-pill);
+    font-weight: 800;
+    background-color: #f1f5f9;
+    color: var(--text-muted);
+  }
+
+  .btn-filter-pill.active .pill-badge {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+  }
+
+  .badge-color-dikirim { background-color: var(--success-light); color: var(--success-dark); }
+  .badge-color-diproses { background-color: var(--warning-light); color: var(--warning-dark); }
+  .badge-color-selesai { background-color: var(--info-light); color: var(--info-dark); }
+
+  /* Input icon wrapper */
+  .input-icon-wrapper {
+    position: relative;
+  }
+  .input-icon {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  .ps-5 {
+    padding-left: 2.5rem !important;
+  }
+
+  .alert-danger-modern {
+    background-color: var(--danger-light);
+    color: var(--danger-dark);
+    border: 1px solid rgba(244, 63, 94, 0.2);
+    border-radius: var(--radius-md);
+    font-weight: 600;
   }
 </style>
