@@ -346,7 +346,7 @@
   
   /* Profile Banner Card */
   .profile-banner-card {
-    background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%);
+    background: linear-gradient(135deg, var(--primary) 0%, #7c85fc 100%);
     border-radius: var(--radius-md);
   }
   .profile-banner-icon {

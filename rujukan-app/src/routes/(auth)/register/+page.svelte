@@ -155,7 +155,7 @@
 
 <style>
   .auth-container {
-    background-color: #0b0f19;
+    background: radial-gradient(circle at 50% 50%, #1e1b4b 0%, #0f172a 100%);
   }
   
   .icon-badge {
