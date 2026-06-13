@@ -328,6 +328,21 @@
     }
   }
 
+  .btn-primary {
+    background: #ffffff;
+    color: #0b111e;
+    font-weight: 700;
+    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all var(--transition-normal);
+  }
+
+  .btn-primary:hover {
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 6px 20px rgba(255, 255, 255, 0.35);
+    transform: translateY(-2px);
+  }
+
   .w-full {
     width: 100%;
   }

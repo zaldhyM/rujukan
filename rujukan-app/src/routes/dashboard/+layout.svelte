@@ -14,6 +14,14 @@
 
   // Active path detection
   let currentPath = $derived(page.url.pathname);
+  let isRujukanDropdownOpen = $state(false);
+
+  // Automatically open dropdown if on a rujukan subpage
+  $effect(() => {
+    if (currentPath.startsWith('/dashboard/rujukan-')) {
+      isRujukanDropdownOpen = true;
+    }
+  });
 
   onMount(() => {
     const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
@@ -77,33 +85,59 @@
           <span>Dashboard</span>
         </a>
 
-        <a 
-          href="/dashboard/rujukan-masuk" 
-          class="nav-item" 
-          class:active={currentPath === '/dashboard/rujukan-masuk'}
-          onclick={() => isSidebarOpen = false}
-        >
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="17 10 12 15 7 10"></polyline>
-            <line x1="12" y1="15" x2="12" y2="3"></line>
-            <path d="M20 17H4c-1.1 0-2 .9-2 2v2h20v-2c0-1.1-.9-2-2-2z"></path>
-          </svg>
-          <span>Rujukan Masuk</span>
-        </a>
+        <!-- Rujukan Parent Menu Dropdown -->
+        <div class="nav-dropdown-wrapper">
+          <button 
+            type="button"
+            class="nav-item nav-dropdown-trigger" 
+            class:active={currentPath.startsWith('/dashboard/rujukan-')}
+            onclick={() => isRujukanDropdownOpen = !isRujukanDropdownOpen}
+            aria-expanded={isRujukanDropdownOpen}
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+              <line x1="16" y1="13" x2="8" y2="13"></line>
+              <line x1="16" y1="17" x2="8" y2="17"></line>
+              <polyline points="10 9 9 9 8 9"></polyline>
+            </svg>
+            <span>Rujukan</span>
+            <svg 
+              class="chevron-icon" 
+              class:rotate={isRujukanDropdownOpen}
+              viewBox="0 0 24 24" 
+              fill="none" 
+              stroke="currentColor" 
+              stroke-width="2.5"
+            >
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </button>
 
-        <a 
-          href="/dashboard/rujukan-keluar" 
-          class="nav-item" 
-          class:active={currentPath === '/dashboard/rujukan-keluar'}
-          onclick={() => isSidebarOpen = false}
-        >
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="7 14 12 9 17 14"></polyline>
-            <line x1="12" y1="9" x2="12" y2="21"></line>
-            <path d="M20 7H4c-1.1 0-2-.9-2-2V3h20v2c0 1.1-.9 2-2 2z"></path>
-          </svg>
-          <span>Rujukan Keluar</span>
-        </a>
+          {#if isRujukanDropdownOpen}
+            <div class="submenu-list animate-slide-down">
+              <a 
+                href="/dashboard/rujukan-masuk" 
+                class="submenu-item" 
+                class:active={currentPath === '/dashboard/rujukan-masuk'}
+                onclick={() => isSidebarOpen = false}
+              >
+                <span class="bullet"></span>
+                <span>Rujukan Masuk</span>
+              </a>
+
+              <a 
+                href="/dashboard/rujukan-keluar" 
+                class="submenu-item" 
+                class:active={currentPath === '/dashboard/rujukan-keluar'}
+                onclick={() => isSidebarOpen = false}
+              >
+                <span class="bullet"></span>
+                <span>Rujukan Keluar</span>
+              </a>
+            </div>
+          {/if}
+        </div>
 
         <a 
           href="/dashboard/pengaturan" 
@@ -276,6 +310,103 @@
 
   .nav-item.active:hover {
     transform: none;
+  }
+
+  /* Dropdown Wrapper & Trigger */
+  .nav-dropdown-wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .nav-dropdown-trigger {
+    background: none;
+    border: 1px solid transparent;
+    cursor: pointer;
+    width: 100%;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+  }
+
+  .nav-dropdown-trigger span {
+    flex-grow: 1;
+  }
+
+  .chevron-icon {
+    width: 14px;
+    height: 14px;
+    margin-left: auto;
+    transition: transform var(--transition-fast);
+    color: var(--text-muted);
+  }
+
+  .nav-dropdown-trigger:hover .chevron-icon,
+  .nav-dropdown-trigger.active .chevron-icon {
+    color: inherit;
+  }
+
+  .chevron-icon.rotate {
+    transform: rotate(180deg);
+  }
+
+  /* Submenu List */
+  .submenu-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding-left: 1rem;
+    margin-top: 0.25rem;
+    border-left: 1px solid rgba(255, 255, 255, 0.05);
+    margin-left: 1.5rem;
+  }
+
+  .submenu-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.65rem 1rem;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    border-radius: var(--border-radius-sm);
+    transition: all var(--transition-fast);
+  }
+
+  .submenu-item:hover {
+    color: white;
+    background: rgba(255, 255, 255, 0.02);
+  }
+
+  .submenu-item.active {
+    color: var(--color-primary);
+    font-weight: 600;
+  }
+
+  .submenu-item .bullet {
+    width: 4px;
+    height: 4px;
+    background: var(--text-muted);
+    border-radius: 50%;
+    transition: all var(--transition-fast);
+  }
+
+  .submenu-item:hover .bullet {
+    background: white;
+  }
+
+  .submenu-item.active .bullet {
+    background: var(--color-primary);
+    box-shadow: 0 0 6px var(--color-primary);
+  }
+
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .animate-slide-down {
+    animation: slideDown 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   }
 
   .sidebar-footer {
