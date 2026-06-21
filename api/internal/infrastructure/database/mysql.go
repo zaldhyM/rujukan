@@ -1,4 +1,4 @@
-package model
+package database
 
 import (
 	"fmt"
@@ -16,11 +16,12 @@ var (
 	once sync.Once
 )
 
-func DBConnection() {
+// Connect initializes the database connection pool using configurations from environment variables.
+func Connect() *gorm.DB {
 	// Load file .env
 	err := godotenv.Load()
 	if err != nil {
-		log.Fatal("Error loading .env file")
+		log.Println("Warning: Error loading .env file, relying on environment variables")
 	}
 
 	// Ambil value
@@ -45,22 +46,34 @@ func DBConnection() {
 
 		// Test query sederhana
 		sqlDB, _ := db.DB()
-		//defer sqlDB.Close()
-
 		err = sqlDB.Ping()
 		if err != nil {
 			log.Fatal("❌ Cannot ping database: ", err)
 		}
 		log.Println("✅ Database ping successful!")
 	})
+
+	return DB
 }
 
-func CloseConnectionDB() {
-	sqlDB, _ := DB.DB()
-	defer sqlDB.Close()
+// Close closes the database connection.
+func Close() {
+	if DB != nil {
+		sqlDB, err := DB.DB()
+		if err != nil {
+			log.Println("Error getting database instance to close:", err)
+			return
+		}
+		if err := sqlDB.Close(); err != nil {
+			log.Println("Error closing database connection:", err)
+		} else {
+			log.Println("✅ Database connection closed successfully!")
+		}
+	}
 }
 
-func SwitchDatabase(dbName string) error {
+// Switch switches the active database schema for the current session.
+func Switch(dbName string) error {
 	if DB == nil {
 		return fmt.Errorf("DB belum diinisialisasi")
 	}

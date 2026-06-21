@@ -2,21 +2,24 @@ package main
 
 import (
 	"log"
-	"os"
-	v1 "rujukan/internal/delivery/v1"
-	"rujukan/model"
+	"rujukan/internal/app"
+	"rujukan/internal/infrastructure/database"
 
 	"github.com/joho/godotenv"
 )
 
 func main() {
+	// Load environment variables
 	err := godotenv.Load()
-	model.DBConnection()
 	if err != nil {
-		log.Fatal("Error loading .env file")
+		log.Println("Warning: Error loading .env file, relying on environment variables")
 	}
 
-	port := os.Getenv("PORT")
-	router := v1.SetupRouter()
-	router.Run(":" + port)
+	// Defer closing database connection on main exit
+	defer database.Close()
+
+	// Boot application
+	application := app.NewApp()
+	application.Start()
 }
+
