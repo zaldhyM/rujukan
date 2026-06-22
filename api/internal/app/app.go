@@ -4,6 +4,7 @@ import (
 	"log"
 	"os"
 	"rujukan/internal/infrastructure/database"
+	"rujukan/internal/middleware"
 	"rujukan/internal/modules/faskes"
 	"rujukan/internal/modules/pasien"
 	"rujukan/internal/modules/referensi"
@@ -46,12 +47,19 @@ func NewApp() *App {
 	// 5. Group routes based on version
 	v1 := router.Group("/v1")
 	{
-		// Register routes from each module
-		userModule.RegisterRoutes(v1)
-		faskesModule.RegisterRoutes(v1)
-		pasienModule.RegisterRoutes(v1)
-		wilayahModule.RegisterRoutes(v1)
-		referensiModule.RegisterRoutes(v1)
+		// Register public/auth routes
+		userModule.RegisterAuthRoutes(v1)
+
+		// Register protected routes group using AuthMiddleware
+		protected := v1.Group("")
+		protected.Use(middleware.AuthMiddleware())
+		{
+			userModule.RegisterRoutes(protected)
+			faskesModule.RegisterRoutes(protected)
+			pasienModule.RegisterRoutes(protected)
+			wilayahModule.RegisterRoutes(protected)
+			referensiModule.RegisterRoutes(protected)
+		}
 	}
 
 	return &App{

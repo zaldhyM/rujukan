@@ -22,10 +22,17 @@ func NewUserModule(db *gorm.DB) *UserModule {
 	}
 }
 
-// RegisterRoutes registers the routing endpoints for the user module.
+// RegisterAuthRoutes registers the authentication endpoints that DO NOT require middleware.
+func (m *UserModule) RegisterAuthRoutes(rg *gin.RouterGroup) {
+	rg.POST("/auth/login", m.Handler.Login)
+	rg.POST("/auth/register", m.Handler.Register)
+}
+
+// RegisterRoutes registers the routing endpoints for the user module that require authentication.
 func (m *UserModule) RegisterRoutes(rg *gin.RouterGroup) {
 	// Group routes under the version group passed in (e.g. /v1)
-	// Matching the old endpoint routes
 	rg.GET("/aplikasi/user", m.Handler.DataAll)
 	rg.GET("/aplikasi/data", m.Handler.DataAll)
+	rg.POST("/auth/logout", m.Handler.Logout)
+	rg.GET("/auth/me", m.Handler.Me)
 }
