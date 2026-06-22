@@ -4,7 +4,11 @@ import (
 	"log"
 	"os"
 	"rujukan/internal/infrastructure/database"
+	"rujukan/internal/modules/faskes"
+	"rujukan/internal/modules/pasien"
+	"rujukan/internal/modules/referensi"
 	"rujukan/internal/modules/user"
+	"rujukan/internal/modules/wilayah"
 
 	"github.com/gin-gonic/gin"
 )
@@ -34,12 +38,20 @@ func NewApp() *App {
 
 	// 4. Initialize Monolith Modules
 	userModule := user.NewUserModule(db)
+	faskesModule := faskes.NewFaskesModule(db)
+	pasienModule := pasien.NewPasienModule(db)
+	wilayahModule := wilayah.NewWilayahModule(db)
+	referensiModule := referensi.NewReferensiModule(db)
 
 	// 5. Group routes based on version
 	v1 := router.Group("/v1")
 	{
 		// Register routes from each module
 		userModule.RegisterRoutes(v1)
+		faskesModule.RegisterRoutes(v1)
+		pasienModule.RegisterRoutes(v1)
+		wilayahModule.RegisterRoutes(v1)
+		referensiModule.RegisterRoutes(v1)
 	}
 
 	return &App{
