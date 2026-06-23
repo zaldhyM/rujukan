@@ -2,6 +2,7 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import { goto } from '$app/navigation';
+  import kemkesLogo from '$lib/assets/kemkes.png';
 
   let nama = $state('');
   let username = $state('');
@@ -56,15 +57,7 @@
 <div class="auth-container">
   <div class="logo-area">
     <div class="logo-glow"></div>
-    <svg class="logo-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M19 10.5V19C19 20.1 18.1 21 17 21H7C5.9 21 5 20.1 5 19V10.5M12 3V17M12 3L7.5 7.5M12 3L16.5 7.5" stroke="url(#logoGrad)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-      <defs>
-        <linearGradient id="logoGrad" x1="5" y1="3" x2="19" y2="21" gradientUnits="userSpaceOnUse">
-          <stop stop-color="#00C853" />
-          <stop offset="1" stop-color="#8DC63F" />
-        </linearGradient>
-      </defs>
-    </svg>
+    <img src={kemkesLogo} alt="Logo Kemenkes" class="logo-icon" />
     <h1>RUJUKAN<span>MEDIS</span></h1>
     <p class="subtitle">Pendaftaran Fasilitas Kesehatan Baru & Tenaga Medis</p>
   </div>
@@ -215,7 +208,7 @@
     position: absolute;
     width: 120px;
     height: 120px;
-    background: radial-gradient(circle, rgba(0, 200, 83, 0.4) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(46, 196, 177, 0.3) 0%, transparent 70%);
     top: -30px;
     left: 50%;
     transform: translateX(-50%);
@@ -224,10 +217,12 @@
   }
 
   .logo-icon {
-    width: 60px;
-    height: 60px;
-    margin-bottom: 0.5rem;
-    filter: drop-shadow(0 0 8px rgba(0, 200, 83, 0.4));
+    width: 72px;
+    height: 72px;
+    object-fit: contain;
+    margin-bottom: 0.75rem;
+    filter: drop-shadow(0 0 8px rgba(46, 196, 177, 0.35));
+    animation: pulse-glow 3s infinite ease-in-out;
   }
 
   .logo-area h1 {
@@ -293,10 +288,10 @@
   }
 
   .alert-success {
-    background: rgba(0, 245, 160, 0.1);
-    border: 1px solid rgba(0, 245, 160, 0.25);
+    background: rgba(46, 196, 177, 0.1);
+    border: 1px solid rgba(46, 196, 177, 0.3);
     border-radius: var(--border-radius-sm);
-    color: var(--color-success);
+    color: #1A9E93;
     padding: 0.85rem 1rem;
     margin-bottom: 1.5rem;
     display: flex;
@@ -329,17 +324,17 @@
   }
 
   .btn-primary {
-    background: linear-gradient(135deg, #00C853 0%, #43A047 100%);
-    color: #071a0d;
+    background: linear-gradient(135deg, #2EC4B1 0%, #239B90 100%);
+    color: #ffffff;
     font-weight: 700;
-    box-shadow: 0 4px 15px rgba(0, 200, 83, 0.3);
+    box-shadow: 0 4px 15px rgba(46, 196, 177, 0.35);
     border: none;
     transition: all var(--transition-normal);
   }
 
   .btn-primary:hover {
-    background: linear-gradient(135deg, #43A047 0%, #00C853 100%);
-    box-shadow: 0 6px 20px rgba(0, 200, 83, 0.5);
+    background: linear-gradient(135deg, #239B90 0%, #2EC4B1 100%);
+    box-shadow: 0 6px 20px rgba(46, 196, 177, 0.5);
     transform: translateY(-2px);
   }
 
@@ -350,8 +345,8 @@
   .btn-spinner {
     width: 18px;
     height: 18px;
-    border: 2px solid rgba(7, 26, 13, 0.15);
-    border-top-color: #071a0d;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top-color: #ffffff;
     border-radius: 50%;
     animation: spin 0.8s linear infinite;
   }

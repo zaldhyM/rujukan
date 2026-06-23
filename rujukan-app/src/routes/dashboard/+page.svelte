@@ -197,7 +197,7 @@
     gap: 0.75rem;
     padding: 0.75rem 1.25rem;
     border-radius: var(--border-radius-sm);
-    color: white;
+    color: var(--text-primary);
     font-family: var(--font-title);
     font-weight: 600;
   }

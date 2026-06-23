@@ -204,7 +204,7 @@
                   </svg>
                 </div>
                 <div>
-                  <h3 class="text-white">Telegram Bot Alert</h3>
+                  <h3>Telegram Bot Alert</h3>
                   <p class="text-secondary font-size-sm">Dapatkan notifikasi rujukan baru secara otomatis di Telegram Anda</p>
                 </div>
               </div>
@@ -251,11 +251,11 @@
 
           <!-- Alert settings -->
           <div class="preferences-box mt-4">
-            <h3 class="text-white mb-3">Preferensi Sistem</h3>
+            <h3 class="mb-3">Preferensi Sistem</h3>
             
             <div class="preference-item">
               <div class="pref-desc">
-                <span class="pref-title text-white">Notifikasi Email</span>
+                <span class="pref-title">Notifikasi Email</span>
                 <span class="pref-sub text-muted">Kirim rekap rujukan mingguan ke email terdaftar</span>
               </div>
               <label class="switch">
@@ -266,7 +266,7 @@
 
             <div class="preference-item">
               <div class="pref-desc">
-                <span class="pref-title text-white">Alert Suara</span>
+                <span class="pref-title">Alert Suara</span>
                 <span class="pref-sub text-muted">Putar suara notifikasi saat ada rujukan masuk yang mendesak (Cito)</span>
               </div>
               <label class="switch">
@@ -337,7 +337,7 @@
 
   .page-header h1 {
     font-size: 2rem;
-    color: white;
+    color: var(--text-primary);
   }
 
   /* Toast Notification */
@@ -402,13 +402,14 @@
   }
 
   .settings-nav-btn:hover {
-    color: white;
-    background: rgba(255, 255, 255, 0.02);
+    color: var(--color-primary);
+    background: rgba(46, 196, 177, 0.06);
+    border-color: rgba(46, 196, 177, 0.2);
   }
 
   .settings-nav-btn.active {
-    background: rgba(0, 242, 254, 0.05);
-    border-color: var(--border-glass-focus);
+    background: rgba(46, 196, 177, 0.1);
+    border-color: rgba(46, 196, 177, 0.3);
     color: var(--color-primary);
   }
 
@@ -418,7 +419,7 @@
 
   .content-tab h2 {
     font-size: 1.5rem;
-    color: white;
+    color: var(--text-primary);
     margin-bottom: 0.25rem;
   }
 
@@ -463,15 +464,15 @@
 
   /* Telegram bot integration box */
   .integration-card {
-    background: rgba(255, 255, 255, 0.01);
-    border: 1px solid var(--border-glass);
+    background: rgba(0, 0, 0, 0.02);
+    border: 1px solid rgba(0, 0, 0, 0.08);
     border-radius: var(--border-radius-md);
     overflow: hidden;
   }
 
   .integration-header {
-    background: rgba(255, 255, 255, 0.02);
-    border-bottom: 1px solid var(--border-glass);
+    background: rgba(0, 0, 0, 0.03);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
     padding: 1.25rem 1.5rem;
     display: flex;
     justify-content: space-between;
@@ -518,10 +519,10 @@
   }
 
   .info-text code {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(46, 196, 177, 0.08);
     padding: 0.1rem 0.4rem;
     border-radius: 4px;
-    color: var(--color-primary);
+    color: var(--color-primary-hover);
     font-family: monospace;
     font-size: 0.9rem;
   }
@@ -551,13 +552,13 @@
 
   .connected-info {
     font-size: 0.95rem;
-    color: white;
+    color: var(--text-primary);
   }
 
   /* Preference Switch / Sliders */
   .preferences-box {
-    background: rgba(255, 255, 255, 0.01);
-    border: 1px solid var(--border-glass);
+    background: rgba(0, 0, 0, 0.02);
+    border: 1px solid rgba(0, 0, 0, 0.08);
     border-radius: var(--border-radius-md);
     padding: 1.5rem;
   }
@@ -567,7 +568,7 @@
     justify-content: space-between;
     align-items: center;
     padding: 1rem 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
     gap: 1.5rem;
   }
 
@@ -613,10 +614,10 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: rgba(0, 0, 0, 0.12);
     transition: .3s;
     border-radius: 24px;
-    border: 1px solid var(--border-glass);
+    border: 1px solid rgba(0, 0, 0, 0.1);
   }
 
   .slider:before {

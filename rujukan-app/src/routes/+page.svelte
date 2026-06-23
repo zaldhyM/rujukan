@@ -2,6 +2,7 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import { goto } from "$app/navigation";
+  import kemkesLogo from '$lib/assets/kemkes.png';
 
   let isLoggedIn = $state(false);
   let copied = $state(false);
@@ -38,21 +39,7 @@
     <div class="access-panel">
       <div class="logo-area">
         <div class="logo-wrapper">
-          <svg class="logo-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path
-              d="M19 10.5V19C19 20.1 18.1 21 17 21H7C5.9 21 5 20.1 5 19V10.5M12 3V17M12 3L7.5 7.5M12 3L16.5 7.5"
-              stroke="url(#logoGrad)"
-              stroke-width="2.5"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-            <defs>
-              <linearGradient id="logoGrad" x1="5" y1="3" x2="19" y2="21" gradientUnits="userSpaceOnUse">
-                <stop stop-color="#ffffff" />
-                <stop offset="1" stop-color="#8DC63F" />
-              </linearGradient>
-            </defs>
-          </svg>
+          <img src={kemkesLogo} alt="Logo Kemenkes" class="logo-icon" />
         </div>
         <h1>RUJUKAN<span>MEDIS</span></h1>
         <span class="portal-badge">
@@ -109,8 +96,8 @@
             <path d="M0,5 L35,5 L40,1 L45,9 L50,5 L100,5" fill="none" stroke="url(#lineGrad2)" stroke-width="2" />
             <defs>
               <linearGradient id="lineGrad2" x1="0" y1="0" x2="1" y2="0">
-                <stop offset="0%" stop-color="#00873C" />
-                <stop offset="100%" stop-color="#8DC63F" />
+                <stop offset="0%" stop-color="#2EC4B1" />
+                <stop offset="100%" stop-color="#AACC00" />
               </linearGradient>
             </defs>
           </svg>
@@ -200,14 +187,14 @@
   .orb-1 {
     width: 400px;
     height: 400px;
-    background: #00873C;
+    background: #2EC4B1;
     top: 0;
     left: 5%;
   }
   .orb-2 {
     width: 400px;
     height: 400px;
-    background: #8DC63F;
+    background: #AACC00;
     bottom: 0;
     right: 5%;
     animation-delay: -5s;
@@ -230,9 +217,9 @@
     border: 1px solid rgba(0, 0, 0, 0.06);
   }
 
-  /* Panel kiri — hijau Kemenkes */
+  /* Panel kiri — teal Kemenkes */
   .access-panel {
-    background: #005C28;
+    background: #0D7A72;
     padding: 3.5rem 3rem;
     display: flex;
     flex-direction: column;
@@ -260,9 +247,10 @@
   }
 
   .logo-icon {
-    width: 56px;
-    height: 56px;
-    filter: drop-shadow(0 0 10px rgba(141, 198, 63, 0.5));
+    width: 72px;
+    height: 72px;
+    object-fit: contain;
+    filter: drop-shadow(0 0 10px rgba(170, 204, 0, 0.5));
     animation: float 4s ease-in-out infinite;
   }
 
@@ -280,7 +268,7 @@
   }
 
   .logo-area h1 span {
-    color: #8DC63F;
+    color: #AACC00;
   }
 
   .portal-badge {
@@ -301,13 +289,13 @@
   .pulse-dot {
     width: 6px;
     height: 6px;
-    background: #8DC63F;
+    background: #AACC00;
     border-radius: 50%;
     animation: pulse 1.8s infinite;
   }
   @keyframes pulse {
     0%   { transform: scale(0.9); opacity: 0.6; }
-    50%  { transform: scale(1.4); opacity: 1; box-shadow: 0 0 8px #8DC63F; }
+    50%  { transform: scale(1.4); opacity: 1; box-shadow: 0 0 8px #AACC00; }
     100% { transform: scale(0.9); opacity: 0.6; }
   }
 
@@ -333,15 +321,15 @@
     font-size: 0.95rem;
     cursor: pointer;
     border: none;
-    background: #8DC63F;
-    color: #005C28;
-    box-shadow: 0 4px 14px rgba(141, 198, 63, 0.35);
+    background: #AACC00;
+    color: #0D7A72;
+    box-shadow: 0 4px 14px rgba(170, 204, 0, 0.35);
     transition: all var(--transition-normal);
   }
 
   .btn-cta:hover {
-    background: #9DD44F;
-    box-shadow: 0 6px 20px rgba(141, 198, 63, 0.5);
+    background: #BBDD00;
+    box-shadow: 0 6px 20px rgba(170, 204, 0, 0.5);
     transform: translateY(-2px);
   }
 
@@ -398,8 +386,8 @@
   }
 
   .cred-code {
-    background: rgba(141, 198, 63, 0.2);
-    color: #8DC63F;
+    background: rgba(170, 204, 0, 0.2);
+    color: #AACC00;
     padding: 0.1rem 0.35rem;
     border-radius: 4px;
     font-weight: 700;
@@ -413,7 +401,7 @@
   }
 
   .text-copied {
-    color: #8DC63F;
+    color: #AACC00;
     font-weight: 600;
   }
 
@@ -478,8 +466,8 @@
   .feature-card:hover {
     transform: translateX(4px);
     background: #FFFFFF;
-    border-color: rgba(0, 135, 60, 0.2);
-    box-shadow: 0 4px 16px rgba(0, 135, 60, 0.08);
+    border-color: rgba(46, 196, 177, 0.25);
+    box-shadow: 0 4px 16px rgba(46, 196, 177, 0.1);
   }
 
   .feature-icon-wrapper {
@@ -494,25 +482,25 @@
   }
 
   .icon-primary {
-    background: rgba(0, 135, 60, 0.08);
-    border: 1px solid rgba(0, 135, 60, 0.18);
-    color: #00873C;
+    background: rgba(46, 196, 177, 0.1);
+    border: 1px solid rgba(46, 196, 177, 0.25);
+    color: #2EC4B1;
   }
   .feature-card:hover .icon-primary {
-    background: #00873C;
+    background: #2EC4B1;
     color: #ffffff;
-    box-shadow: 0 4px 12px rgba(0, 135, 60, 0.3);
+    box-shadow: 0 4px 12px rgba(46, 196, 177, 0.35);
   }
 
   .icon-success {
-    background: rgba(141, 198, 63, 0.1);
-    border: 1px solid rgba(141, 198, 63, 0.25);
-    color: #5A8A00;
+    background: rgba(170, 204, 0, 0.1);
+    border: 1px solid rgba(170, 204, 0, 0.25);
+    color: #7A9400;
   }
   .feature-card:hover .icon-success {
-    background: #8DC63F;
+    background: #AACC00;
     color: #ffffff;
-    box-shadow: 0 4px 12px rgba(141, 198, 63, 0.35);
+    box-shadow: 0 4px 12px rgba(170, 204, 0, 0.35);
   }
 
   .icon-warning {

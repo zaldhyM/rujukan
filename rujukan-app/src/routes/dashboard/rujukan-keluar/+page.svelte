@@ -447,7 +447,7 @@
 
   .page-header h1 {
     font-size: 2rem;
-    color: white;
+    color: var(--text-primary);
   }
 
   /* Toast Notification */
@@ -525,7 +525,7 @@
   .rujukan-table td {
     padding: 1rem;
     font-size: 0.9rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
     vertical-align: middle;
   }
 
@@ -534,7 +534,7 @@
   }
 
   .table-row:hover {
-    background-color: rgba(255, 255, 255, 0.02);
+    background-color: rgba(46, 196, 177, 0.04);
   }
 
   .ref-id {
@@ -551,7 +551,7 @@
 
   .patient-name {
     font-weight: 600;
-    color: white;
+    color: var(--text-primary);
   }
 
   .patient-meta {
@@ -620,8 +620,10 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid var(--border-glass);
-    padding-bottom: 1rem;
+    background: #0D7A72;
+    padding: 1.25rem 1.5rem;
+    margin: -2rem -2rem 1.5rem -2rem;
+    border-radius: var(--border-radius-md) var(--border-radius-md) 0 0;
   }
 
   .modal-header h2 {
@@ -648,14 +650,15 @@
   .close-modal-btn {
     background: none;
     border: none;
-    color: var(--text-secondary);
+    color: rgba(255, 255, 255, 0.75);
     font-size: 1.75rem;
     cursor: pointer;
     line-height: 1;
+    transition: color var(--transition-fast);
   }
 
   .close-modal-btn:hover {
-    color: white;
+    color: #ffffff;
   }
 
   .modal-body {
@@ -693,7 +696,7 @@
 
   .select-input option {
     background-color: var(--bg-secondary);
-    color: white;
+    color: var(--text-primary);
   }
 
   /* Radio Group */
@@ -746,8 +749,8 @@
   }
 
   .info-section {
-    background: rgba(255, 255, 255, 0.01);
-    border: 1px solid rgba(255, 255, 255, 0.03);
+    background: rgba(0, 0, 0, 0.02);
+    border: 1px solid rgba(0, 0, 0, 0.08);
     border-radius: var(--border-radius-md);
     padding: 1.25rem;
   }
@@ -755,7 +758,7 @@
   .info-section h3 {
     font-size: 0.95rem;
     color: var(--color-primary);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
     padding-bottom: 0.5rem;
     margin-bottom: 1rem;
   }
@@ -786,7 +789,7 @@
   }
 
   .text-white {
-    color: white;
+    color: var(--text-primary);
   }
 
   .notes-section {
@@ -796,8 +799,8 @@
   }
 
   .notes-box {
-    background: rgba(0, 0, 0, 0.2);
-    border: 1px solid var(--border-glass);
+    background: rgba(0, 0, 0, 0.03);
+    border: 1px solid rgba(0, 0, 0, 0.08);
     border-radius: var(--border-radius-sm);
     padding: 1rem;
     font-size: 0.9rem;
