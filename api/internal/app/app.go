@@ -8,6 +8,7 @@ import (
 	"rujukan/internal/modules/faskes"
 	"rujukan/internal/modules/pasien"
 	"rujukan/internal/modules/referensi"
+	"rujukan/internal/modules/rujukan"
 	"rujukan/internal/modules/user"
 	"rujukan/internal/modules/wilayah"
 
@@ -43,6 +44,7 @@ func NewApp() *App {
 	pasienModule := pasien.NewPasienModule(db)
 	wilayahModule := wilayah.NewWilayahModule(db)
 	referensiModule := referensi.NewReferensiModule(db)
+	rujukanModule := rujukan.NewRujukanModule(db)
 
 	// 5. Group routes based on version
 	v1 := router.Group("/v1")
@@ -59,6 +61,7 @@ func NewApp() *App {
 			pasienModule.RegisterRoutes(protected)
 			wilayahModule.RegisterRoutes(protected)
 			referensiModule.RegisterRoutes(protected)
+			rujukanModule.RegisterRoutes(protected)
 		}
 	}
 
