@@ -77,12 +77,12 @@
         <svg class="custom-chart" viewBox="0 0 500 220" width="100%" height="100%">
           <defs>
             <linearGradient id="chartGrad" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="rgba(0, 242, 254, 0.4)"/>
-              <stop offset="100%" stop-color="rgba(0, 242, 254, 0)"/>
+              <stop offset="0%" stop-color="rgba(0, 200, 83, 0.4)"/>
+              <stop offset="100%" stop-color="rgba(0, 200, 83, 0)"/>
             </linearGradient>
             <linearGradient id="lineGrad" x1="0" y1="0" x2="1" y2="0">
-              <stop offset="0%" stop-color="#00f2fe"/>
-              <stop offset="100%" stop-color="#8b5cf6"/>
+              <stop offset="0%" stop-color="#00C853"/>
+              <stop offset="100%" stop-color="#8DC63F"/>
             </linearGradient>
           </defs>
           
@@ -97,10 +97,10 @@
           <path d="M 40 160 Q 110 90 180 130 T 320 60 T 460 30" fill="none" stroke="url(#lineGrad)" stroke-width="3" stroke-linecap="round" />
           
           <!-- Chart Data Points -->
-          <circle cx="40" cy="160" r="4" fill="#00f2fe" stroke="#0b111e" stroke-width="2" />
-          <circle cx="180" cy="130" r="4" fill="#00f2fe" stroke="#0b111e" stroke-width="2" />
-          <circle cx="320" cy="60" r="4" fill="#8b5cf6" stroke="#0b111e" stroke-width="2" />
-          <circle cx="460" cy="30" r="4" fill="#8b5cf6" stroke="#0b111e" stroke-width="2" />
+          <circle cx="40" cy="160" r="4" fill="#00C853" stroke="#071a0d" stroke-width="2" />
+          <circle cx="180" cy="130" r="4" fill="#00C853" stroke="#071a0d" stroke-width="2" />
+          <circle cx="320" cy="60" r="4" fill="#8DC63F" stroke="#071a0d" stroke-width="2" />
+          <circle cx="460" cy="30" r="4" fill="#8DC63F" stroke="#071a0d" stroke-width="2" />
           
           <!-- Labels -->
           <text x="40" y="195" fill="var(--text-muted)" font-size="10" text-anchor="middle">Sen</text>
@@ -187,7 +187,7 @@
 
   .page-header h1 {
     font-size: 2rem;
-    color: white;
+    color: var(--text-primary);
     margin-top: 0.25rem;
   }
 
@@ -235,11 +235,11 @@
   /* Glow effects per card status type */
   .card-glow-primary:hover {
     border-color: var(--color-primary);
-    box-shadow: 0 8px 30px rgba(0, 242, 254, 0.15);
+    box-shadow: 0 8px 30px rgba(0, 200, 83, 0.15);
   }
   .card-glow-success:hover {
     border-color: var(--color-success);
-    box-shadow: 0 8px 30px rgba(0, 245, 160, 0.15);
+    box-shadow: 0 8px 30px rgba(0, 200, 83, 0.15);
   }
   .card-glow-warning:hover {
     border-color: var(--color-warning);
@@ -275,8 +275,8 @@
     justify-content: center;
   }
 
-  .icon-primary { background: rgba(0, 242, 254, 0.1); color: var(--color-primary); }
-  .icon-success { background: rgba(0, 245, 160, 0.1); color: var(--color-success); }
+  .icon-primary { background: rgba(0, 200, 83, 0.1); color: var(--color-primary); }
+  .icon-success { background: rgba(0, 200, 83, 0.1); color: var(--color-success); }
   .icon-warning { background: rgba(255, 174, 52, 0.1); color: var(--color-warning); }
   .icon-danger { background: rgba(255, 117, 140, 0.1); color: var(--color-danger); }
 
@@ -284,7 +284,7 @@
     font-size: 2.25rem;
     font-weight: 800;
     font-family: var(--font-title);
-    color: white;
+    color: var(--text-primary);
     line-height: 1;
     margin-bottom: 0.5rem;
   }
@@ -327,7 +327,7 @@
 
   .panel-header h3 {
     font-size: 1.2rem;
-    color: white;
+    color: var(--text-primary);
   }
 
   .view-all-link {
@@ -378,8 +378,9 @@
   .dashboard-table td {
     padding: 1rem;
     font-size: 0.9rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.04);
     vertical-align: middle;
+    color: var(--text-secondary);
   }
 
   .table-row {
@@ -387,7 +388,7 @@
   }
 
   .table-row:hover {
-    background-color: rgba(255, 255, 255, 0.02);
+    background-color: rgba(0, 135, 60, 0.03);
   }
 
   .ref-id {
@@ -404,7 +405,7 @@
 
   .patient-name {
     font-weight: 600;
-    color: white;
+    color: var(--text-primary);
   }
 
   .patient-type {

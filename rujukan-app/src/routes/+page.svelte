@@ -21,9 +21,7 @@
   const copyCredentials = () => {
     navigator.clipboard.writeText("12345");
     copied = true;
-    setTimeout(() => {
-      copied = false;
-    }, 2000);
+    setTimeout(() => { copied = false; }, 2000);
   };
 </script>
 
@@ -32,21 +30,15 @@
 </svelte:head>
 
 <div class="landing-container animate-fade-in">
-  <!-- Decorative background orbs -->
   <div class="glow-orb orb-1"></div>
   <div class="glow-orb orb-2"></div>
 
   <div class="unified-portal-card">
-    <!-- Layout 1: Brand & Access Portal -->
+    <!-- Panel Kiri: Brand & Akses -->
     <div class="access-panel">
       <div class="logo-area">
         <div class="logo-wrapper">
-          <svg
-            class="logo-icon"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
+          <svg class="logo-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path
               d="M19 10.5V19C19 20.1 18.1 21 17 21H7C5.9 21 5 20.1 5 19V10.5M12 3V17M12 3L7.5 7.5M12 3L16.5 7.5"
               stroke="url(#logoGrad)"
@@ -55,16 +47,9 @@
               stroke-linejoin="round"
             />
             <defs>
-              <linearGradient
-                id="logoGrad"
-                x1="5"
-                y1="3"
-                x2="19"
-                y2="21"
-                gradientUnits="userSpaceOnUse"
-              >
-                <stop stop-color="#00f2fe" />
-                <stop offset="1" stop-color="#8b5cf6" />
+              <linearGradient id="logoGrad" x1="5" y1="3" x2="19" y2="21" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#ffffff" />
+                <stop offset="1" stop-color="#8DC63F" />
               </linearGradient>
             </defs>
           </svg>
@@ -77,100 +62,55 @@
       </div>
 
       <div class="action-buttons">
-        <button onclick={handleCTA} class="btn btn-primary w-full">
+        <button onclick={handleCTA} class="btn-cta w-full">
           {#if isLoggedIn}
             <span>Masuk Dashboard</span>
           {:else}
             <span>Masuk ke Sistem</span>
           {/if}
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            width="18"
-            height="18"
-            stroke="currentColor"
-            stroke-width="2.5"
-          >
+          <svg viewBox="0 0 24 24" fill="none" width="18" height="18" stroke="currentColor" stroke-width="2.5">
             <line x1="5" y1="12" x2="19" y2="12"></line>
             <polyline points="12 5 19 12 12 19"></polyline>
           </svg>
         </button>
 
         {#if !isLoggedIn}
-          <a href="/register" class="btn btn-secondary w-full"
-            >Daftar Faskes Baru</a
-          >
+          <a href="/register" class="btn-outline w-full">Daftar Faskes Baru</a>
         {/if}
       </div>
 
-      <button
-        onclick={copyCredentials}
-        class="test-tip-btn"
-        aria-label="Salin akun uji coba"
-      >
+      <button onclick={copyCredentials} class="test-tip-btn" aria-label="Salin akun uji coba">
         <div class="test-tip-content">
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            width="16"
-            height="16"
-            stroke="var(--color-primary)"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
+          <svg viewBox="0 0 24 24" fill="none" width="16" height="16" stroke="rgba(255,255,255,0.7)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
             <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
           </svg>
-          <span
-            >Uji Coba: <code class="cred-code">12345</code> /
-            <code class="cred-code">12345</code></span
-          >
+          <span>Uji Coba: <code class="cred-code">12345</code> / <code class="cred-code">12345</code></span>
         </div>
         <div class="copy-action-text">
           {#if copied}
-            <span class="text-success">Tersalin!</span>
+            <span class="text-copied">Tersalin!</span>
           {:else}
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              width="14"
-              height="14"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
+            <svg viewBox="0 0 24 24" fill="none" width="14" height="14" stroke="rgba(255,255,255,0.5)" stroke-width="2">
               <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"
-              ></path>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
             </svg>
           {/if}
         </div>
       </button>
     </div>
 
-    <!-- Layout 2: Platform Description & Information -->
+    <!-- Panel Kanan: Deskripsi & Fitur -->
     <div class="description-panel">
       <div class="description-header">
         <h2>Tentang Platform</h2>
         <div class="decor-line">
-          <svg
-            viewBox="0 0 100 10"
-            width="100"
-            height="15"
-            preserveAspectRatio="none"
-          >
-            <path
-              d="M0,5 L35,5 L40,1 L45,9 L50,5 L100,5"
-              fill="none"
-              stroke="url(#lineGrad2)"
-              stroke-width="2"
-            />
+          <svg viewBox="0 0 100 10" width="100" height="15" preserveAspectRatio="none">
+            <path d="M0,5 L35,5 L40,1 L45,9 L50,5 L100,5" fill="none" stroke="url(#lineGrad2)" stroke-width="2" />
             <defs>
               <linearGradient id="lineGrad2" x1="0" y1="0" x2="1" y2="0">
-                <stop offset="0%" stop-color="#00f2fe" />
-                <stop offset="100%" stop-color="#8b5cf6" />
+                <stop offset="0%" stop-color="#00873C" />
+                <stop offset="100%" stop-color="#8DC63F" />
               </linearGradient>
             </defs>
           </svg>
@@ -186,17 +126,8 @@
 
       <div class="features-list">
         <div class="feature-card">
-          <div class="feature-icon-wrapper primary-glow">
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              width="22"
-              height="22"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
+          <div class="feature-icon-wrapper icon-primary">
+            <svg viewBox="0 0 24 24" fill="none" width="22" height="22" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
               <polyline points="7 10 12 15 17 10"></polyline>
               <line x1="12" y1="15" x2="12" y2="3"></line>
@@ -204,25 +135,13 @@
           </div>
           <div class="feature-info">
             <h3>Rujukan Masuk</h3>
-            <p>
-              Review diagnosis klinis ICD-10 pasien dan berikan tindakan
-              persetujuan/penolakan dengan cepat.
-            </p>
+            <p>Review diagnosis klinis ICD-10 pasien dan berikan tindakan persetujuan/penolakan dengan cepat.</p>
           </div>
         </div>
 
         <div class="feature-card">
-          <div class="feature-icon-wrapper success-glow">
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              width="22"
-              height="22"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
+          <div class="feature-icon-wrapper icon-success">
+            <svg viewBox="0 0 24 24" fill="none" width="22" height="22" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
               <polyline points="17 8 12 3 7 8"></polyline>
               <line x1="12" y1="3" x2="12" y2="15"></line>
@@ -230,38 +149,21 @@
           </div>
           <div class="feature-info">
             <h3>Rujukan Keluar</h3>
-            <p>
-              Buat rujukan transfer pasien ke rumah sakit dengan spesialisasi
-              lebih lengkap secara paperless.
-            </p>
+            <p>Buat rujukan transfer pasien ke rumah sakit dengan spesialisasi lebih lengkap secara paperless.</p>
           </div>
         </div>
 
         <div class="feature-card">
-          <div class="feature-icon-wrapper warning-glow">
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              width="22"
-              height="22"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <path
-                d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"
-              ></path>
+          <div class="feature-icon-wrapper icon-warning">
+            <svg viewBox="0 0 24 24" fill="none" width="22" height="22" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
               <line x1="12" y1="9" x2="12" y2="13"></line>
               <line x1="12" y1="17" x2="12.01" y2="17"></line>
             </svg>
           </div>
           <div class="feature-info">
             <h3>Notifikasi Alert</h3>
-            <p>
-              Integrasi peringatan kasus darurat (Cito) melalui bot Telegram
-              agar segera mendapat perhatian.
-            </p>
+            <p>Integrasi peringatan kasus darurat (Cito) melalui bot Telegram agar segera mendapat perhatian.</p>
           </div>
         </div>
       </div>
@@ -269,7 +171,7 @@
   </div>
 
   <footer class="landing-footer">
-    <p>&copy; 2026 Rujukan Medis Terintegrasi. All rights reserved.</p>
+    <p>&copy; 2026 Rujukan Medis Terintegrasi &mdash; Kementerian Kesehatan RI</p>
   </footer>
 </div>
 
@@ -286,41 +188,36 @@
     overflow: hidden;
   }
 
-  /* Decorative glow orbs */
   .glow-orb {
     position: absolute;
     border-radius: 50%;
-    filter: blur(140px);
-    z-index: -1;
-    opacity: 0.12;
+    filter: blur(120px);
+    z-index: 0;
+    opacity: 0.06;
     pointer-events: none;
     animation: orb-bounce 15s ease-in-out infinite alternate;
   }
   .orb-1 {
-    width: 350px;
-    height: 350px;
-    background: var(--color-primary);
-    top: 5%;
-    left: 10%;
+    width: 400px;
+    height: 400px;
+    background: #00873C;
+    top: 0;
+    left: 5%;
   }
   .orb-2 {
-    width: 450px;
-    height: 450px;
-    background: var(--color-secondary);
-    bottom: 5%;
-    right: 10%;
+    width: 400px;
+    height: 400px;
+    background: #8DC63F;
+    bottom: 0;
+    right: 5%;
     animation-delay: -5s;
   }
   @keyframes orb-bounce {
-    0% {
-      transform: translate(0, 0) scale(1);
-    }
-    100% {
-      transform: translate(60px, 40px) scale(1.15);
-    }
+    0%   { transform: translate(0, 0) scale(1); }
+    100% { transform: translate(40px, 30px) scale(1.1); }
   }
 
-  /* Single Unified Portal Card */
+  /* Card utama */
   .unified-portal-card {
     display: grid;
     grid-template-columns: 1fr 1.2fr;
@@ -328,37 +225,21 @@
     max-width: 1000px;
     z-index: 1;
     overflow: hidden;
-    background: var(--bg-glass);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid var(--border-glass);
     border-radius: var(--border-radius-lg);
-    box-shadow: var(--shadow-card);
-    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.12);
+    border: 1px solid rgba(0, 0, 0, 0.06);
   }
 
-  .unified-portal-card:hover {
-    border-color: rgba(255, 255, 255, 0.15);
-    box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.4);
-  }
-
-  /* Layout 1: Access Portal */
+  /* Panel kiri — hijau Kemenkes */
   .access-panel {
-    align-items: center;
-    text-align: center;
-    gap: 2rem;
-    position: relative;
+    background: #005C28;
     padding: 3.5rem 3rem;
     display: flex;
     flex-direction: column;
+    align-items: center;
     justify-content: center;
-    background: rgba(
-      9,
-      15,
-      26,
-      0.55
-    ); /* Bedah warna: darker side panel restored */
-    border-right: 1px solid var(--border-glass); /* Garis pembatas panel */
+    gap: 2rem;
+    text-align: center;
   }
 
   .logo-area {
@@ -370,7 +251,6 @@
   }
 
   .logo-wrapper {
-    position: relative;
     width: 68px;
     height: 68px;
     display: flex;
@@ -382,53 +262,38 @@
   .logo-icon {
     width: 56px;
     height: 56px;
-    filter: drop-shadow(0 0 12px rgba(0, 242, 254, 0.4));
-    z-index: 2;
+    filter: drop-shadow(0 0 10px rgba(141, 198, 63, 0.5));
     animation: float 4s ease-in-out infinite;
   }
 
   @keyframes float {
-    0%,
-    100% {
-      transform: translateY(0);
-    }
-    50% {
-      transform: translateY(-6px);
-    }
+    0%, 100% { transform: translateY(0); }
+    50%       { transform: translateY(-6px); }
   }
 
   .logo-area h1 {
     font-size: 2.2rem;
     font-weight: 800;
     letter-spacing: 0.05em;
-    background: linear-gradient(135deg, #ffffff 0%, #a5b4fc 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: #ffffff;
     line-height: 1.1;
   }
 
   .logo-area h1 span {
-    background: linear-gradient(
-      135deg,
-      var(--color-primary) 0%,
-      var(--color-secondary) 100%
-    );
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow: 0 0 20px rgba(0, 242, 254, 0.15);
+    color: #8DC63F;
   }
 
   .portal-badge {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    background: rgba(0, 242, 254, 0.06);
-    border: 1px solid rgba(0, 242, 254, 0.15);
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
     padding: 0.35rem 0.85rem;
     border-radius: var(--border-radius-full);
     font-size: 0.7rem;
     font-weight: 700;
-    color: var(--color-primary);
+    color: rgba(255, 255, 255, 0.85);
     letter-spacing: 0.08em;
     margin-top: 0.25rem;
   }
@@ -436,104 +301,84 @@
   .pulse-dot {
     width: 6px;
     height: 6px;
-    background-color: var(--color-success);
+    background: #8DC63F;
     border-radius: 50%;
-    box-shadow: 0 0 8px var(--color-success);
     animation: pulse 1.8s infinite;
   }
   @keyframes pulse {
-    0% {
-      transform: scale(0.9);
-      opacity: 0.6;
-    }
-    50% {
-      transform: scale(1.3);
-      opacity: 1;
-      box-shadow: 0 0 12px var(--color-success);
-    }
-    100% {
-      transform: scale(0.9);
-      opacity: 0.6;
-    }
+    0%   { transform: scale(0.9); opacity: 0.6; }
+    50%  { transform: scale(1.4); opacity: 1; box-shadow: 0 0 8px #8DC63F; }
+    100% { transform: scale(0.9); opacity: 0.6; }
   }
 
   .action-buttons {
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 0.85rem;
   }
 
-  .w-full {
+  .w-full { width: 100%; }
+
+  .btn-cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
     width: 100%;
-  }
-
-  /* Tombol Utama menjadi putih dengan teks gelap */
-  .btn-primary {
-    position: relative;
-    overflow: hidden;
-    background: #00f2fe;
-    color: #0b111e;
+    padding: 0.85rem 1.5rem;
+    border-radius: var(--border-radius-sm);
+    font-family: var(--font-title);
     font-weight: 700;
-    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2);
-    border: 1px solid rgba(255, 255, 255, 0.4);
+    font-size: 0.95rem;
+    cursor: pointer;
+    border: none;
+    background: #8DC63F;
+    color: #005C28;
+    box-shadow: 0 4px 14px rgba(141, 198, 63, 0.35);
+    transition: all var(--transition-normal);
   }
 
-  .btn-primary:hover {
-    background: rgba(255, 255, 255, 0.9);
-    box-shadow: 0 6px 20px rgba(255, 255, 255, 0.45);
+  .btn-cta:hover {
+    background: #9DD44F;
+    box-shadow: 0 6px 20px rgba(141, 198, 63, 0.5);
     transform: translateY(-2px);
   }
 
-  .btn-primary::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: -50%;
-    width: 20%;
-    height: 100%;
-    background: linear-gradient(
-      to right,
-      rgba(0, 0, 0, 0) 0%,
-      rgba(0, 0, 0, 0.1) 50%,
-      rgba(0, 0, 0, 0) 100%
-    );
-    transform: skewX(-25deg);
-    transition: 0.75s;
-    opacity: 0;
+  .btn-outline {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.85rem 1.5rem;
+    border-radius: var(--border-radius-sm);
+    font-family: var(--font-title);
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    background: transparent;
+    border: 1.5px solid rgba(255, 255, 255, 0.35);
+    color: rgba(255, 255, 255, 0.85);
+    transition: all var(--transition-normal);
+    text-align: center;
   }
 
-  .btn-primary:hover::after {
-    left: 125%;
-    opacity: 1;
-    transition: 0.75s;
+  .btn-outline:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.6);
+    color: #ffffff;
   }
 
-  .btn-secondary {
-    border: 1px solid var(--border-glass);
-    background: rgba(255, 255, 255, 0.03);
-    color: var(--text-primary);
-    transition: all 0.3s ease;
-  }
-
-  .btn-secondary:hover {
-    background: rgba(255, 255, 255, 0.08);
-    border-color: var(--color-primary);
-    box-shadow: 0 0 15px rgba(0, 242, 254, 0.15);
-  }
-
-  /* Test account copy card style */
   .test-tip-btn {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 0.5rem;
     font-size: 0.8rem;
-    color: var(--text-secondary);
-    background: rgba(255, 255, 255, 0.02);
+    color: rgba(255, 255, 255, 0.6);
+    background: rgba(255, 255, 255, 0.06);
     padding: 0.65rem 1rem;
     border-radius: var(--border-radius-sm);
-    border: 1px solid var(--border-glass);
+    border: 1px solid rgba(255, 255, 255, 0.12);
     width: 100%;
     cursor: pointer;
     text-align: left;
@@ -542,8 +387,8 @@
   }
 
   .test-tip-btn:hover {
-    background: rgba(255, 255, 255, 0.05);
-    border-color: rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
   }
 
   .test-tip-content {
@@ -553,11 +398,11 @@
   }
 
   .cred-code {
-    background: rgba(0, 242, 254, 0.1);
-    color: var(--color-primary);
+    background: rgba(141, 198, 63, 0.2);
+    color: #8DC63F;
     padding: 0.1rem 0.35rem;
     border-radius: 4px;
-    font-weight: 600;
+    font-weight: 700;
     font-family: monospace;
   }
 
@@ -565,84 +410,76 @@
     display: flex;
     align-items: center;
     font-size: 0.75rem;
-    color: var(--text-muted);
   }
 
-  .test-tip-btn:hover .copy-action-text {
-    color: var(--color-primary);
-  }
-
-  .text-success {
-    color: var(--color-success);
+  .text-copied {
+    color: #8DC63F;
     font-weight: 600;
   }
 
-  /* Layout 2: Description Panel */
+  /* Panel kanan — putih */
   .description-panel {
-    gap: 1.5rem;
+    background: #FFFFFF;
     padding: 3.5rem 3rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    background: rgba(255, 255, 255, 0.01); /* Bedah warna: lighter side */
+    gap: 1.5rem;
   }
 
   .description-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    width: 100%;
     flex-wrap: wrap;
     gap: 1rem;
   }
 
   .description-panel h2 {
     font-size: 1.6rem;
-    color: white;
+    color: var(--text-primary);
     font-family: var(--font-title);
   }
 
   .decor-line {
-    flex-grow: 0;
     width: 100px;
-    opacity: 0.8;
+    opacity: 0.9;
   }
 
   .description {
     color: var(--text-secondary);
     font-size: 0.95rem;
-    line-height: 1.6;
+    line-height: 1.7;
   }
 
   .divider {
     height: 1px;
-    background-color: var(--border-glass);
+    background: rgba(0, 0, 0, 0.07);
     width: 100%;
   }
 
   .features-list {
     display: flex;
     flex-direction: column;
-    gap: 1.25rem;
-    width: 100%;
+    gap: 1rem;
   }
 
   .feature-card {
     display: flex;
     align-items: flex-start;
     gap: 1.25rem;
-    padding: 1.25rem;
+    padding: 1.1rem 1.25rem;
     border-radius: var(--border-radius-md);
-    background: rgba(255, 255, 255, 0.02);
-    border: 1px solid rgba(255, 255, 255, 0.04);
+    background: var(--bg-primary);
+    border: 1px solid rgba(0, 0, 0, 0.06);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .feature-card:hover {
-    transform: translateY(-2px) translateX(4px);
-    background: rgba(255, 255, 255, 0.04);
-    border-color: rgba(255, 255, 255, 0.1);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    transform: translateX(4px);
+    background: #FFFFFF;
+    border-color: rgba(0, 135, 60, 0.2);
+    box-shadow: 0 4px 16px rgba(0, 135, 60, 0.08);
   }
 
   .feature-icon-wrapper {
@@ -656,43 +493,43 @@
     transition: all var(--transition-fast);
   }
 
-  .primary-glow {
-    background: rgba(0, 242, 254, 0.08);
-    border: 1px solid rgba(0, 242, 254, 0.2);
-    color: var(--color-primary);
+  .icon-primary {
+    background: rgba(0, 135, 60, 0.08);
+    border: 1px solid rgba(0, 135, 60, 0.18);
+    color: #00873C;
   }
-  .feature-card:hover .primary-glow {
-    background: var(--color-primary);
-    color: #0b111e;
-    box-shadow: 0 0 15px var(--color-primary);
-  }
-
-  .success-glow {
-    background: rgba(0, 245, 160, 0.08);
-    border: 1px solid rgba(0, 245, 160, 0.2);
-    color: var(--color-success);
-  }
-  .feature-card:hover .success-glow {
-    background: var(--color-success);
-    color: #0b111e;
-    box-shadow: 0 0 15px var(--color-success);
+  .feature-card:hover .icon-primary {
+    background: #00873C;
+    color: #ffffff;
+    box-shadow: 0 4px 12px rgba(0, 135, 60, 0.3);
   }
 
-  .warning-glow {
-    background: rgba(255, 174, 52, 0.08);
-    border: 1px solid rgba(255, 174, 52, 0.2);
-    color: var(--color-warning);
+  .icon-success {
+    background: rgba(141, 198, 63, 0.1);
+    border: 1px solid rgba(141, 198, 63, 0.25);
+    color: #5A8A00;
   }
-  .feature-card:hover .warning-glow {
-    background: var(--color-warning);
-    color: #0b111e;
-    box-shadow: 0 0 15px var(--color-warning);
+  .feature-card:hover .icon-success {
+    background: #8DC63F;
+    color: #ffffff;
+    box-shadow: 0 4px 12px rgba(141, 198, 63, 0.35);
+  }
+
+  .icon-warning {
+    background: rgba(245, 158, 11, 0.08);
+    border: 1px solid rgba(245, 158, 11, 0.2);
+    color: #D97706;
+  }
+  .feature-card:hover .icon-warning {
+    background: #F59E0B;
+    color: #ffffff;
+    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
   }
 
   .feature-info h3 {
     font-size: 1rem;
     font-weight: 600;
-    color: white;
+    color: var(--text-primary);
     margin-bottom: 0.25rem;
     font-family: var(--font-title);
   }
@@ -709,14 +546,11 @@
     z-index: 1;
   }
 
-  /* Responsive Design adjustments */
   @media (max-width: 850px) {
     .unified-portal-card {
       grid-template-columns: 1fr;
     }
     .access-panel {
-      border-right: none;
-      border-bottom: 1px solid var(--border-glass);
       padding: 3rem 2rem;
     }
     .description-panel {

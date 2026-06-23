@@ -60,8 +60,8 @@
       <path d="M19 10.5V19C19 20.1 18.1 21 17 21H7C5.9 21 5 20.1 5 19V10.5M12 3V17M12 3L7.5 7.5M12 3L16.5 7.5" stroke="url(#logoGrad)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
       <defs>
         <linearGradient id="logoGrad" x1="5" y1="3" x2="19" y2="21" gradientUnits="userSpaceOnUse">
-          <stop stop-color="#00f2fe" />
-          <stop offset="1" stop-color="#4facfe" />
+          <stop stop-color="#00C853" />
+          <stop offset="1" stop-color="#8DC63F" />
         </linearGradient>
       </defs>
     </svg>
@@ -215,7 +215,7 @@
     position: absolute;
     width: 120px;
     height: 120px;
-    background: radial-gradient(circle, rgba(0, 242, 254, 0.4) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(0, 200, 83, 0.4) 0%, transparent 70%);
     top: -30px;
     left: 50%;
     transform: translateX(-50%);
@@ -227,23 +227,23 @@
     width: 60px;
     height: 60px;
     margin-bottom: 0.5rem;
-    filter: drop-shadow(0 0 8px rgba(0, 242, 254, 0.3));
+    filter: drop-shadow(0 0 8px rgba(0, 200, 83, 0.4));
   }
 
   .logo-area h1 {
     font-size: 1.8rem;
     font-weight: 800;
     letter-spacing: 0.1em;
-    background: linear-gradient(135deg, #ffffff 0%, #a5b4fc 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    background: none;
+    -webkit-text-fill-color: var(--text-primary);
+    color: var(--text-primary);
   }
 
   .logo-area h1 span {
-    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-hover) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: var(--color-primary);
+    -webkit-text-fill-color: var(--color-primary);
     font-weight: 800;
+    background: none;
   }
 
   .subtitle {
@@ -258,7 +258,7 @@
     max-width: 680px;
     padding: 2.5rem;
     border-radius: var(--border-radius-lg);
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
     animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   }
 
@@ -269,7 +269,7 @@
 
   .card-header h2 {
     font-size: 1.5rem;
-    color: white;
+    color: var(--text-primary);
     margin-bottom: 0.5rem;
   }
 
@@ -329,17 +329,17 @@
   }
 
   .btn-primary {
-    background: #ffffff;
-    color: #0b111e;
+    background: linear-gradient(135deg, #00C853 0%, #43A047 100%);
+    color: #071a0d;
     font-weight: 700;
-    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.15);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 15px rgba(0, 200, 83, 0.3);
+    border: none;
     transition: all var(--transition-normal);
   }
 
   .btn-primary:hover {
-    background: rgba(255, 255, 255, 0.9);
-    box-shadow: 0 6px 20px rgba(255, 255, 255, 0.35);
+    background: linear-gradient(135deg, #43A047 0%, #00C853 100%);
+    box-shadow: 0 6px 20px rgba(0, 200, 83, 0.5);
     transform: translateY(-2px);
   }
 
@@ -350,8 +350,8 @@
   .btn-spinner {
     width: 18px;
     height: 18px;
-    border: 2px solid rgba(11, 17, 30, 0.1);
-    border-top-color: #0b111e;
+    border: 2px solid rgba(7, 26, 13, 0.15);
+    border-top-color: #071a0d;
     border-radius: 50%;
     animation: spin 0.8s linear infinite;
   }

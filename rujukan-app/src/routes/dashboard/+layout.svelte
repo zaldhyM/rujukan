@@ -61,8 +61,8 @@
           <path d="M19 10.5V19C19 20.1 18.1 21 17 21H7C5.9 21 5 20.1 5 19V10.5M12 3V17M12 3L7.5 7.5M12 3L16.5 7.5" stroke="url(#sideLogoGrad)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
           <defs>
             <linearGradient id="sideLogoGrad" x1="5" y1="3" x2="19" y2="21" gradientUnits="userSpaceOnUse">
-              <stop stop-color="#00f2fe" />
-              <stop offset="1" stop-color="#4facfe" />
+              <stop stop-color="#00C853" />
+              <stop offset="1" stop-color="#8DC63F" />
             </linearGradient>
           </defs>
         </svg>
@@ -230,9 +230,9 @@
     left: 0;
     z-index: 100;
     border-radius: 0;
-    border-top: none;
-    border-bottom: none;
-    border-left: none;
+    border: none;
+    background: #005C28 !important;
+    box-shadow: 2px 0 16px rgba(0, 0, 0, 0.12) !important;
     display: flex;
     flex-direction: column;
     padding: 2rem 1.5rem;
@@ -249,16 +249,21 @@
   .sidebar-logo {
     width: 32px;
     height: 32px;
-    filter: drop-shadow(0 0 6px rgba(0, 242, 254, 0.3));
+    filter: drop-shadow(0 0 6px rgba(0, 200, 83, 0.4));
   }
 
   .logo-text {
     font-size: 1.25rem;
     font-weight: 800;
     letter-spacing: 0.05em;
-    background: linear-gradient(135deg, #ffffff 0%, #a5b4fc 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: #ffffff;
+    -webkit-text-fill-color: #ffffff;
+  }
+
+  .logo-text span {
+    color: #8DC63F;
+    -webkit-text-fill-color: #8DC63F;
+    background: none;
   }
 
   .logo-text span {
@@ -280,7 +285,7 @@
     gap: 1rem;
     padding: 0.85rem 1.25rem;
     border-radius: var(--border-radius-sm);
-    color: var(--text-secondary);
+    color: rgba(255, 255, 255, 0.7);
     font-family: var(--font-title);
     font-weight: 500;
     transition: all var(--transition-fast);
@@ -294,18 +299,18 @@
   }
 
   .nav-item:hover {
-    color: white;
-    background: rgba(255, 255, 255, 0.03);
-    border-color: rgba(255, 255, 255, 0.05);
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.1);
     transform: translateX(4px);
   }
 
   .nav-item.active {
-    color: #0b111e;
-    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-hover) 100%);
-    border-color: var(--color-primary);
-    box-shadow: 0 4px 15px rgba(0, 242, 254, 0.2);
-    font-weight: 600;
+    color: #005C28;
+    background: #8DC63F;
+    border-color: #8DC63F;
+    box-shadow: 0 4px 12px rgba(141, 198, 63, 0.3);
+    font-weight: 700;
   }
 
   .nav-item.active:hover {
@@ -358,7 +363,7 @@
     gap: 0.25rem;
     padding-left: 1rem;
     margin-top: 0.25rem;
-    border-left: 1px solid rgba(255, 255, 255, 0.05);
+    border-left: 1px solid rgba(255, 255, 255, 0.15);
     margin-left: 1.5rem;
   }
 
@@ -368,25 +373,25 @@
     gap: 0.75rem;
     padding: 0.65rem 1rem;
     font-size: 0.85rem;
-    color: var(--text-secondary);
+    color: rgba(255, 255, 255, 0.65);
     border-radius: var(--border-radius-sm);
     transition: all var(--transition-fast);
   }
 
   .submenu-item:hover {
     color: white;
-    background: rgba(255, 255, 255, 0.02);
+    background: rgba(255, 255, 255, 0.08);
   }
 
   .submenu-item.active {
-    color: var(--color-primary);
+    color: #8DC63F;
     font-weight: 600;
   }
 
   .submenu-item .bullet {
     width: 4px;
     height: 4px;
-    background: var(--text-muted);
+    background: rgba(255, 255, 255, 0.4);
     border-radius: 50%;
     transition: all var(--transition-fast);
   }
@@ -396,8 +401,8 @@
   }
 
   .submenu-item.active .bullet {
-    background: var(--color-primary);
-    box-shadow: 0 0 6px var(--color-primary);
+    background: #8DC63F;
+    box-shadow: 0 0 6px rgba(141, 198, 63, 0.6);
   }
 
   @keyframes slideDown {
@@ -414,14 +419,15 @@
   }
 
   .logout-btn {
-    border-color: rgba(255, 117, 140, 0.2);
-    color: #ff758c;
+    border-color: rgba(255, 255, 255, 0.2);
+    color: rgba(255, 255, 255, 0.7);
+    background: rgba(255, 255, 255, 0.05);
   }
 
   .logout-btn:hover {
-    background: rgba(255, 117, 140, 0.1);
-    color: #ff758c;
-    border-color: rgba(255, 117, 140, 0.4);
+    background: rgba(239, 68, 68, 0.15);
+    color: #FCA5A5;
+    border-color: rgba(239, 68, 68, 0.3);
   }
 
   /* Overlay */
@@ -431,7 +437,7 @@
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: rgba(11, 17, 30, 0.8);
+    background: rgba(7, 26, 13, 0.85);
     backdrop-filter: blur(4px);
     z-index: 90;
     border: none;
@@ -450,11 +456,14 @@
 
   /* Topbar Styling */
   .topbar {
-    height: 80px;
+    height: 72px;
     border-radius: 0;
     border-top: none;
     border-left: none;
     border-right: none;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08) !important;
+    background: #FFFFFF !important;
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.06) !important;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -474,7 +483,7 @@
     display: none;
     background: none;
     border: none;
-    color: white;
+    color: var(--text-primary);
     cursor: pointer;
     padding: 0.25rem;
   }
@@ -494,7 +503,7 @@
 
   .faskes-name {
     font-size: 1.1rem;
-    color: white;
+    color: var(--text-primary);
   }
 
   .topbar-right {
@@ -519,8 +528,8 @@
     justify-content: center;
     font-family: var(--font-title);
     font-weight: 700;
-    color: #0b111e;
-    box-shadow: 0 0 10px rgba(0, 242, 254, 0.2);
+    color: #071a0d;
+    box-shadow: 0 0 10px rgba(0, 200, 83, 0.25);
   }
 
   .user-info {
@@ -531,7 +540,7 @@
   .user-name {
     font-size: 0.95rem;
     font-weight: 600;
-    color: white;
+    color: var(--text-primary);
   }
 
   .user-role {
@@ -550,8 +559,9 @@
 
   /* Footer */
   .footer {
-    padding: 2rem 2.5rem;
+    padding: 1.5rem 2.5rem;
     border-top: 1px solid var(--border-glass);
+    background: #FFFFFF;
     text-align: center;
     color: var(--text-muted);
     font-size: 0.85rem;
