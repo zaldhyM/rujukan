@@ -1,26 +1,32 @@
 package http
 
 import (
+	"context"
 	"log"
 	"net/http"
+	"os"
+	"strconv"
 	"time"
 
 	"rujukan/internal/infrastructure/auth"
+	"rujukan/internal/infrastructure/cache"
 	"rujukan/internal/modules/user/domain"
 	"rujukan/internal/modules/user/repository"
 
 	"github.com/gin-gonic/gin"
+	"github.com/redis/go-redis/v9"
 	"golang.org/x/crypto/bcrypt"
 )
 
 // UserHandler handles HTTP requests related to the user domain.
 type UserHandler struct {
 	repo repository.UserRepository
+	rdb  *redis.Client
 }
 
 // NewUserHandler returns a new instance of UserHandler.
-func NewUserHandler(repo repository.UserRepository) *UserHandler {
-	return &UserHandler{repo: repo}
+func NewUserHandler(repo repository.UserRepository, rdb *redis.Client) *UserHandler {
+	return &UserHandler{repo: repo, rdb: rdb}
 }
 
 // DataAll handles request to retrieve all user data.
@@ -120,7 +126,7 @@ func (h *UserHandler) Login(c *gin.Context) {
 	}
 
 	// 5. Generate JWT Token
-	tokenDuration := 24 * time.Hour
+	tokenDuration := tokenExpiredDuration()
 	token, err := auth.GenerateToken(user.ID, user.USERNAME, user.ROLE, user.ID_FASKES, user.NAMA, tokenDuration)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
@@ -130,17 +136,16 @@ func (h *UserHandler) Login(c *gin.Context) {
 		return
 	}
 
-	// 6. Update token in database (Session registration/tracking)
-	if err := h.repo.UpdateToken(user.ID, token); err != nil {
+	// 6. Store token in Redis (overwrites previous session — single active session)
+	if err := h.rdb.Set(context.Background(), cache.SessionKey(user.ID), token, tokenDuration).Err(); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"success": false,
-			"message": "Could not register session in database",
+			"message": "Could not register session in cache",
 		})
 		return
 	}
 
 	// 7. Set HTTP-only Cookie for Session Authentication
-	// Parameters: name, value, maxAge (seconds), path, domain, secure, httpOnly
 	c.SetCookie("session_token", token, int(tokenDuration.Seconds()), "/", "", false, true)
 
 	c.JSON(http.StatusOK, gin.H{
@@ -257,9 +262,9 @@ func (h *UserHandler) Logout(c *gin.Context) {
 		userID = uint(v)
 	}
 
-	// Clear token in DB
-	if err := h.repo.UpdateToken(userID, ""); err != nil {
-		log.Printf("⚠️ Failed to clear token in DB on logout: %v", err)
+	// Delete session from Redis
+	if err := h.rdb.Del(context.Background(), cache.SessionKey(userID)).Err(); err != nil {
+		log.Printf("⚠️ Failed to delete session from Redis on logout: %v", err)
 	}
 
 	// Clear the cookie (expire immediately)
@@ -295,4 +300,13 @@ func (h *UserHandler) Me(c *gin.Context) {
 			"id_faskes": dbUser.ID_FASKES,
 		},
 	})
+}
+
+// tokenExpiredDuration reads TOKEN_EXPIRED_HOURS from env, defaults to 24 hours.
+func tokenExpiredDuration() time.Duration {
+	hours, err := strconv.Atoi(os.Getenv("TOKEN_EXPIRED_HOURS"))
+	if err != nil || hours <= 0 {
+		hours = 24
+	}
+	return time.Duration(hours) * time.Hour
 }

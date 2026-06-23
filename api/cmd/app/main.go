@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"rujukan/internal/app"
+	"rujukan/internal/infrastructure/cache"
 	"rujukan/internal/infrastructure/database"
 
 	"github.com/joho/godotenv"
@@ -15,8 +16,9 @@ func main() {
 		log.Println("Warning: Error loading .env file, relying on environment variables")
 	}
 
-	// Defer closing database connection on main exit
+	// Defer closing database and cache connections on main exit
 	defer database.Close()
+	defer cache.Close()
 
 	// Boot application
 	application := app.NewApp()

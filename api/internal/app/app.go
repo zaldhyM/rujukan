@@ -3,6 +3,7 @@ package app
 import (
 	"log"
 	"os"
+	"rujukan/internal/infrastructure/cache"
 	"rujukan/internal/infrastructure/database"
 	"rujukan/internal/middleware"
 	"rujukan/internal/modules/faskes"
@@ -22,8 +23,9 @@ type App struct {
 
 // NewApp initializes dependencies, databases, modules, and routes.
 func NewApp() *App {
-	// 1. Initialize Database connection
+	// 1. Initialize Database and Cache connections
 	db := database.Connect()
+	rdb := cache.Connect()
 
 	// 2. Set GIN_MODE from env (release/debug)
 	ginMode := os.Getenv("GIN_MODE")
@@ -39,7 +41,7 @@ func NewApp() *App {
 	router.SetTrustedProxies([]string{"127.0.0.1"})
 
 	// 4. Initialize Monolith Modules
-	userModule := user.NewUserModule(db)
+	userModule := user.NewUserModule(db, rdb)
 	faskesModule := faskes.NewFaskesModule(db)
 	pasienModule := pasien.NewPasienModule(db)
 	wilayahModule := wilayah.NewWilayahModule(db)
@@ -54,7 +56,7 @@ func NewApp() *App {
 
 		// Register protected routes group using AuthMiddleware
 		protected := v1.Group("")
-		protected.Use(middleware.AuthMiddleware())
+		protected.Use(middleware.AuthMiddleware(rdb))
 		{
 			userModule.RegisterRoutes(protected)
 			faskesModule.RegisterRoutes(protected)

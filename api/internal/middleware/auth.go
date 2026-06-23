@@ -1,20 +1,23 @@
 package middleware
 
 import (
+	"context"
 	"log"
 	"net/http"
 	"strings"
 	"time"
 
 	"rujukan/internal/infrastructure/auth"
+	"rujukan/internal/infrastructure/cache"
 	"rujukan/internal/infrastructure/database"
 	"rujukan/internal/modules/user/domain"
 
 	"github.com/gin-gonic/gin"
+	"github.com/redis/go-redis/v9"
 )
 
 // AuthMiddleware authenticates requests using JWT (Bearer token or session cookie).
-func AuthMiddleware() gin.HandlerFunc {
+func AuthMiddleware(rdb *redis.Client) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var tokenStr string
 
@@ -27,7 +30,7 @@ func AuthMiddleware() gin.HandlerFunc {
 			}
 		}
 
-		// 2. If not found in header, try to get from session_token cookie (Session Auth)
+		// 2. If not found in header, try to get from session_token cookie
 		if tokenStr == "" {
 			if cookie, err := c.Cookie("session_token"); err == nil {
 				tokenStr = cookie
@@ -44,7 +47,7 @@ func AuthMiddleware() gin.HandlerFunc {
 			return
 		}
 
-		// 4. Validate the token
+		// 4. Validate JWT signature and expiry
 		claims, err := auth.ValidateToken(tokenStr)
 		if err != nil {
 			c.JSON(http.StatusUnauthorized, gin.H{
@@ -55,7 +58,26 @@ func AuthMiddleware() gin.HandlerFunc {
 			return
 		}
 
-		// 5. Verify user status and session against database
+		// 5. Verify active session against Redis (single active session enforcement)
+		sessionToken, err := rdb.Get(context.Background(), cache.SessionKey(claims.UserID)).Result()
+		if err != nil {
+			c.JSON(http.StatusUnauthorized, gin.H{
+				"success": false,
+				"message": "Session has been invalidated or logged out",
+			})
+			c.Abort()
+			return
+		}
+		if sessionToken != tokenStr {
+			c.JSON(http.StatusUnauthorized, gin.H{
+				"success": false,
+				"message": "Session has been invalidated or logged out",
+			})
+			c.Abort()
+			return
+		}
+
+		// 6. Verify user status and masa aktif from database
 		if err := database.Switch("aplikasi"); err != nil {
 			log.Println("⚠️ Error switching to database aplikasi in auth middleware:", err)
 		}
@@ -70,7 +92,6 @@ func AuthMiddleware() gin.HandlerFunc {
 			return
 		}
 
-		// Verify Status
 		if dbUser.STATUS != 1 {
 			c.JSON(http.StatusUnauthorized, gin.H{
 				"success": false,
@@ -80,7 +101,6 @@ func AuthMiddleware() gin.HandlerFunc {
 			return
 		}
 
-		// Verify Masa Aktif (expiry date) if set
 		if dbUser.MASA_AKTIF != "" {
 			if expiryDate, err := time.Parse("2006-01-02", dbUser.MASA_AKTIF); err == nil {
 				if time.Now().After(expiryDate) {
@@ -92,16 +112,6 @@ func AuthMiddleware() gin.HandlerFunc {
 					return
 				}
 			}
-		}
-
-		// Verify Token matching (Single Active Session Enforcement)
-		if dbUser.TOKEN != tokenStr {
-			c.JSON(http.StatusUnauthorized, gin.H{
-				"success": false,
-				"message": "Session has been invalidated or logged out",
-			})
-			c.Abort()
-			return
 		}
 
 		// Store user info in context for use in handlers

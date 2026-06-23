@@ -5,6 +5,7 @@ import (
 	"rujukan/internal/modules/user/repository"
 
 	"github.com/gin-gonic/gin"
+	"github.com/redis/go-redis/v9"
 	"gorm.io/gorm"
 )
 
@@ -14,9 +15,9 @@ type UserModule struct {
 }
 
 // NewUserModule initializes and wires up the user module's dependencies.
-func NewUserModule(db *gorm.DB) *UserModule {
+func NewUserModule(db *gorm.DB, rdb *redis.Client) *UserModule {
 	repo := repository.NewMySQLRepository(db)
-	handler := http.NewUserHandler(repo)
+	handler := http.NewUserHandler(repo, rdb)
 	return &UserModule{
 		Handler: handler,
 	}
