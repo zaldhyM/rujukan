@@ -4,3 +4,4 @@ go.sum
 .env
 docker-compose.yml
 mysql_data/
+redis_data/
