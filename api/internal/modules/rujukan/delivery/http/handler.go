@@ -33,7 +33,7 @@ func (h *RujukanHandler) QueryAll(c *gin.Context) {
 
 	data, total, err := h.repo.QueryAll(search, status, limit, offset)
 	if err != nil {
-		response.InternalError(c, err.Error())
+		response.ServerError(c, err)
 		return
 	}
 
@@ -83,7 +83,7 @@ func (h *RujukanHandler) Create(c *gin.Context) {
 	}
 
 	if err := h.repo.Create(&rujukan); err != nil {
-		response.InternalError(c, err.Error())
+		response.ServerError(c, err)
 		return
 	}
 
@@ -108,7 +108,7 @@ func (h *RujukanHandler) UpdateStatus(c *gin.Context) {
 	}
 
 	if err := h.repo.UpdateStatus(id, input.Status); err != nil {
-		response.InternalError(c, err.Error())
+		response.ServerError(c, err)
 		return
 	}
 

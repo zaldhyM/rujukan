@@ -1,6 +1,9 @@
 package user
 
 import (
+	"time"
+
+	"rujukan/internal/middleware"
 	"rujukan/internal/modules/user/delivery/http"
 	"rujukan/internal/modules/user/repository"
 
@@ -9,31 +12,29 @@ import (
 	"gorm.io/gorm"
 )
 
-// UserModule represents the user domain module in the monolith.
 type UserModule struct {
 	Handler *http.UserHandler
+	rdb     *redis.Client
 }
 
-// NewUserModule initializes and wires up the user module's dependencies.
 func NewUserModule(db *gorm.DB, rdb *redis.Client) *UserModule {
 	repo := repository.NewMySQLRepository(db)
 	handler := http.NewUserHandler(repo, rdb)
-	return &UserModule{
-		Handler: handler,
-	}
+	return &UserModule{Handler: handler, rdb: rdb}
 }
 
-// RegisterAuthRoutes registers the authentication endpoints that DO NOT require middleware.
+// RegisterAuthRoutes mendaftarkan endpoint publik dengan rate limiting pada login.
 func (m *UserModule) RegisterAuthRoutes(rg *gin.RouterGroup) {
-	rg.POST("/auth/login", m.Handler.Login)
+	rg.POST("/auth/login", middleware.RateLimit(m.rdb, 5, time.Minute), m.Handler.Login)
 	rg.POST("/auth/register", m.Handler.Register)
 }
 
-// RegisterRoutes registers the routing endpoints for the user module that require authentication.
+// RegisterRoutes mendaftarkan endpoint yang memerlukan autentikasi.
 func (m *UserModule) RegisterRoutes(rg *gin.RouterGroup) {
-	// Group routes under the version group passed in (e.g. /v1)
-	rg.GET("/aplikasi/user", m.Handler.DataAll)
-	rg.GET("/aplikasi/data", m.Handler.DataAll)
 	rg.POST("/auth/logout", m.Handler.Logout)
 	rg.GET("/auth/me", m.Handler.Me)
+
+	admin := rg.Group("", middleware.RequireRole("admin"))
+	admin.GET("/aplikasi/user", m.Handler.DataAll)
+	admin.GET("/aplikasi/data", m.Handler.DataAll)
 }

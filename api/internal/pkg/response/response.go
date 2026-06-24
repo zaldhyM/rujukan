@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"log"
 	"net/http"
 	"strings"
 
@@ -55,6 +56,13 @@ func NotFound(c *gin.Context, message string) {
 
 func InternalError(c *gin.Context, message string) {
 	Error(c, http.StatusInternalServerError, message)
+}
+
+// ServerError logs the actual error internally and returns a generic message to the client.
+// Gunakan ini sebagai pengganti InternalError agar detail error DB tidak bocor ke client.
+func ServerError(c *gin.Context, err error) {
+	log.Printf("[ERROR] %s %s — %v", c.Request.Method, c.Request.URL.Path, err)
+	Error(c, http.StatusInternalServerError, "Terjadi kesalahan pada server")
 }
 
 // ValidationError formats binding/validation errors into field-level messages.

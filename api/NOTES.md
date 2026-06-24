@@ -171,18 +171,19 @@ Setiap perubahan skema wajib dicatat sebagai file patch baru di `db/patches/` de
 - [x] Fase 4: Buat helper `response.go` untuk format JSON standar (success/error)
 - [x] Fase 4: CORS middleware untuk akses dari `rujukan-app`
 
-## Backlog Keamanan (Security)
-
-Temuan dari security review — belum dieksekusi:
+## Backlog Keamanan (Security) ✅
 
 ### 🟠 Prioritas Tinggi
-- [ ] **Rate limiting login** — `POST /v1/auth/login` belum ada pembatasan percobaan. Rentan brute force. Solusi: middleware rate limiter (misal: `golang.org/x/time/rate` atau `github.com/ulule/limiter`) per IP, max 5 percobaan/menit.
-- [ ] **Role-based authorization** — `AuthMiddleware` hanya autentikasi, belum otorisasi. User role `faskes` bisa delete faskes lain, update rujukan orang lain, dll. Solusi: buat middleware `RequireRole("admin")` dan pasang di route yang sesuai.
+- [x] **Rate limiting login** — `middleware/ratelimit.go`, max 5 percobaan/menit per IP via Redis. Header `Retry-After` dikembalikan saat limit tercapai.
+- [x] **Role-based authorization** — `middleware/role.go` (`RequireRole`). Matrix akses:
+  - `admin` — user list, semua write faskes, delete pasien
+  - `admin`, `faskes` — write/update pasien, buat rujukan
+  - `admin`, `faskes`, `dinkeskab`, `dinkesprov` — update status rujukan
 
 ### 🟡 Prioritas Sedang
-- [ ] **Error message leakage** — `response.InternalError(c, err.Error())` meneruskan error GORM mentah ke client (bisa bocorkan nama tabel/kolom). Solusi: log error internal, kembalikan pesan generik `"Terjadi kesalahan pada server"` ke client.
-- [ ] **Cookie Secure flag** — `SetCookie(..., false, true)` → flag `Secure: false`. Di production (HTTPS), harus `true`. Solusi: baca dari env `APP_ENV`, set `Secure: true` jika production.
-- [ ] **JWT fallback secret** — Jika `JWT_SECRET` kosong di `.env`, pakai secret hardcoded yang lemah. Solusi: aplikasi harus `log.Fatal` jika `JWT_SECRET` tidak di-set, bukan pakai fallback.
-- [ ] **`database.Switch()` tanpa whitelist** — `DB.Exec("USE " + dbName)` pakai string concatenation. Saat ini aman (nilai hardcoded), tapi tambahkan whitelist `{"aplikasi", "master", "rujukan"}` sebagai defense-in-depth.
+- [x] **Error message leakage** — `response.ServerError(c, err)` log error ke server, kirim pesan generik ke client. Semua handler sudah dimigrasi dari `InternalError(c, err.Error())`.
+- [x] **Cookie Secure flag** — `isProduction()` baca env `APP_ENV`. Set `Secure: true` otomatis saat `APP_ENV=production`.
+- [x] **JWT fallback secret** — `auth/jwt.go` sekarang `log.Fatal` jika `JWT_SECRET` kosong. Tidak ada fallback.
+- [x] **`database.Switch()` whitelist** — hanya schema `aplikasi`, `master`, `rujukan` yang diizinkan. Schema lain mengembalikan error.
 - [ ] Fase 5: Integrasi `swaggo/swag` untuk dokumentasi otomatis
 - [ ] Fase 5: Setup `golang-migrate` untuk eksekusi patch otomatis

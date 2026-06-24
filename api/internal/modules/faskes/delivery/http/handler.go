@@ -31,7 +31,7 @@ func (h *FaskesHandler) QueryAll(c *gin.Context) {
 
 	data, total, err := h.repo.QueryAll(search, limit, offset)
 	if err != nil {
-		response.InternalError(c, err.Error())
+		response.ServerError(c, err)
 		return
 	}
 
@@ -62,7 +62,7 @@ func (h *FaskesHandler) Create(c *gin.Context) {
 	}
 
 	if err := h.repo.Create(&faskes); err != nil {
-		response.InternalError(c, err.Error())
+		response.ServerError(c, err)
 		return
 	}
 
@@ -84,7 +84,7 @@ func (h *FaskesHandler) Update(c *gin.Context) {
 
 	faskes.ID = int16(id)
 	if err := h.repo.Update(&faskes); err != nil {
-		response.InternalError(c, err.Error())
+		response.ServerError(c, err)
 		return
 	}
 
@@ -99,7 +99,7 @@ func (h *FaskesHandler) Delete(c *gin.Context) {
 	}
 
 	if err := h.repo.Delete(int16(id)); err != nil {
-		response.InternalError(c, err.Error())
+		response.ServerError(c, err)
 		return
 	}
 

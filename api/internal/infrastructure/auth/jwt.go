@@ -2,6 +2,7 @@ package auth
 
 import (
 	"errors"
+	"log"
 	"os"
 	"time"
 
@@ -23,11 +24,12 @@ type Claims struct {
 	jwt.RegisteredClaims
 }
 
-// GetSecretKey retrieves the secret key from environment variables or uses a fallback.
+// GetSecretKey retrieves the JWT secret from environment variables.
+// Aplikasi akan berhenti (fatal) jika JWT_SECRET tidak di-set — tidak ada fallback.
 func GetSecretKey() []byte {
 	secret := os.Getenv("JWT_SECRET")
 	if secret == "" {
-		secret = "rujukan_secret_key_2026_change_me"
+		log.Fatal("JWT_SECRET tidak di-set. Isi JWT_SECRET di file .env sebelum menjalankan aplikasi.")
 	}
 	return []byte(secret)
 }

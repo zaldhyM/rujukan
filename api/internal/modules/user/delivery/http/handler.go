@@ -30,7 +30,7 @@ func NewUserHandler(repo repository.UserRepository, rdb *redis.Client) *UserHand
 func (h *UserHandler) DataAll(c *gin.Context) {
 	respon, err := h.repo.QueryAll()
 	if err != nil {
-		response.InternalError(c, err.Error())
+		response.ServerError(c, err)
 		return
 	}
 
@@ -93,16 +93,16 @@ func (h *UserHandler) Login(c *gin.Context) {
 	tokenDuration := tokenExpiredDuration()
 	token, err := auth.GenerateToken(user.ID, user.USERNAME, user.ROLE, user.ID_FASKES, user.NAMA, tokenDuration)
 	if err != nil {
-		response.InternalError(c, "Gagal membuat token autentikasi")
+		response.ServerError(c, err)
 		return
 	}
 
 	if err := h.rdb.Set(context.Background(), cache.SessionKey(user.ID), token, tokenDuration).Err(); err != nil {
-		response.InternalError(c, "Gagal menyimpan sesi")
+		response.ServerError(c, err)
 		return
 	}
 
-	c.SetCookie("session_token", token, int(tokenDuration.Seconds()), "/", "", false, true)
+	c.SetCookie("session_token", token, int(tokenDuration.Seconds()), "/", "", isProduction(), true)
 
 	c.JSON(200, gin.H{
 		"success": true,
@@ -141,7 +141,7 @@ func (h *UserHandler) Register(c *gin.Context) {
 
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(input.Password), bcrypt.DefaultCost)
 	if err != nil {
-		response.InternalError(c, "Gagal mengamankan password")
+		response.ServerError(c, err)
 		return
 	}
 
@@ -160,7 +160,7 @@ func (h *UserHandler) Register(c *gin.Context) {
 	}
 
 	if err := h.repo.Create(&newUser); err != nil {
-		response.InternalError(c, "Gagal membuat user: "+err.Error())
+		response.ServerError(c, err)
 		return
 	}
 
@@ -194,7 +194,7 @@ func (h *UserHandler) Logout(c *gin.Context) {
 		log.Printf("⚠️ Gagal hapus sesi dari Redis saat logout: %v", err)
 	}
 
-	c.SetCookie("session_token", "", -1, "/", "", false, true)
+	c.SetCookie("session_token", "", -1, "/", "", isProduction(), true)
 	response.OKMessage(c, "Logout berhasil")
 }
 
@@ -223,4 +223,8 @@ func tokenExpiredDuration() time.Duration {
 		hours = 24
 	}
 	return time.Duration(hours) * time.Hour
+}
+
+func isProduction() bool {
+	return os.Getenv("APP_ENV") == "production"
 }

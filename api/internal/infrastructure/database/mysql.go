@@ -72,10 +72,20 @@ func Close() {
 	}
 }
 
+var allowedSchemas = map[string]struct{}{
+	"aplikasi": {},
+	"master":   {},
+	"rujukan":  {},
+}
+
 // Switch switches the active database schema for the current session.
+// Hanya schema yang ada dalam allowedSchemas yang diizinkan.
 func Switch(dbName string) error {
 	if DB == nil {
 		return fmt.Errorf("DB belum diinisialisasi")
+	}
+	if _, ok := allowedSchemas[dbName]; !ok {
+		return fmt.Errorf("schema '%s' tidak diizinkan", dbName)
 	}
 	return DB.Exec("USE " + dbName).Error
 }

@@ -31,7 +31,7 @@ func (h *PasienHandler) QueryAll(c *gin.Context) {
 
 	data, total, err := h.repo.QueryAll(search, limit, offset)
 	if err != nil {
-		response.InternalError(c, err.Error())
+		response.ServerError(c, err)
 		return
 	}
 
@@ -57,7 +57,7 @@ func (h *PasienHandler) Create(c *gin.Context) {
 	}
 
 	if err := h.repo.Create(&pasien); err != nil {
-		response.InternalError(c, err.Error())
+		response.ServerError(c, err)
 		return
 	}
 
@@ -75,7 +75,7 @@ func (h *PasienHandler) Update(c *gin.Context) {
 
 	pasien.ID = id
 	if err := h.repo.Update(&pasien); err != nil {
-		response.InternalError(c, err.Error())
+		response.ServerError(c, err)
 		return
 	}
 
@@ -85,7 +85,7 @@ func (h *PasienHandler) Update(c *gin.Context) {
 func (h *PasienHandler) Delete(c *gin.Context) {
 	id := c.Param("id")
 	if err := h.repo.Delete(id); err != nil {
-		response.InternalError(c, err.Error())
+		response.ServerError(c, err)
 		return
 	}
 

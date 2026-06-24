@@ -40,7 +40,7 @@ func (h *WilayahHandler) QueryWilayah(c *gin.Context) {
 
 	data, total, err := h.repo.QueryWilayah(search, jenis, parentID, limit, offset)
 	if err != nil {
-		response.InternalError(c, err.Error())
+		response.ServerError(c, err)
 		return
 	}
 
@@ -61,7 +61,7 @@ func (h *WilayahHandler) GetWilayahByID(c *gin.Context) {
 func (h *WilayahHandler) QueryJenisWilayah(c *gin.Context) {
 	data, err := h.repo.QueryJenisWilayah()
 	if err != nil {
-		response.InternalError(c, err.Error())
+		response.ServerError(c, err)
 		return
 	}
 

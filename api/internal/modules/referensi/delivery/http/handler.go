@@ -30,7 +30,7 @@ func (h *ReferensiHandler) QueryReferensi(c *gin.Context) {
 
 	data, err := h.repo.QueryReferensi(jenis, search)
 	if err != nil {
-		response.InternalError(c, err.Error())
+		response.ServerError(c, err)
 		return
 	}
 
@@ -62,7 +62,7 @@ func (h *ReferensiHandler) GetReferensiByKeys(c *gin.Context) {
 func (h *ReferensiHandler) QueryJenisReferensi(c *gin.Context) {
 	data, err := h.repo.QueryJenisReferensi()
 	if err != nil {
-		response.InternalError(c, err.Error())
+		response.ServerError(c, err)
 		return
 	}
 

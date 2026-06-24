@@ -1,6 +1,7 @@
 package rujukan
 
 import (
+	"rujukan/internal/middleware"
 	"rujukan/internal/modules/rujukan/delivery/http"
 	"rujukan/internal/modules/rujukan/repository"
 
@@ -21,6 +22,10 @@ func NewRujukanModule(db *gorm.DB) *RujukanModule {
 func (m *RujukanModule) RegisterRoutes(rg *gin.RouterGroup) {
 	rg.GET("/rujukan", m.Handler.QueryAll)
 	rg.GET("/rujukan/:id", m.Handler.GetByID)
-	rg.POST("/rujukan", m.Handler.Create)
-	rg.PUT("/rujukan/:id/status", m.Handler.UpdateStatus)
+
+	// Buat rujukan: admin dan faskes
+	rg.POST("/rujukan", middleware.RequireRole("admin", "faskes"), m.Handler.Create)
+
+	// Update status: semua role terautentikasi bisa (admin, faskes, dinkeskab, dinkesprov)
+	rg.PUT("/rujukan/:id/status", middleware.RequireRole("admin", "faskes", "dinkeskab", "dinkesprov"), m.Handler.UpdateStatus)
 }
