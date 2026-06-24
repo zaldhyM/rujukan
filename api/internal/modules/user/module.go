@@ -1,6 +1,9 @@
 package user
 
 import (
+	"log"
+	"os"
+	"strconv"
 	"time"
 
 	"rujukan/internal/middleware"
@@ -23,9 +26,17 @@ func NewUserModule(db *gorm.DB, rdb *redis.Client) *UserModule {
 	return &UserModule{Handler: handler, rdb: rdb}
 }
 
-// RegisterAuthRoutes mendaftarkan endpoint publik dengan rate limiting pada login.
+// RegisterAuthRoutes mendaftarkan endpoint publik.
+// Rate limiting aktif hanya jika RATE_LIMIT_MAX di-set di .env.
 func (m *UserModule) RegisterAuthRoutes(rg *gin.RouterGroup) {
-	rg.POST("/auth/login", middleware.RateLimit(m.rdb, 5, time.Minute), m.Handler.Login)
+	handlers := []gin.HandlerFunc{}
+
+	if rl := rateLimitFromEnv(m.rdb); rl != nil {
+		handlers = append(handlers, rl)
+	}
+
+	handlers = append(handlers, m.Handler.Login)
+	rg.POST("/auth/login", handlers...)
 	rg.POST("/auth/register", m.Handler.Register)
 }
 
@@ -37,4 +48,30 @@ func (m *UserModule) RegisterRoutes(rg *gin.RouterGroup) {
 	admin := rg.Group("", middleware.RequireRole("admin"))
 	admin.GET("/aplikasi/user", m.Handler.DataAll)
 	admin.GET("/aplikasi/data", m.Handler.DataAll)
+}
+
+// rateLimitFromEnv membaca konfigurasi rate limiter dari env.
+// Mengembalikan nil jika RATE_LIMIT_MAX tidak di-set — rate limiter dinonaktifkan.
+func rateLimitFromEnv(rdb *redis.Client) gin.HandlerFunc {
+	maxStr := os.Getenv("RATE_LIMIT_MAX")
+	if maxStr == "" {
+		log.Println("ℹ️  RATE_LIMIT_MAX tidak di-set, rate limiter login dinonaktifkan")
+		return nil
+	}
+
+	max, err := strconv.ParseInt(maxStr, 10, 64)
+	if err != nil || max <= 0 {
+		log.Printf("⚠️  RATE_LIMIT_MAX tidak valid ('%s'), rate limiter dinonaktifkan\n", maxStr)
+		return nil
+	}
+
+	window := time.Minute
+	if windowStr := os.Getenv("RATE_LIMIT_WINDOW_SECONDS"); windowStr != "" {
+		if secs, err := strconv.Atoi(windowStr); err == nil && secs > 0 {
+			window = time.Duration(secs) * time.Second
+		}
+	}
+
+	log.Printf("✅ Rate limiter login aktif: max %d percobaan per %s\n", max, window)
+	return middleware.RateLimit(rdb, max, window)
 }
