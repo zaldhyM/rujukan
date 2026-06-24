@@ -1,10 +1,11 @@
 package http
 
 import (
-	"net/http"
 	"strconv"
+
 	"rujukan/internal/modules/faskes/domain"
 	"rujukan/internal/modules/faskes/repository"
+	"rujukan/internal/pkg/response"
 
 	"github.com/gin-gonic/gin"
 )
@@ -19,143 +20,88 @@ func NewFaskesHandler(repo repository.FaskesRepository) *FaskesHandler {
 
 func (h *FaskesHandler) QueryAll(c *gin.Context) {
 	search := c.Query("search")
-	limitStr := c.DefaultQuery("limit", "10")
-	offsetStr := c.DefaultQuery("offset", "0")
-
-	limit, err := strconv.Atoi(limitStr)
+	limit, err := strconv.Atoi(c.DefaultQuery("limit", "10"))
 	if err != nil || limit <= 0 {
 		limit = 10
 	}
-
-	offset, err := strconv.Atoi(offsetStr)
+	offset, err := strconv.Atoi(c.DefaultQuery("offset", "0"))
 	if err != nil || offset < 0 {
 		offset = 0
 	}
 
 	data, total, err := h.repo.QueryAll(search, limit, offset)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"success": false,
-			"message": err.Error(),
-		})
+		response.InternalError(c, err.Error())
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{
-		"success": true,
-		"total":   total,
-		"limit":   limit,
-		"offset":  offset,
-		"data":    data,
-	})
+	response.OKList(c, data, int(total), limit, offset)
 }
 
 func (h *FaskesHandler) GetByID(c *gin.Context) {
-	idStr := c.Param("id")
-	id, err := strconv.Atoi(idStr)
+	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"success": false,
-			"message": "Invalid ID format",
-		})
+		response.BadRequest(c, "Format ID tidak valid")
 		return
 	}
 
 	data, err := h.repo.GetByID(int16(id))
 	if err != nil {
-		c.JSON(http.StatusNotFound, gin.H{
-			"success": false,
-			"message": "Faskes not found",
-		})
+		response.NotFound(c, "Faskes tidak ditemukan")
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{
-		"success": true,
-		"data":    data,
-	})
+	response.OK(c, data)
 }
 
 func (h *FaskesHandler) Create(c *gin.Context) {
 	var faskes domain.Faskes
 	if err := c.ShouldBindJSON(&faskes); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"success": false,
-			"message": err.Error(),
-		})
+		response.ValidationError(c, err)
 		return
 	}
 
 	if err := h.repo.Create(&faskes); err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"success": false,
-			"message": err.Error(),
-		})
+		response.InternalError(c, err.Error())
 		return
 	}
 
-	c.JSON(http.StatusCreated, gin.H{
-		"success": true,
-		"data":    faskes,
-	})
+	response.Created(c, faskes)
 }
 
 func (h *FaskesHandler) Update(c *gin.Context) {
-	idStr := c.Param("id")
-	id, err := strconv.Atoi(idStr)
+	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"success": false,
-			"message": "Invalid ID format",
-		})
+		response.BadRequest(c, "Format ID tidak valid")
 		return
 	}
 
 	var faskes domain.Faskes
 	if err := c.ShouldBindJSON(&faskes); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"success": false,
-			"message": err.Error(),
-		})
+		response.ValidationError(c, err)
 		return
 	}
 
 	faskes.ID = int16(id)
 	if err := h.repo.Update(&faskes); err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"success": false,
-			"message": err.Error(),
-		})
+		response.InternalError(c, err.Error())
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{
-		"success": true,
-		"data":    faskes,
-	})
+	response.OK(c, faskes)
 }
 
 func (h *FaskesHandler) Delete(c *gin.Context) {
-	idStr := c.Param("id")
-	id, err := strconv.Atoi(idStr)
+	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"success": false,
-			"message": "Invalid ID format",
-		})
+		response.BadRequest(c, "Format ID tidak valid")
 		return
 	}
 
 	if err := h.repo.Delete(int16(id)); err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"success": false,
-			"message": err.Error(),
-		})
+		response.InternalError(c, err.Error())
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{
-		"success": true,
-		"message": "Faskes deleted successfully",
-	})
+	response.OKMessage(c, "Faskes berhasil dihapus")
 }

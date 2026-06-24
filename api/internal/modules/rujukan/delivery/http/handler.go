@@ -1,11 +1,11 @@
 package http
 
 import (
-	"net/http"
 	"strconv"
 
 	"rujukan/internal/modules/rujukan/domain"
 	"rujukan/internal/modules/rujukan/repository"
+	"rujukan/internal/pkg/response"
 
 	"github.com/gin-gonic/gin"
 )
@@ -33,33 +33,27 @@ func (h *RujukanHandler) QueryAll(c *gin.Context) {
 
 	data, total, err := h.repo.QueryAll(search, status, limit, offset)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"success": false, "message": err.Error()})
+		response.InternalError(c, err.Error())
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{
-		"success": true,
-		"total":   total,
-		"limit":   limit,
-		"offset":  offset,
-		"data":    data,
-	})
+	response.OKList(c, data, int(total), limit, offset)
 }
 
 func (h *RujukanHandler) GetByID(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"success": false, "message": "ID tidak valid"})
+		response.BadRequest(c, "ID tidak valid")
 		return
 	}
 
 	data, err := h.repo.GetByID(id)
 	if err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"success": false, "message": "Rujukan tidak ditemukan"})
+		response.NotFound(c, "Rujukan tidak ditemukan")
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"success": true, "data": data})
+	response.OK(c, data)
 }
 
 type CreateInput struct {
@@ -74,11 +68,9 @@ type CreateInput struct {
 func (h *RujukanHandler) Create(c *gin.Context) {
 	var input CreateInput
 	if err := c.ShouldBindJSON(&input); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"success": false, "message": err.Error()})
+		response.ValidationError(c, err)
 		return
 	}
-
-	userID := extractUserID(c)
 
 	rujukan := domain.Rujukan{
 		IDPasien:       input.IDPasien,
@@ -87,15 +79,15 @@ func (h *RujukanHandler) Create(c *gin.Context) {
 		KodeICD:        input.KodeICD,
 		Diagnosa:       input.Diagnosa,
 		Catatan:        input.Catatan,
-		IDUser:         userID,
+		IDUser:         extractUserID(c),
 	}
 
 	if err := h.repo.Create(&rujukan); err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"success": false, "message": err.Error()})
+		response.InternalError(c, err.Error())
 		return
 	}
 
-	c.JSON(http.StatusCreated, gin.H{"success": true, "data": rujukan})
+	response.Created(c, rujukan)
 }
 
 type UpdateStatusInput struct {
@@ -105,22 +97,22 @@ type UpdateStatusInput struct {
 func (h *RujukanHandler) UpdateStatus(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"success": false, "message": "ID tidak valid"})
+		response.BadRequest(c, "ID tidak valid")
 		return
 	}
 
 	var input UpdateStatusInput
 	if err := c.ShouldBindJSON(&input); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"success": false, "message": err.Error()})
+		response.ValidationError(c, err)
 		return
 	}
 
 	if err := h.repo.UpdateStatus(id, input.Status); err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"success": false, "message": err.Error()})
+		response.InternalError(c, err.Error())
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"success": true, "message": "Status rujukan berhasil diperbarui"})
+	response.OKMessage(c, "Status rujukan berhasil diperbarui")
 }
 
 func extractUserID(c *gin.Context) uint {

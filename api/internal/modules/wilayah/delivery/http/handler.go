@@ -1,9 +1,10 @@
 package http
 
 import (
-	"net/http"
 	"strconv"
+
 	"rujukan/internal/modules/wilayah/repository"
+	"rujukan/internal/pkg/response"
 
 	"github.com/gin-gonic/gin"
 )
@@ -20,100 +21,65 @@ func (h *WilayahHandler) QueryWilayah(c *gin.Context) {
 	search := c.Query("search")
 	parentID := c.Query("parent_id")
 	jenisStr := c.Query("jenis")
-	limitStr := c.DefaultQuery("limit", "10")
-	offsetStr := c.DefaultQuery("offset", "0")
 
 	var jenis int8 = 0
 	if jenisStr != "" {
-		j, err := strconv.Atoi(jenisStr)
-		if err == nil {
+		if j, err := strconv.Atoi(jenisStr); err == nil {
 			jenis = int8(j)
 		}
 	}
 
-	limit, err := strconv.Atoi(limitStr)
+	limit, err := strconv.Atoi(c.DefaultQuery("limit", "10"))
 	if err != nil || limit <= 0 {
 		limit = 10
 	}
-
-	offset, err := strconv.Atoi(offsetStr)
+	offset, err := strconv.Atoi(c.DefaultQuery("offset", "0"))
 	if err != nil || offset < 0 {
 		offset = 0
 	}
 
 	data, total, err := h.repo.QueryWilayah(search, jenis, parentID, limit, offset)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"success": false,
-			"message": err.Error(),
-		})
+		response.InternalError(c, err.Error())
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{
-		"success": true,
-		"total":   total,
-		"limit":   limit,
-		"offset":  offset,
-		"data":    data,
-	})
+	response.OKList(c, data, int(total), limit, offset)
 }
 
 func (h *WilayahHandler) GetWilayahByID(c *gin.Context) {
 	id := c.Param("id")
 	data, err := h.repo.GetWilayahByID(id)
 	if err != nil {
-		c.JSON(http.StatusNotFound, gin.H{
-			"success": false,
-			"message": "Wilayah not found",
-		})
+		response.NotFound(c, "Wilayah tidak ditemukan")
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{
-		"success": true,
-		"data":    data,
-	})
+	response.OK(c, data)
 }
 
 func (h *WilayahHandler) QueryJenisWilayah(c *gin.Context) {
 	data, err := h.repo.QueryJenisWilayah()
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"success": false,
-			"message": err.Error(),
-		})
+		response.InternalError(c, err.Error())
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{
-		"success": true,
-		"data":    data,
-	})
+	response.OK(c, data)
 }
 
 func (h *WilayahHandler) GetJenisWilayahByID(c *gin.Context) {
-	idStr := c.Param("id")
-	id, err := strconv.Atoi(idStr)
+	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"success": false,
-			"message": "Invalid ID format",
-		})
+		response.BadRequest(c, "Format ID tidak valid")
 		return
 	}
 
 	data, err := h.repo.GetJenisWilayahByID(int8(id))
 	if err != nil {
-		c.JSON(http.StatusNotFound, gin.H{
-			"success": false,
-			"message": "Jenis wilayah not found",
-		})
+		response.NotFound(c, "Jenis wilayah tidak ditemukan")
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{
-		"success": true,
-		"data":    data,
-	})
+	response.OK(c, data)
 }

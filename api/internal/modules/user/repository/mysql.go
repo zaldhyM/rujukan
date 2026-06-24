@@ -35,7 +35,8 @@ func (r *mysqlRepository) QueryAll() ([]domain.User, error) {
 	}
 
 	var users []domain.User
-	if err := r.db.Find(&users).Error; err != nil {
+	cols := "ID, USERNAME, NAMA, NIK, ID_FASKES, MASA_AKTIF, ROLE, STATUS, STATUS_TELEGRAM, ID_TELEGRAM, TERAKHIR_UBAH_PASSWORD"
+	if err := r.db.Select(cols).Find(&users).Error; err != nil {
 		return nil, err
 	}
 	return users, nil

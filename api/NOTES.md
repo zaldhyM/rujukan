@@ -104,7 +104,7 @@ db/
 | Fase 1 | Middleware & Security (JWT, CORS, Logger) | ✅ JWT & Auth Middleware selesai |
 | Fase 2 | Auth lengkap (Login, Register, Logout, Me) | ✅ Selesai |
 | Fase 3 | Modul data master + Modul Rujukan | ✅ Selesai |
-| Fase 4 | Validasi input & standarisasi error response | ⏳ Belum |
+| Fase 4 | Validasi input & standarisasi error response | ✅ Selesai |
 | Fase 5 | Swagger/OpenAPI + migrasi DB otomatis | ⏳ Belum |
 
 ---
@@ -134,9 +134,11 @@ db/
   - `GET /v1/rujukan` — list dengan filter.
   - `PUT /v1/rujukan/:id/status` — update status.
 
-### 📝 Fase 4: Validasi & Standarisasi Error ⏳
-- **Request Validation:** Integrasi `github.com/go-playground/validator` pada handler.
-- **Standard Response Helper:** Format response konsisten untuk sukses dan error di semua modul.
+### 📝 Fase 4: Validasi & Standarisasi Error ✅
+- **Request Validation:** `go-playground/validator/v10` aktif via tag `binding` di semua input struct.
+- **Standard Response Helper:** `internal/pkg/response/response.go` — fungsi `OK`, `OKList`, `OKMessage`, `Created`, `Error`, `ValidationError`, `BadRequest`, `NotFound`, `Unauthorized`, `Conflict`, `InternalError`.
+- Semua handler (user, rujukan, faskes, pasien, wilayah, referensi) sudah menggunakan helper ini.
+- `ValidationError` otomatis mem-format field-level error menjadi map `{"field": "pesan"}`.
 
 ### 📖 Fase 5: Dokumentasi API & Deployment ⏳
 - **Swagger/OpenAPI:** Integrasi `swaggo/swag` untuk generate dokumentasi otomatis.
@@ -165,8 +167,22 @@ Setiap perubahan skema wajib dicatat sebagai file patch baru di `db/patches/` de
 ## Yang Perlu Dilakukan Selanjutnya
 
 - [ ] Jalankan `db/rujukan/create_db.sql` lalu `db/rujukan/tables/rujukan.sql` di database
-- [ ] Fase 4: Integrasi `go-playground/validator` di semua handler
-- [ ] Fase 4: Buat helper `response.go` untuk format JSON standar (success/error)
-- [ ] Fase 4: CORS middleware untuk akses dari `rujukan-app`
+- [x] Fase 4: Integrasi `go-playground/validator` di semua handler
+- [x] Fase 4: Buat helper `response.go` untuk format JSON standar (success/error)
+- [x] Fase 4: CORS middleware untuk akses dari `rujukan-app`
+
+## Backlog Keamanan (Security)
+
+Temuan dari security review — belum dieksekusi:
+
+### 🟠 Prioritas Tinggi
+- [ ] **Rate limiting login** — `POST /v1/auth/login` belum ada pembatasan percobaan. Rentan brute force. Solusi: middleware rate limiter (misal: `golang.org/x/time/rate` atau `github.com/ulule/limiter`) per IP, max 5 percobaan/menit.
+- [ ] **Role-based authorization** — `AuthMiddleware` hanya autentikasi, belum otorisasi. User role `faskes` bisa delete faskes lain, update rujukan orang lain, dll. Solusi: buat middleware `RequireRole("admin")` dan pasang di route yang sesuai.
+
+### 🟡 Prioritas Sedang
+- [ ] **Error message leakage** — `response.InternalError(c, err.Error())` meneruskan error GORM mentah ke client (bisa bocorkan nama tabel/kolom). Solusi: log error internal, kembalikan pesan generik `"Terjadi kesalahan pada server"` ke client.
+- [ ] **Cookie Secure flag** — `SetCookie(..., false, true)` → flag `Secure: false`. Di production (HTTPS), harus `true`. Solusi: baca dari env `APP_ENV`, set `Secure: true` jika production.
+- [ ] **JWT fallback secret** — Jika `JWT_SECRET` kosong di `.env`, pakai secret hardcoded yang lemah. Solusi: aplikasi harus `log.Fatal` jika `JWT_SECRET` tidak di-set, bukan pakai fallback.
+- [ ] **`database.Switch()` tanpa whitelist** — `DB.Exec("USE " + dbName)` pakai string concatenation. Saat ini aman (nilai hardcoded), tapi tambahkan whitelist `{"aplikasi", "master", "rujukan"}` sebagai defense-in-depth.
 - [ ] Fase 5: Integrasi `swaggo/swag` untuk dokumentasi otomatis
 - [ ] Fase 5: Setup `golang-migrate` untuk eksekusi patch otomatis

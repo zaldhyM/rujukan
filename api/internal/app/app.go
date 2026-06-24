@@ -40,6 +40,9 @@ func NewApp() *App {
 	// Only trust proxies from loopback for production security
 	router.SetTrustedProxies([]string{"127.0.0.1"})
 
+	// CORS — harus sebelum semua route
+	router.Use(middleware.CORSMiddleware())
+
 	// 4. Initialize Monolith Modules
 	userModule := user.NewUserModule(db, rdb)
 	faskesModule := faskes.NewFaskesModule(db)
