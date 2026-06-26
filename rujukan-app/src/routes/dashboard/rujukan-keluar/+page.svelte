@@ -455,16 +455,16 @@
     position: fixed;
     top: 24px;
     right: 24px;
-    background: rgba(18, 27, 45, 0.9);
-    border: 1px solid var(--color-success);
-    padding: 1rem 1.5rem;
+    background: #FFFFFF;
+    border: 1px solid #BBF7D0;
+    padding: 0.875rem 1.25rem;
     border-radius: var(--border-radius-md);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
     display: flex;
     align-items: center;
     gap: 0.75rem;
     z-index: 2000;
-    color: white;
+    color: var(--text-primary);
     font-weight: 500;
     animation: slideInRight 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   }
@@ -594,8 +594,8 @@
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: rgba(11, 17, 30, 0.85);
-    backdrop-filter: blur(8px);
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(4px);
     z-index: 1000;
     display: flex;
     align-items: center;
@@ -608,7 +608,7 @@
     max-width: 800px;
     padding: 2.5rem;
     border-radius: var(--border-radius-lg);
-    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
@@ -620,7 +620,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: #0D7A72;
+    background: var(--color-primary);
     padding: 1.25rem 1.5rem;
     margin: -2rem -2rem 1.5rem -2rem;
     border-radius: var(--border-radius-md) var(--border-radius-md) 0 0;
@@ -638,11 +638,11 @@
   }
 
   .modal-badge {
-    background: rgba(0, 242, 254, 0.1);
-    border: 1px solid rgba(0, 242, 254, 0.3);
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.35);
     padding: 0.35rem 0.75rem;
     border-radius: 6px;
-    color: var(--color-primary);
+    color: #FFFFFF;
     font-size: 0.85rem;
     font-weight: 700;
   }

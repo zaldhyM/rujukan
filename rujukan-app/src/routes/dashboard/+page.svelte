@@ -77,30 +77,30 @@
         <svg class="custom-chart" viewBox="0 0 500 220" width="100%" height="100%">
           <defs>
             <linearGradient id="chartGrad" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="rgba(0, 200, 83, 0.4)"/>
-              <stop offset="100%" stop-color="rgba(0, 200, 83, 0)"/>
+              <stop offset="0%" stop-color="rgba(20, 184, 166, 0.18)"/>
+              <stop offset="100%" stop-color="rgba(20, 184, 166, 0)"/>
             </linearGradient>
             <linearGradient id="lineGrad" x1="0" y1="0" x2="1" y2="0">
-              <stop offset="0%" stop-color="#00C853"/>
-              <stop offset="100%" stop-color="#8DC63F"/>
+              <stop offset="0%" stop-color="#14B8A6"/>
+              <stop offset="100%" stop-color="#A3E635"/>
             </linearGradient>
           </defs>
-          
+
           <!-- Grid Lines -->
-          <line x1="30" y1="20" x2="480" y2="20" stroke="rgba(255, 255, 255, 0.05)" stroke-width="1" />
-          <line x1="30" y1="70" x2="480" y2="70" stroke="rgba(255, 255, 255, 0.05)" stroke-width="1" />
-          <line x1="30" y1="120" x2="480" y2="120" stroke="rgba(255, 255, 255, 0.05)" stroke-width="1" />
-          <line x1="30" y1="170" x2="480" y2="170" stroke="rgba(255, 255, 255, 0.05)" stroke-width="1" />
-          
+          <line x1="30" y1="20" x2="480" y2="20" stroke="#E5E7EB" stroke-width="1" />
+          <line x1="30" y1="70" x2="480" y2="70" stroke="#E5E7EB" stroke-width="1" />
+          <line x1="30" y1="120" x2="480" y2="120" stroke="#E5E7EB" stroke-width="1" />
+          <line x1="30" y1="170" x2="480" y2="170" stroke="#E5E7EB" stroke-width="1" />
+
           <!-- Chart Paths -->
           <path d="M 40 160 Q 110 90 180 130 T 320 60 T 460 30 L 460 170 L 40 170 Z" fill="url(#chartGrad)" />
-          <path d="M 40 160 Q 110 90 180 130 T 320 60 T 460 30" fill="none" stroke="url(#lineGrad)" stroke-width="3" stroke-linecap="round" />
-          
+          <path d="M 40 160 Q 110 90 180 130 T 320 60 T 460 30" fill="none" stroke="url(#lineGrad)" stroke-width="2.5" stroke-linecap="round" />
+
           <!-- Chart Data Points -->
-          <circle cx="40" cy="160" r="4" fill="#00C853" stroke="#071a0d" stroke-width="2" />
-          <circle cx="180" cy="130" r="4" fill="#00C853" stroke="#071a0d" stroke-width="2" />
-          <circle cx="320" cy="60" r="4" fill="#8DC63F" stroke="#071a0d" stroke-width="2" />
-          <circle cx="460" cy="30" r="4" fill="#8DC63F" stroke="#071a0d" stroke-width="2" />
+          <circle cx="40" cy="160" r="4" fill="#14B8A6" stroke="#FFFFFF" stroke-width="2" />
+          <circle cx="180" cy="130" r="4" fill="#14B8A6" stroke="#FFFFFF" stroke-width="2" />
+          <circle cx="320" cy="60" r="4" fill="#A3E635" stroke="#FFFFFF" stroke-width="2" />
+          <circle cx="460" cy="30" r="4" fill="#A3E635" stroke="#FFFFFF" stroke-width="2" />
           
           <!-- Labels -->
           <text x="40" y="195" fill="var(--text-muted)" font-size="10" text-anchor="middle">Sen</text>
@@ -275,10 +275,10 @@
     justify-content: center;
   }
 
-  .icon-primary { background: rgba(0, 200, 83, 0.1); color: var(--color-primary); }
-  .icon-success { background: rgba(0, 200, 83, 0.1); color: var(--color-success); }
-  .icon-warning { background: rgba(255, 174, 52, 0.1); color: var(--color-warning); }
-  .icon-danger { background: rgba(255, 117, 140, 0.1); color: var(--color-danger); }
+  .icon-primary { background: #CCFBF1; color: var(--color-primary); }
+  .icon-success { background: #DCFCE7; color: var(--color-success); }
+  .icon-warning { background: #FEF3C7; color: var(--color-warning); }
+  .icon-danger { background: #FEE2E2; color: var(--color-danger); }
 
   .stat-value {
     font-size: 2.25rem;
@@ -388,7 +388,7 @@
   }
 
   .table-row:hover {
-    background-color: rgba(0, 135, 60, 0.03);
+    background-color: rgba(20, 184, 166, 0.04);
   }
 
   .ref-id {

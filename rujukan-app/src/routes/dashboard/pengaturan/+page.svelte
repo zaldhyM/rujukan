@@ -345,16 +345,16 @@
     position: fixed;
     top: 24px;
     right: 24px;
-    background: rgba(18, 27, 45, 0.9);
-    border: 1px solid var(--color-success);
-    padding: 1rem 1.5rem;
+    background: #FFFFFF;
+    border: 1px solid #BBF7D0;
+    padding: 0.875rem 1.25rem;
     border-radius: var(--border-radius-md);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
     display: flex;
     align-items: center;
     gap: 0.75rem;
     z-index: 2000;
-    color: white;
+    color: var(--text-primary);
     font-weight: 500;
     animation: slideInRight 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   }
@@ -403,14 +403,14 @@
 
   .settings-nav-btn:hover {
     color: var(--color-primary);
-    background: rgba(46, 196, 177, 0.06);
-    border-color: rgba(46, 196, 177, 0.2);
+    background: rgba(20, 184, 166, 0.06);
+    border-color: transparent;
   }
 
   .settings-nav-btn.active {
-    background: rgba(46, 196, 177, 0.1);
-    border-color: rgba(46, 196, 177, 0.3);
-    color: var(--color-primary);
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+    color: #FFFFFF;
   }
 
   .settings-content {
@@ -633,12 +633,12 @@
   }
 
   input:checked + .slider {
-    background-color: var(--color-primary-hover);
+    background-color: var(--color-primary);
     border-color: var(--color-primary);
   }
 
   input:checked + .slider:before {
     transform: translateX(22px);
-    background-color: #0b111e;
+    background-color: #FFFFFF;
   }
 </style>

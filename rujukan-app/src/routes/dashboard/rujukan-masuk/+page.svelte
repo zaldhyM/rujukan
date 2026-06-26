@@ -490,8 +490,8 @@
   }
 
   .tab-btn.active {
-    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-hover) 100%);
-    color: #0b111e;
+    background: var(--color-primary);
+    color: #FFFFFF;
     border-color: var(--color-primary);
   }
 
@@ -622,8 +622,8 @@
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: rgba(11, 17, 30, 0.85);
-    backdrop-filter: blur(8px);
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(4px);
     z-index: 1000;
     display: flex;
     align-items: center;
@@ -636,7 +636,7 @@
     max-width: 800px;
     padding: 2.5rem;
     border-radius: var(--border-radius-lg);
-    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
@@ -652,7 +652,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: #0D7A72;
+    background: var(--color-primary);
     padding: 1.25rem 1.5rem;
     margin: -2rem -2rem 1.5rem -2rem;
     border-radius: var(--border-radius-md) var(--border-radius-md) 0 0;
@@ -665,11 +665,11 @@
   }
 
   .modal-badge {
-    background: rgba(0, 242, 254, 0.1);
-    border: 1px solid rgba(0, 242, 254, 0.3);
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.35);
     padding: 0.35rem 0.75rem;
     border-radius: 6px;
-    color: var(--color-primary);
+    color: #FFFFFF;
     font-size: 0.85rem;
     font-weight: 700;
   }
