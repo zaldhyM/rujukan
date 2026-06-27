@@ -194,20 +194,6 @@
 
       <div class="sidebar-footer">
         <button
-          class="collapse-btn"
-          onclick={toggleCollapse}
-          title={isCollapsed ? 'Perluas sidebar' : 'Kecilkan sidebar'}
-        >
-          <svg viewBox="0 0 24 24" fill="none" width="16" height="16"
-            stroke="currentColor" stroke-width="2.5"
-            stroke-linecap="round" stroke-linejoin="round"
-            class:flip={isCollapsed}>
-            <polyline points="15 18 9 12 15 6"></polyline>
-          </svg>
-          {#if !isCollapsed}<span>Kecilkan Menu</span>{/if}
-        </button>
-
-        <button
           onclick={handleLogout}
           class="logout-btn"
           onmouseenter={(e) => showTooltip(e, 'Keluar')}
@@ -280,6 +266,17 @@
               <line x1="3" y1="12" x2="21" y2="12"></line>
               <line x1="3" y1="6" x2="21" y2="6"></line>
               <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+          </button>
+          <button
+            class="collapse-toggle-btn"
+            onclick={toggleCollapse}
+            title={isCollapsed ? 'Perluas sidebar' : 'Kecilkan sidebar'}
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="18" height="18" rx="2"></rect>
+              <line x1="9" y1="3" x2="9" y2="21"></line>
             </svg>
           </button>
           <div class="topbar-search">
@@ -380,46 +377,24 @@
 
   .logo-text span { color: var(--color-primary); }
 
-  /* ─── Collapse Button ─── */
-  .collapse-btn {
+  /* ─── Collapse Toggle (Topbar) ─── */
+  .collapse-toggle-btn {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 0.75rem;
-    width: 100%;
-    padding: 0.625rem 1rem;
-    background: var(--bg-primary);
-    border: 1px solid var(--border-glass);
-    border-radius: var(--border-radius-sm);
+    background: none;
+    border: none;
     color: var(--text-muted);
     cursor: pointer;
-    font-family: var(--font-title);
-    font-weight: 600;
-    font-size: 0.78rem;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    white-space: nowrap;
-    overflow: hidden;
-    transition: all var(--transition-fast);
-  }
-
-  .sidebar.collapsed .collapse-btn {
-    padding: 0.625rem;
-    gap: 0;
-  }
-
-  .collapse-btn:hover {
-    background: #F3F4F6;
-    color: var(--text-primary);
-    border-color: #D1D5DB;
-  }
-
-  .collapse-btn svg {
-    transition: transform var(--transition-normal);
+    padding: 0.25rem;
     flex-shrink: 0;
+    border-radius: 6px;
+    transition: color var(--transition-fast), background var(--transition-fast);
   }
 
-  .collapse-btn svg.flip { transform: rotate(180deg); }
+  .collapse-toggle-btn:hover { color: var(--text-primary); background: var(--bg-primary); }
+
+  .collapse-toggle-btn svg { width: 22px; height: 22px; }
 
   /* ─── Nav Items ─── */
   .sidebar-nav {
@@ -870,7 +845,7 @@
 
     .sidebar.active { transform: translateX(0); }
 
-    .collapse-btn { display: none; }
+    .collapse-toggle-btn { display: none; }
 
     .main-container,
     .main-container.collapsed { margin-left: 0; }

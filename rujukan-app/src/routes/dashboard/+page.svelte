@@ -1,26 +1,78 @@
 <!-- src/routes/dashboard/+page.svelte -->
 <script lang="ts">
-  import { onMount } from 'svelte';
+  import { onMount } from "svelte";
 
-  let faskes = $state('');
+  let faskes = $state("");
 
   onMount(() => {
-    faskes = localStorage.getItem('faskes') || 'Fasilitas Kesehatan';
+    faskes = localStorage.getItem("faskes") || "Fasilitas Kesehatan";
   });
 
   // Mock Data
   const stats = [
-    { title: 'Total Rujukan Masuk', value: '24', change: '+12% minggu ini', type: 'primary', icon: 'M19 10.5V19C19 20.1 18.1 21 17 21H7C5.9 21 5 20.1 5 19V10.5M12 3V17M12 3L7.5 7.5M12 3L16.5 7.5' },
-    { title: 'Rujukan Disetujui', value: '18', change: '80% Rate Penerimaan', type: 'success', icon: 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z' },
-    { title: 'Menunggu Review', value: '4', change: 'Butuh tindakan segera', type: 'warning', icon: 'M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z' },
-    { title: 'Rujukan Ditolak', value: '2', change: 'Penolakan dengan catatan', type: 'danger', icon: 'M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z' }
+    {
+      title: "Total Rujukan Masuk",
+      value: "24",
+      change: "+12% minggu ini",
+      type: "primary",
+      icon: "M19 10.5V19C19 20.1 18.1 21 17 21H7C5.9 21 5 20.1 5 19V10.5M12 3V17M12 3L7.5 7.5M12 3L16.5 7.5",
+    },
+    {
+      title: "Rujukan Disetujui",
+      value: "18",
+      change: "80% Rate Penerimaan",
+      type: "success",
+      icon: "M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z",
+    },
+    {
+      title: "Menunggu Review",
+      value: "4",
+      change: "Butuh tindakan segera",
+      type: "warning",
+      icon: "M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z",
+    },
+    {
+      title: "Rujukan Ditolak",
+      value: "2",
+      change: "Penolakan dengan catatan",
+      type: "danger",
+      icon: "M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z",
+    },
   ];
 
   const recentReferrals = [
-    { id: 'REF-008', patient: 'Andi Wijaya', from: 'Puskesmas Kassi Kassi', date: 'Hari ini, 09:15', status: 'Pending', type: 'Umum' },
-    { id: 'REF-007', patient: 'Siti Rahma', from: 'RS Stella Maris', date: 'Hari ini, 08:30', status: 'Approved', type: 'BPJS' },
-    { id: 'REF-006', patient: 'Budi Santoso', from: 'Klinik Medika', date: 'Kemarin, 16:45', status: 'Approved', type: 'BPJS' },
-    { id: 'REF-005', patient: 'Dewi Lestari', from: 'Puskesmas Mamajang', date: 'Kemarin, 14:20', status: 'Rejected', type: 'Umum' }
+    {
+      id: "REF-008",
+      patient: "Andi Wijaya",
+      from: "Puskesmas Kassi Kassi",
+      date: "Hari ini, 09:15",
+      status: "Pending",
+      type: "Umum",
+    },
+    {
+      id: "REF-007",
+      patient: "Siti Rahma",
+      from: "RS Stella Maris",
+      date: "Hari ini, 08:30",
+      status: "Approved",
+      type: "BPJS",
+    },
+    {
+      id: "REF-006",
+      patient: "Budi Santoso",
+      from: "Klinik Medika",
+      date: "Kemarin, 16:45",
+      status: "Approved",
+      type: "BPJS",
+    },
+    {
+      id: "REF-005",
+      patient: "Dewi Lestari",
+      from: "Puskesmas Mamajang",
+      date: "Kemarin, 14:20",
+      status: "Rejected",
+      type: "Umum",
+    },
   ];
 </script>
 
@@ -29,11 +81,20 @@
     <div class="header-left">
       <span class="breadcrumb">BERANDA / DASHBOARD</span>
       <h1>Ringkasan Rujukan</h1>
-      <p class="subtitle">Monitor status rujukan pasien secara real-time untuk {faskes}</p>
+      <p class="subtitle">
+        Monitor status rujukan pasien secara real-time untuk {faskes}
+      </p>
     </div>
     <div class="header-right">
       <div class="date-badge glass-panel">
-        <svg viewBox="0 0 24 24" fill="none" width="18" height="18" stroke="currentColor" stroke-width="2">
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          width="18"
+          height="18"
+          stroke="currentColor"
+          stroke-width="2"
+        >
           <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
           <line x1="16" y1="2" x2="16" y2="6"></line>
           <line x1="8" y1="2" x2="8" y2="6"></line>
@@ -51,7 +112,16 @@
         <div class="stat-header">
           <span class="stat-title">{stat.title}</span>
           <div class="stat-icon-wrap icon-{stat.type}">
-            <svg viewBox="0 0 24 24" fill="none" width="20" height="20" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              width="20"
+              height="20"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
               <path d={stat.icon} />
             </svg>
           </div>
@@ -74,47 +144,183 @@
       </div>
       <div class="chart-container">
         <!-- Premium Custom SVG Bar/Line Chart -->
-        <svg class="custom-chart" viewBox="0 0 500 220" width="100%" height="100%">
+        <svg
+          class="custom-chart"
+          viewBox="0 0 500 220"
+          width="100%"
+          height="100%"
+        >
           <defs>
             <linearGradient id="chartGrad" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="rgba(20, 184, 166, 0.18)"/>
-              <stop offset="100%" stop-color="rgba(20, 184, 166, 0)"/>
+              <stop offset="0%" stop-color="rgba(20, 184, 166, 0.18)" />
+              <stop offset="100%" stop-color="rgba(20, 184, 166, 0)" />
             </linearGradient>
             <linearGradient id="lineGrad" x1="0" y1="0" x2="1" y2="0">
-              <stop offset="0%" stop-color="#14B8A6"/>
-              <stop offset="100%" stop-color="#A3E635"/>
+              <stop offset="0%" stop-color="#14B8A6" />
+              <stop offset="100%" stop-color="#A3E635" />
             </linearGradient>
           </defs>
 
           <!-- Grid Lines -->
-          <line x1="30" y1="20" x2="480" y2="20" stroke="#E5E7EB" stroke-width="1" />
-          <line x1="30" y1="70" x2="480" y2="70" stroke="#E5E7EB" stroke-width="1" />
-          <line x1="30" y1="120" x2="480" y2="120" stroke="#E5E7EB" stroke-width="1" />
-          <line x1="30" y1="170" x2="480" y2="170" stroke="#E5E7EB" stroke-width="1" />
+          <line
+            x1="30"
+            y1="20"
+            x2="480"
+            y2="20"
+            stroke="#E5E7EB"
+            stroke-width="1"
+          />
+          <line
+            x1="30"
+            y1="70"
+            x2="480"
+            y2="70"
+            stroke="#E5E7EB"
+            stroke-width="1"
+          />
+          <line
+            x1="30"
+            y1="120"
+            x2="480"
+            y2="120"
+            stroke="#E5E7EB"
+            stroke-width="1"
+          />
+          <line
+            x1="30"
+            y1="170"
+            x2="480"
+            y2="170"
+            stroke="#E5E7EB"
+            stroke-width="1"
+          />
 
           <!-- Chart Paths -->
-          <path d="M 40 160 Q 110 90 180 130 T 320 60 T 460 30 L 460 170 L 40 170 Z" fill="url(#chartGrad)" />
-          <path d="M 40 160 Q 110 90 180 130 T 320 60 T 460 30" fill="none" stroke="url(#lineGrad)" stroke-width="2.5" stroke-linecap="round" />
+          <path
+            d="M 40 160 Q 110 90 180 130 T 320 60 T 460 30 L 460 170 L 40 170 Z"
+            fill="url(#chartGrad)"
+          />
+          <path
+            d="M 40 160 Q 110 90 180 130 T 320 60 T 460 30"
+            fill="none"
+            stroke="url(#lineGrad)"
+            stroke-width="2.5"
+            stroke-linecap="round"
+          />
 
           <!-- Chart Data Points -->
-          <circle cx="40" cy="160" r="4" fill="#14B8A6" stroke="#FFFFFF" stroke-width="2" />
-          <circle cx="180" cy="130" r="4" fill="#14B8A6" stroke="#FFFFFF" stroke-width="2" />
-          <circle cx="320" cy="60" r="4" fill="#A3E635" stroke="#FFFFFF" stroke-width="2" />
-          <circle cx="460" cy="30" r="4" fill="#A3E635" stroke="#FFFFFF" stroke-width="2" />
-          
-          <!-- Labels -->
-          <text x="40" y="195" fill="var(--text-muted)" font-size="10" text-anchor="middle">Sen</text>
-          <text x="110" y="195" fill="var(--text-muted)" font-size="10" text-anchor="middle">Sel</text>
-          <text x="180" y="195" fill="var(--text-muted)" font-size="10" text-anchor="middle">Rab</text>
-          <text x="250" y="195" fill="var(--text-muted)" font-size="10" text-anchor="middle">Kam</text>
-          <text x="320" y="195" fill="var(--text-muted)" font-size="10" text-anchor="middle">Jum</text>
-          <text x="390" y="195" fill="var(--text-muted)" font-size="10" text-anchor="middle">Sab</text>
-          <text x="460" y="195" fill="var(--text-muted)" font-size="10" text-anchor="middle">Min</text>
+          <circle
+            cx="40"
+            cy="160"
+            r="4"
+            fill="#14B8A6"
+            stroke="#FFFFFF"
+            stroke-width="2"
+          />
+          <circle
+            cx="180"
+            cy="130"
+            r="4"
+            fill="#14B8A6"
+            stroke="#FFFFFF"
+            stroke-width="2"
+          />
+          <circle
+            cx="320"
+            cy="60"
+            r="4"
+            fill="#A3E635"
+            stroke="#FFFFFF"
+            stroke-width="2"
+          />
+          <circle
+            cx="460"
+            cy="30"
+            r="4"
+            fill="#A3E635"
+            stroke="#FFFFFF"
+            stroke-width="2"
+          />
 
-          <text x="22" y="174" fill="var(--text-muted)" font-size="10" text-anchor="end">0</text>
-          <text x="22" y="124" fill="var(--text-muted)" font-size="10" text-anchor="end">10</text>
-          <text x="22" y="74" fill="var(--text-muted)" font-size="10" text-anchor="end">20</text>
-          <text x="22" y="24" fill="var(--text-muted)" font-size="10" text-anchor="end">30</text>
+          <!-- Labels -->
+          <text
+            x="40"
+            y="195"
+            fill="var(--text-muted)"
+            font-size="10"
+            text-anchor="middle">Sen</text
+          >
+          <text
+            x="110"
+            y="195"
+            fill="var(--text-muted)"
+            font-size="10"
+            text-anchor="middle">Sel</text
+          >
+          <text
+            x="180"
+            y="195"
+            fill="var(--text-muted)"
+            font-size="10"
+            text-anchor="middle">Rab</text
+          >
+          <text
+            x="250"
+            y="195"
+            fill="var(--text-muted)"
+            font-size="10"
+            text-anchor="middle">Kam</text
+          >
+          <text
+            x="320"
+            y="195"
+            fill="var(--text-muted)"
+            font-size="10"
+            text-anchor="middle">Jum</text
+          >
+          <text
+            x="390"
+            y="195"
+            fill="var(--text-muted)"
+            font-size="10"
+            text-anchor="middle">Sab</text
+          >
+          <text
+            x="460"
+            y="195"
+            fill="var(--text-muted)"
+            font-size="10"
+            text-anchor="middle">Min</text
+          >
+
+          <text
+            x="22"
+            y="174"
+            fill="var(--text-muted)"
+            font-size="10"
+            text-anchor="end">0</text
+          >
+          <text
+            x="22"
+            y="124"
+            fill="var(--text-muted)"
+            font-size="10"
+            text-anchor="end">10</text
+          >
+          <text
+            x="22"
+            y="74"
+            fill="var(--text-muted)"
+            font-size="10"
+            text-anchor="end">20</text
+          >
+          <text
+            x="22"
+            y="24"
+            fill="var(--text-muted)"
+            font-size="10"
+            text-anchor="end">30</text
+          >
         </svg>
       </div>
     </div>
@@ -142,14 +348,16 @@
                 <td>
                   <div class="patient-cell">
                     <span class="patient-name">{ref.patient}</span>
-                    <span class="patient-type badge badge-primary">{ref.type}</span>
+                    <span class="patient-type badge badge-primary"
+                      >{ref.type}</span
+                    >
                   </div>
                 </td>
                 <td class="text-secondary">{ref.from}</td>
                 <td>
-                  {#if ref.status === 'Pending'}
+                  {#if ref.status === "Pending"}
                     <span class="badge badge-warning">Review</span>
-                  {:else if ref.status === 'Approved'}
+                  {:else if ref.status === "Approved"}
                     <span class="badge badge-success">Disetujui</span>
                   {:else}
                     <span class="badge badge-danger">Ditolak</span>
@@ -176,13 +384,6 @@
     justify-content: space-between;
     align-items: center;
     gap: 1.5rem;
-  }
-
-  .breadcrumb {
-    font-size: 0.75rem;
-    font-weight: 600;
-    color: var(--color-primary);
-    letter-spacing: 0.1em;
   }
 
   .page-header h1 {
@@ -219,7 +420,7 @@
     .stats-grid {
       grid-template-columns: 1fr;
     }
-    
+
     .page-header {
       flex-direction: column;
       align-items: flex-start;
@@ -275,10 +476,22 @@
     justify-content: center;
   }
 
-  .icon-primary { background: #CCFBF1; color: var(--color-primary); }
-  .icon-success { background: #DCFCE7; color: var(--color-success); }
-  .icon-warning { background: #FEF3C7; color: var(--color-warning); }
-  .icon-danger { background: #FEE2E2; color: var(--color-danger); }
+  .icon-primary {
+    background: #ccfbf1;
+    color: var(--color-primary);
+  }
+  .icon-success {
+    background: #dcfce7;
+    color: var(--color-success);
+  }
+  .icon-warning {
+    background: #fef3c7;
+    color: var(--color-warning);
+  }
+  .icon-danger {
+    background: #fee2e2;
+    color: var(--color-danger);
+  }
 
   .stat-value {
     font-size: 2.25rem;
@@ -293,11 +506,19 @@
     font-size: 0.8rem;
     font-weight: 500;
   }
-  
-  .text-primary { color: var(--color-primary); }
-  .text-success { color: var(--color-success); }
-  .text-warning { color: var(--color-warning); }
-  .text-danger { color: var(--color-danger); }
+
+  .text-primary {
+    color: var(--color-primary);
+  }
+  .text-success {
+    color: var(--color-success);
+  }
+  .text-warning {
+    color: var(--color-warning);
+  }
+  .text-danger {
+    color: var(--color-danger);
+  }
 
   /* Dashboard Panels Grid */
   .dashboard-grid {
@@ -312,7 +533,8 @@
     }
   }
 
-  .chart-panel, .table-panel {
+  .chart-panel,
+  .table-panel {
     padding: 1.75rem;
     display: flex;
     flex-direction: column;
